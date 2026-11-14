@@ -20,9 +20,9 @@ Aponte a câmera do app do seu banco para o QR Code, ou use a chave ou o "copia 
 00020101021126580014br.gov.bcb.pix01366656db10-157f-4582-bdb8-2f43d0d8e7dd5204000053039865802BR5912Prep Wiki BR6006BRASIL62070503***630421A5
 ```
 
-## Liberapay
+## Liberapay (PayPal)
 
-Para apoiar com cartão, de qualquer país, ou com uma contribuição recorrente: [liberapay.com/wdonega](https://liberapay.com/wdonega/donate).
+Para apoiar com PayPal ou cartão, de qualquer país, ou com uma contribuição recorrente: [liberapay.com/wdonega](https://liberapay.com/wdonega/donate).
 
 ---
 

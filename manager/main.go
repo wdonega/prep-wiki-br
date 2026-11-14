@@ -280,6 +280,7 @@ func (a *App) rotas() http.Handler {
 	// páginas próprias
 	// sem nada instalado, a própria página inicial diz isso e leva ao gerenciador (home.js)
 	mux.HandleFunc("GET /{$}", pagina(web, "home.html"))
+	mux.HandleFunc("GET /apoie", pagina(web, "apoie.html")) // PIX e Liberapay; funciona offline
 	mux.Handle("GET /prep/", estaticos(web))
 	mux.HandleFunc("GET /api/biblioteca", a.apiBiblioteca)
 
