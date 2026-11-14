@@ -1,0 +1,23 @@
+<p><b>Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.</b></p>
+
+<p>Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar no celular. Você escolhe o que baixar numa lista pronta de 81 acervos e, depois de baixado, tudo funciona sem internet.</p>
+
+<p><b>O que dá para baixar</b></p>
+<ul>
+<li>Wikipédia em português: completa (com ou sem imagens) ou só os 50 mil melhores artigos, a partir de 153 MB</li>
+<li>Wikipédia por tema: Medicina, Química, Física, Matemática, Biologia, História, Geografia, Computação</li>
+<li>Duas wikis do próprio projeto: Sisteminha Embrapa (produção de alimentos no quintal) e Plantas Medicinais (85 plantas do Formulário de Fitoterápicos da Anvisa)</li>
+<li>Estudo, consertos (iFixit), livros (Wikisource, Projeto Gutenberg), dicionário, guias de viagem e mapas do Brasil</li>
+<li>Material de preparação em inglês: sobrevivência, medicina de campo, tratamento de água, conservas, horta, energia, consertos e rádio amador</li>
+</ul>
+
+<p><b>Como funciona</b></p>
+<ul>
+<li>Biblioteca: os acervos instalados, com filtro por categoria e busca no texto de todos eles</li>
+<li>Gerenciador: baixa, atualiza e apaga acervos, mostrando o tamanho de cada um e o espaço livre</li>
+<li>Leitor: cada acervo abre como um site, com busca própria</li>
+</ul>
+
+<p>Os acervos ficam na pasta do app e são apagados se o app for desinstalado. Os acervos são arquivos ZIM, os mesmos do Kiwix, lidos pela libkiwix. O app só usa a internet para baixar os acervos que você escolher; não tem anúncios nem rastreamento.</p>
+
+<p>O mesmo projeto roda em computador, mini PC ou Raspberry Pi pelo Docker, para servir a biblioteca para a casa toda.</p>

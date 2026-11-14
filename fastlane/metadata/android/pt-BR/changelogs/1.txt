@@ -1,0 +1,1 @@
+Primeira versão: biblioteca, gerenciador de downloads e leitor, com os 81 acervos do catálogo.

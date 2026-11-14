@@ -158,7 +158,7 @@ Ideias para as próximas wikis, todas a partir de material de órgãos públicos
 
 ## Licenças
 
-- O **código** deste repositório (gerenciador, scripts de build, CSS e JS) pode ser usado livremente.
+- O **código** deste repositório (gerenciador, app Android, scripts de build, CSS e JS) é software livre, sob a [GPLv3 ou posterior](LICENSE): pode usar, estudar, modificar e redistribuir, desde que as versões modificadas sigam abertas sob a mesma licença.
 - O **conteúdo das duas wikis** vem de publicações públicas da Embrapa, da Anvisa e do Ministério da Saúde, reorganizadas para uso **pessoal e educativo, sem fins comerciais**. Toda página cita a fonte. Os créditos completos estão no README de cada wiki e dentro de cada ZIM.
 - As **fotos** da wiki de plantas vêm do Wikimedia Commons, com licenças livres, e o autor é creditado em cada imagem.
 - Os **outros acervos** não são deste projeto. Cada um segue a licença da sua origem (os da Wikimedia, por exemplo, são CC BY-SA). Alguns, como o iFixit, não permitem uso comercial.
