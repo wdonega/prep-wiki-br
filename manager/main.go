@@ -278,18 +278,8 @@ func (a *App) rotas() http.Handler {
 	mux := http.NewServeMux()
 
 	// páginas próprias
-	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
-		// primeira vez, sem nada instalado: vai direto para o gerenciador
-		// (só para quem pode usá-lo; quem acabou de sair fica na página inicial)
-		a.mu.Lock()
-		vazio := len(a.est.Instalados) == 0
-		a.mu.Unlock()
-		if vazio && a.cfg.Admin != adminDesligado && a.porteiro.liberado(r) {
-			http.Redirect(w, r, "/admin/", http.StatusFound)
-			return
-		}
-		pagina(web, "home.html")(w, r)
-	})
+	// sem nada instalado, a própria página inicial diz isso e leva ao gerenciador (home.js)
+	mux.HandleFunc("GET /{$}", pagina(web, "home.html"))
 	mux.Handle("GET /prep/", estaticos(web))
 	mux.HandleFunc("GET /api/biblioteca", a.apiBiblioteca)
 
