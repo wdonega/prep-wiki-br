@@ -5,7 +5,6 @@ const ico = (nome, cls = "") => `<svg class="i ${cls}" aria-hidden="true"><use h
 
 let livros = null;   // null = ainda carregando
 let grupos = [];
-let tags = [];       // etiquetas do catálogo (ex.: "Lançamento")
 let grupoSel = sessionStorage.getItem("prep.grupo") || "";   // "" = todos
 let consulta = "";
 
@@ -38,18 +37,6 @@ function destacar(texto, q) {
 
 // ---------------------------------------------------------------- desenho
 
-// etiquetas do catálogo (ex.: "Lançamento"). A cor vem do catálogo: um nome da paleta ou "#rrggbb";
-// tag sem definição (ou cor desconhecida) aparece com o próprio nome, em cinza.
-const CORES_TAG = ["amarelo", "verde", "azul", "vermelho", "cinza"];
-function tagHtml(id, defs) {
-  const tg = (defs || []).find((x) => x.id === id) || { titulo: id };
-  const cor = String(tg.cor || "").trim().toLowerCase();
-  if (/^#[0-9a-f]{6}$/.test(cor)) {
-    return `<span class="etq tag" style="color:${cor};background:${cor}26">${esc(tg.titulo)}</span>`;
-  }
-  return `<span class="etq tag tag-${CORES_TAG.includes(cor) ? cor : "cinza"}">${esc(tg.titulo)}</span>`;
-}
-
 function card(l, q) {
   const grupo = grupos.find((g) => g.id === l.grupo);
   const sub = [l.tema || (grupo && grupo.titulo), l.edicao && `edição ${l.edicao}`].filter(Boolean).join(" · ");
@@ -68,7 +55,6 @@ function card(l, q) {
     </div>
     <div class="card-desc">${destacar(l.descricao, q)}</div>
     <div class="card-rodape">
-      ${(l.tags || []).map((id) => tagHtml(id, tags)).join("")}
       ${outros.map((c) => `<span class="etq" title="Em ${esc(nomeIdioma(c))}">${esc(SIGLAS_IDIOMA[c] || c.toUpperCase())}</span>`).join("")}
       ${info.map((t) => `<span class="card-info">${esc(t)}</span>`).join("")}
       ${ico("arrow-right", "card-seta")}
@@ -190,7 +176,7 @@ async function carregar() {
     if (texto === ultima) return; // nada mudou: não redesenha (preserva foco e rolagem)
     ultima = texto;
     const j = JSON.parse(texto);
-    livros = j.livros; grupos = j.grupos; tags = j.tags || []; comAdmin = j.admin !== false;
+    livros = j.livros; grupos = j.grupos; comAdmin = j.admin !== false;
     $("b-admin").hidden = !comAdmin;
     render();
   } catch (e) {
