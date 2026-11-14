@@ -55,6 +55,8 @@
 .lin.s-baixando .lin-st, .lin.s-verificando .lin-st, .lin.s-na_fila .lin-st, .lin.s-apagando .lin-st { background: var(--info-soft); color: var(--info); }
 
 .lin-tit { font-weight: 650; font-size: .96rem; letter-spacing: -.01em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* etiquetas do item (tags do catálogo e situação): ao lado do nome; no celular, numa linha própria logo abaixo */
+.lin-etqs { display: inline-flex; flex-wrap: wrap; gap: 6px; }
 .lin-desc { font-size: .86rem; color: var(--text-2); margin-top: 2px; }
 .lin-meta { font-size: .76rem; color: var(--muted); margin-top: 5px; display: flex; flex-wrap: wrap; gap: 2px 0; }
 .lin-meta > span { white-space: nowrap; }
@@ -129,6 +131,8 @@
   .painel .stat:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
 }
 @media (max-width: 640px) {
+  .lin-tit { row-gap: 6px; }
+  .lin-etqs { flex-basis: 100%; }
   .painel { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 10px; padding-top: 16px; }
   .stat-rot { white-space: normal; }
   .stat .ibtn { width: 36px; height: 36px; margin-right: -4px; }

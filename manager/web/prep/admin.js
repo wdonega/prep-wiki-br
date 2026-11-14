@@ -157,10 +157,11 @@ function linha(it) {
   if (it.erro) extra += `<div class="lin-erro">${ico("alert")}<span>${esc(it.erro)}</span></div>`;
 
   const etq = ETIQUETA[s] ? `<span class="etq ${ETIQUETA[s][1]}">${ETIQUETA[s][0]}</span>` : "";
+  const etqs = (it.tags || []).map((id) => tagHtml(id, est.tags)).join("") + etq;
   return `<div class="lin s-${s}">
     <span class="lin-st">${ico(ICONE[s] || "package", s === "verificando" ? "" : "")}</span>
     <div class="lin-corpo">
-      <div class="lin-tit">${esc(it.titulo)}${(it.tags || []).map((id) => tagHtml(id, est.tags)).join("")}${etq}</div>
+      <div class="lin-tit"><span class="lin-nome">${esc(it.titulo)}</span>${etqs ? `<span class="lin-etqs">${etqs}</span>` : ""}</div>
       <div class="lin-desc">${esc(it.descricao)}</div>
       <div class="lin-meta">${meta.map((m) => (m.startsWith("<span") ? m : `<span>${m}</span>`)).join("")}</div>
     </div>

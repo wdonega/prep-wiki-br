@@ -62,12 +62,13 @@ function card(l, q) {
     <div class="card-topo">
       <span class="card-ico"><img src="${esc(l.icone)}" alt="" width="38" height="38" loading="lazy"></span>
       <div>
-        <div class="card-tit">${destacar(l.titulo, q)}${(l.tags || []).map((id) => tagHtml(id, tags)).join("")}</div>
+        <div class="card-tit">${destacar(l.titulo, q)}</div>
         ${sub ? `<div class="card-sub">${esc(sub)}</div>` : ""}
       </div>
     </div>
     <div class="card-desc">${destacar(l.descricao, q)}</div>
     <div class="card-rodape">
+      ${(l.tags || []).map((id) => tagHtml(id, tags)).join("")}
       ${outros.map((c) => `<span class="etq" title="Em ${esc(nomeIdioma(c))}">${esc(SIGLAS_IDIOMA[c] || c.toUpperCase())}</span>`).join("")}
       ${info.map((t) => `<span class="card-info">${esc(t)}</span>`).join("")}
       ${ico("arrow-right", "card-seta")}
