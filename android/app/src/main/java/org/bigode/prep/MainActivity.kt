@@ -1,7 +1,9 @@
 package org.bigode.prep
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
@@ -14,19 +16,16 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
-import java.io.File
-import java.net.ServerSocket
 import java.net.Socket
 import kotlin.concurrent.thread
 
-// O mesmo gerenciador do Docker, rodando dentro do app. Ele vem no APK como libprepmanager.so (veja
-// preparar-libs.sh) e roda como processo filho; o Kiwix roda aqui dentro, pela libkiwix (Kiwix.kt).
-// A tela é só uma WebView em http://127.0.0.1. Nada de rede sai do aparelho, fora os downloads de acervos.
+// O mesmo gerenciador do Docker, rodando dentro do app: quem o põe para rodar, junto com o Kiwix, é o
+// Servico (Servico.kt), para os downloads seguirem com a tela fechada. A tela é só uma WebView em
+// http://127.0.0.1. Nada de rede sai do aparelho, fora os downloads de acervos.
 class MainActivity : Activity() {
 
-    private var gerenciador: Process? = null
-    private var kiwix: Kiwix? = null
     private lateinit var web: WebView
+    private var pediuNotificacao = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,31 +63,29 @@ class MainActivity : Activity() {
         iniciarGerenciador()
     }
 
-    private fun iniciarGerenciador() {
-        val libs = applicationInfo.nativeLibraryDir
-        // pasta do app no armazenamento externo: cabe acervo grande e some junto se o app for desinstalado
-        val dados = File(getExternalFilesDir(null) ?: filesDir, "dados").apply { mkdirs() }
-        // o Kiwix roda aqui dentro, pela libkiwix, numa porta interna livre; precisa estar de olho na
-        // pasta antes de o gerenciador subir, porque a primeira coisa que ele faz é pedir a biblioteca
-        val portaKiwix = ServerSocket(0).use { it.localPort }
-        kiwix = Kiwix(this, dados, portaKiwix)
-        val pb = ProcessBuilder("$libs/libprepmanager.so").redirectErrorStream(true)
-        pb.environment().apply {
-            put("PREP_DADOS", dados.path)
-            put("PREP_ENDERECO", "$HOST:$PORTA")
-            put("PREP_KIWIX_EXTERNO", "1")
-            put("PREP_KIWIX_PORTA", portaKiwix.toString())
+    // O serviço só pode ser iniciado com a tela visível (Android 8+ recusa com o app em segundo plano, o que
+    // inclui a Activity criada atrás da tela de bloqueio). startService é idempotente: se já estiver rodando,
+    // com um download em andamento, só segue.
+    override fun onResume() {
+        super.onResume()
+        Servico.telaAberta = true
+        try {
+            startService(Intent(this, Servico::class.java))
+        } catch (e: IllegalStateException) {
+            Log.w(TAG, "serviço não iniciou", e)
         }
-        val p = pb.start()
-        gerenciador = p
-        thread(name = "prep-log") { p.inputStream.bufferedReader().forEachLine { Log.i(TAG, it) } }
+        // Android 13+: a notificação de progresso dos downloads precisa de permissão (pede uma vez)
+        if (!pediuNotificacao && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            pediuNotificacao = true
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
+        }
+    }
+
+    private fun iniciarGerenciador() {
         thread(name = "prep-espera") {
             // o gerenciador só abre a porta depois que o Kiwix responde (esperarKiwix, até 10 s)
-            repeat(600) {
-                if (!p.isAlive) {
-                    Log.e(TAG, "gerenciador saiu com código ${p.exitValue()}")
-                    return@thread
-                }
+            repeat(1200) { // até 120 s: a tela pode ter aberto atrás da tela de bloqueio
                 try {
                     Socket(HOST, PORTA).close()
                     runOnUiThread { web.loadUrl("http://$HOST:$PORTA/") }
@@ -97,7 +94,7 @@ class MainActivity : Activity() {
                     Thread.sleep(100)
                 }
             }
-            Log.e(TAG, "gerenciador não abriu a porta em 60 s")
+            Log.e(TAG, "gerenciador não abriu a porta em 120 s")
         }
     }
 
@@ -107,14 +104,13 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
-        gerenciador?.destroy() // SIGTERM
-        kiwix?.parar()
+        Servico.telaAberta = false // sem download em andamento, o Servico encerra o gerenciador e o Kiwix
         super.onDestroy()
     }
 
     companion object {
-        const val TAG = "prep"
-        const val HOST = "127.0.0.1"
-        const val PORTA = 8080
+        const val TAG = Servico.TAG
+        const val HOST = Servico.HOST
+        const val PORTA = Servico.PORTA
     }
 }
