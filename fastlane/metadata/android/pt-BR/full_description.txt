@@ -21,3 +21,5 @@
 <p>Os acervos ficam na pasta do app e são apagados se o app for desinstalado. Os acervos são arquivos ZIM, os mesmos do Kiwix, lidos pela libkiwix. O app só usa a internet para baixar os acervos que você escolher; não tem anúncios nem rastreamento.</p>
 
 <p>O mesmo projeto roda em computador, mini PC ou Raspberry Pi pelo Docker, para servir a biblioteca para a casa toda.</p>
+
+<p>Gostou? Dá para apoiar o projeto por PIX ou Liberapay: https://github.com/wdonega/prep-wiki-br/blob/main/docs/apoie.md</p>

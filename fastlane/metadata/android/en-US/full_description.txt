@@ -21,3 +21,5 @@
 <p>Collections are stored in the app's folder and are deleted if the app is uninstalled. They are ZIM files, the same ones Kiwix uses, read with libkiwix. The app only uses the internet to download the collections you choose; it has no ads and no tracking.</p>
 
 <p>The same project runs on a PC, mini PC or Raspberry Pi with Docker, serving the library to the whole house.</p>
+
+<p>Want to support the project? Liberapay: https://liberapay.com/wdonega</p>

@@ -12,6 +12,7 @@ Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que vo
 [Como instalar](#como-instalar) ·
 [As duas wikis do projeto](#as-duas-wikis-do-projeto) ·
 [Para quem quer mexer](#para-quem-quer-mexer) ·
+[Apoie](#apoie-o-projeto) ·
 [Licenças](#licenças) ·
 [Agradecimentos](#agradecimentos)
 
@@ -155,6 +156,10 @@ Ideias para as próximas wikis, todas a partir de material de órgãos públicos
 - **Defesa Civil:** cartilhas de enchente, deslizamento, seca e kit de emergência.
 - **Ministério da Saúde** ([BVS](https://bvsms.saude.gov.br/)): primeiros socorros, tratamento de água e doenças de veiculação hídrica.
 - **ASA Brasil:** cisterna de placas e convivência com o semiárido.
+
+## Apoie o projeto
+
+O Prep Wiki BR é gratuito e sem anúncios. Se ele foi útil, dá para apoiar por [PIX ou Liberapay](docs/apoie.md).
 
 ## Licenças
 
