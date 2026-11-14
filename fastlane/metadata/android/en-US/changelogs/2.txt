@@ -1,0 +1,1 @@
+Downloads keep going with the screen off or the app closed, with a progress notification.

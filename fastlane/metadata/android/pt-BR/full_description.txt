@@ -14,7 +14,7 @@
 <p><b>Como funciona</b></p>
 <ul>
 <li>Biblioteca: os acervos instalados, com filtro por categoria e busca no texto de todos eles</li>
-<li>Gerenciador: baixa, atualiza e apaga acervos, mostrando o tamanho de cada um e o espaço livre</li>
+<li>Gerenciador: baixa, atualiza e apaga acervos, mostrando o tamanho de cada um e o espaço livre; os downloads continuam com a tela apagada</li>
 <li>Leitor: cada acervo abre como um site, com busca própria</li>
 </ul>
 

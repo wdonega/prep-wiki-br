@@ -1,0 +1,23 @@
+<p><b>An offline library for preparedness, self-reliance and health, in Brazilian Portuguese.</b></p>
+
+<p>When the network goes down (a flood, a blackout, out in the countryside or on the road) what you need to know has to be on your phone. Pick what to download from a curated list of 81 collections; once downloaded, everything works without internet.</p>
+
+<p><b>What you can download</b></p>
+<ul>
+<li>Portuguese Wikipedia: complete (with or without images) or only the 50,000 best articles, starting at 153 MB</li>
+<li>Wikipedia by topic: Medicine, Chemistry, Physics, Mathematics, Biology, History, Geography, Computing</li>
+<li>Two wikis made by this project: Sisteminha Embrapa (backyard food production) and Plantas Medicinais (85 plants from the Brazilian health agency's herbal formulary)</li>
+<li>Study material, repairs (iFixit), books (Wikisource, Project Gutenberg), dictionary, travel guides and maps of Brazil</li>
+<li>Preparedness material in English: survival, field medicine, water treatment, canning, gardening, energy, repairs and amateur radio</li>
+</ul>
+
+<p><b>How it works</b></p>
+<ul>
+<li>Library: your installed collections, with a category filter and full-text search across all of them</li>
+<li>Manager: download, update and delete collections, showing the size of each one and the free space; downloads keep going with the screen off</li>
+<li>Reader: each collection opens like a website, with its own search</li>
+</ul>
+
+<p>Collections are stored in the app's folder and are deleted if the app is uninstalled. They are ZIM files, the same ones Kiwix uses, read with libkiwix. The app only uses the internet to download the collections you choose; it has no ads and no tracking.</p>
+
+<p>The same project runs on a PC, mini PC or Raspberry Pi with Docker, serving the library to the whole house.</p>

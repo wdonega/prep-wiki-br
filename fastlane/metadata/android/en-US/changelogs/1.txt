@@ -1,0 +1,1 @@
+First version: library, download manager and reader, with the 81 collections of the catalog.
