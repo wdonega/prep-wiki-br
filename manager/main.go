@@ -49,7 +49,10 @@ type Config struct {
 	KiwixManage string   // caminho do kiwix-manage
 	KiwixPorta  int      // porta interna do kiwix-serve (só 127.0.0.1)
 	KiwixArgs   []string // opções extras para o kiwix-serve
-	Admin       string   // "completo", "leitura" ou "desligado" (PREP_ADMIN)
+	// Kiwix fora do gerenciador (PREP_KIWIX_EXTERNO=1, app Android): quem serve na KiwixPorta e
+	// monta a biblioteca é o app, pela libkiwix. Veja kiwix_externo.go.
+	KiwixExterno bool
+	Admin        string // "completo", "leitura" ou "desligado" (PREP_ADMIN)
 }
 
 // Modos do gerenciador. A trava é no servidor: as rotas que o modo não permite nem são
@@ -139,6 +142,7 @@ func lerConfig() Config {
 	if extra := strings.Fields(os.Getenv("PREP_KIWIX_ARGS")); len(extra) > 0 {
 		c.KiwixArgs = extra
 	}
+	c.KiwixExterno = os.Getenv("PREP_KIWIX_EXTERNO") == "1"
 	switch c.Admin = strings.ToLower(strings.TrimSpace(env("PREP_ADMIN", adminCompleto))); c.Admin {
 	case adminCompleto, adminLeitura, adminDesligado:
 	default:

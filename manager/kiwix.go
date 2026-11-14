@@ -41,19 +41,32 @@ func (a *App) reconstruirBiblioteca() error {
 
 	tmp := a.caminhoBiblioteca() + ".tmp"
 	os.Remove(tmp)
-	if err := os.WriteFile(tmp, []byte(bibliotecaVazia), 0o644); err != nil {
-		return err
+	corrompido := func(arq string) string {
+		return "O arquivo " + arq + " está corrompido ou não é um ZIM válido e não aparece na biblioteca. Apague e baixe de novo."
 	}
-	// Um arquivo por vez: se um ZIM estiver corrompido, só ele fica de fora (com aviso no admin),
-	// em vez de o kiwix-manage falhar e o kiwix-serve ficar sem nenhum acervo.
 	invalidos := map[string]string{}
-	for _, arq := range arquivos {
-		// caminho relativo: o library.xml fica na mesma pasta dos ZIMs
-		cmd := exec.Command(a.cfg.KiwixManage, filepath.Base(tmp), "add", arq)
-		cmd.Dir = a.cfg.Dados
-		if saida, err := cmd.CombinedOutput(); err != nil {
-			logf("biblioteca: %s ficou de fora: %v: %s", arq, err, strings.TrimSpace(string(saida)))
-			invalidos[idDoArquivo[arq]] = "O arquivo " + arq + " está corrompido ou não é um ZIM válido e não aparece na biblioteca. Apague e baixe de novo."
+	if a.cfg.KiwixExterno {
+		falhas, err := a.bibliotecaPeloApp(arquivos, tmp)
+		if err != nil {
+			return err
+		}
+		for _, arq := range falhas {
+			invalidos[idDoArquivo[arq]] = corrompido(arq)
+		}
+	} else {
+		if err := os.WriteFile(tmp, []byte(bibliotecaVazia), 0o644); err != nil {
+			return err
+		}
+		// Um arquivo por vez: se um ZIM estiver corrompido, só ele fica de fora (com aviso no admin),
+		// em vez de o kiwix-manage falhar e o kiwix-serve ficar sem nenhum acervo.
+		for _, arq := range arquivos {
+			// caminho relativo: o library.xml fica na mesma pasta dos ZIMs
+			cmd := exec.Command(a.cfg.KiwixManage, filepath.Base(tmp), "add", arq)
+			cmd.Dir = a.cfg.Dados
+			if saida, err := cmd.CombinedOutput(); err != nil {
+				logf("biblioteca: %s ficou de fora: %v: %s", arq, err, strings.TrimSpace(string(saida)))
+				invalidos[idDoArquivo[arq]] = corrompido(arq)
+			}
 		}
 	}
 	// O Kiwix guarda um acervo por identificador do ZIM: se dois arquivos são o mesmo ZIM com nomes
@@ -83,6 +96,10 @@ func (a *App) reconstruirBiblioteca() error {
 // supervisionarKiwix inicia o kiwix-serve como processo filho e o reinicia se ele cair.
 func (a *App) supervisionarKiwix() {
 	defer close(a.kiwixParou)
+	if a.cfg.KiwixExterno { // o servidor é do app (veja kiwix_externo.go)
+		<-a.ctx.Done()
+		return
+	}
 	espera := time.Second
 	for a.ctx.Err() == nil {
 		args := []string{

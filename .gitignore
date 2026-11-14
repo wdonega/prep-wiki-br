@@ -3,3 +3,16 @@ __pycache__/
 venv/
 .venv/
 .idea/
+.env
+.local/
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/src/main/jniLibs/
+
+# chave de assinatura do release (nunca no git)
+android/keystore.properties
+*.jks

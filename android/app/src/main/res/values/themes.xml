@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DayNight: claro ou escuro conforme o sistema. A WebView usa o tema do app para responder ao
+         prefers-color-scheme da página, então com um tema fixo a página ficaria sempre escura. -->
+    <style name="Tema" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

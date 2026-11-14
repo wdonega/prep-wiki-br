@@ -205,9 +205,15 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 		if !ok { // instalado mas fora da biblioteca (arquivo inválido): não aparece
 			continue
 		}
+		nome := strings.TrimSuffix(inst.Arquivo, ".zim")
+		if a.cfg.KiwixExterno {
+			// o servidor da libkiwix do app (binding Java) não tem os nomes legíveis do kiwix-serve:
+			// lá as URLs usam o UUID do ZIM (/content/<uuid>/, /viewer#<uuid>)
+			nome = x.ID
+		}
 		l := livro{
 			ID: it.ID, Titulo: it.Titulo, Descricao: it.Descricao, Grupo: it.Grupo, Tema: it.Tema,
-			Nome:    strings.TrimSuffix(inst.Arquivo, ".zim"),
+			Nome:    nome,
 			Icone:   "/catalog/v2/illustration/" + x.ID + "/?size=48",
 			Artigos: x.Artigos, Midias: x.Midias, Tamanho: inst.Tamanho, Edicao: inst.Edicao,
 			Idiomas: []string{},
