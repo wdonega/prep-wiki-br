@@ -31,6 +31,7 @@ class Servico : Service() {
     private var vigia: Thread? = null
     @Volatile private var ativo = true
     @Volatile private var emPrimeiroPlano = false
+    private var baixava = false
     private var acordado: PowerManager.WakeLock? = null
     private var wifi: WifiManager.WifiLock? = null
 
@@ -89,6 +90,8 @@ class Servico : Service() {
                         total += pr.optLong("total")
                     }
                 }
+                if (tarefas > 0 && !baixava) aoComecarDownload?.invoke()
+                baixava = tarefas > 0
                 if (tarefas > 0) mostrarProgresso(tarefas, nome, baixado, total) else ocioso()
             } catch (_: InterruptedException) {
                 return
@@ -217,5 +220,9 @@ class Servico : Service() {
         // A Activity marca quando abre e quando fecha; sem tela e sem download, a vigia encerra o serviço
         // no segundo seguinte (um startService com o app em segundo plano seria recusado pelo Android).
         @Volatile var telaAberta = false
+
+        // A Activity visível se registra aqui para pedir a permissão de notificação quando o primeiro
+        // download começa (chamado da thread da vigia).
+        @Volatile var aoComecarDownload: (() -> Unit)? = null
     }
 }

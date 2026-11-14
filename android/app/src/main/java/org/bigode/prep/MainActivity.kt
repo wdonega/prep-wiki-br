@@ -74,12 +74,23 @@ class MainActivity : Activity() {
         } catch (e: IllegalStateException) {
             Log.w(TAG, "serviço não iniciou", e)
         }
-        // Android 13+: a notificação de progresso dos downloads precisa de permissão (pede uma vez)
-        if (!pediuNotificacao && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            pediuNotificacao = true
-            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
-        }
+        // a permissão de notificação só é pedida quando a pessoa baixa o primeiro acervo, que é quando
+        // aparece a notificação de progresso
+        Servico.aoComecarDownload = { runOnUiThread { pedirNotificacao() } }
+    }
+
+    override fun onPause() {
+        Servico.aoComecarDownload = null
+        super.onPause()
+    }
+
+    // Android 13+: a notificação de progresso dos downloads precisa de permissão. Sem ela o download segue
+    // igual com a tela fechada; só não aparece o progresso na barra. Pede no máximo uma vez por abertura.
+    private fun pedirNotificacao() {
+        if (pediuNotificacao || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) return
+        pediuNotificacao = true
+        requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
     }
 
     private fun iniciarGerenciador() {
