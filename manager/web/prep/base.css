@@ -121,10 +121,16 @@ h1, h2, h3, p { margin: 0; }
 @keyframes subir { from { opacity: 0; transform: translateY(10px); } }
 
 /* ---------- rodapé ---------- */
-.rodape { margin-top: auto; padding: 44px 20px 28px; text-align: center; color: var(--muted); font-size: .8rem; }
+/* em linha: o texto e os links (com o quadradinho de 22 px) alinhados pelo meio; quebra em mais linhas no celular */
+.rodape { margin-top: auto; padding: 44px 20px 28px; text-align: center; color: var(--muted); font-size: .8rem;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; row-gap: 8px; }
 .rodape a { color: var(--text-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
 .rodape a:hover { color: var(--accent); }
 .rodape .i { width: 14px; height: 14px; }
+/* ícones dos links do rodapé: quadradinho no verde da marca com o traço amarelo, como o coração da página /apoie */
+.rodape a .i { width: 22px; height: 22px; padding: 4px; border-radius: 7px; color: #facc15;
+  background: linear-gradient(140deg, #2bb866, #15803d); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25); }
+.rodape a[href="/apoie"] .i { fill: #facc15; }
 .rodape .sep { margin: 0 8px; opacity: .5; }
 
 .conteudo { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
