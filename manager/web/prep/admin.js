@@ -109,6 +109,13 @@ function tagHtml(id, defs) {
   return `<span class="etq tag tag-${CORES_TAG.includes(cor) ? cor : "cinza"}">${esc(tg.titulo)}</span>`;
 }
 
+// rodapé: "Prep Wiki BR · versão X", igual na biblioteca e no gerenciador
+function mostrarVersao(v) {
+  if (!v) return;
+  $("versao-txt").textContent = v === "dev" ? "versão local" : `versão ${v}`;
+  $("versao").hidden = false;
+}
+
 function linha(it) {
   const s = it.situacao, inst = it.instalado, disp = it.disponivel;
   const trava = travados.has(it.id) ? "disabled" : "";
@@ -234,7 +241,7 @@ function render() {
   $("b-sair").hidden = !est.com_senha;
   somenteLeitura = est.modo === "leitura";
   $("faixa-leitura").hidden = !somenteLeitura;
-  $("s-catalogo").textContent = `Prep Wiki BR ${est.versao === "dev" ? "(versão local)" : est.versao} · catálogo v${est.catalogo_versao}`;
+  mostrarVersao(est.versao);
 
   const falhas = itens.filter((i) => i.erro_verificacao).length;
   $("alerta").hidden = somenteLeitura || est.verificando || falhas === 0;

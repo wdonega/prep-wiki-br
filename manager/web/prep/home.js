@@ -37,6 +37,13 @@ function destacar(texto, q) {
 
 // ---------------------------------------------------------------- desenho
 
+// rodapé: "Prep Wiki BR · versão X", igual na biblioteca e no gerenciador
+function mostrarVersao(v) {
+  if (!v) return;
+  $("versao-txt").textContent = v === "dev" ? "versão local" : `versão ${v}`;
+  $("versao").hidden = false;
+}
+
 function card(l, q) {
   const grupo = grupos.find((g) => g.id === l.grupo);
   const sub = [l.tema || (grupo && grupo.titulo), l.edicao && `edição ${l.edicao}`].filter(Boolean).join(" · ");
@@ -177,6 +184,7 @@ async function carregar() {
     ultima = texto;
     const j = JSON.parse(texto);
     livros = j.livros; grupos = j.grupos; comAdmin = j.admin !== false;
+    mostrarVersao(j.versao);
     $("b-admin").hidden = !comAdmin;
     render();
   } catch (e) {

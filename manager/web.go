@@ -231,5 +231,5 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "no-store")
 	json.NewEncoder(w).Encode(map[string]any{"grupos": cat.Grupos, "tags": cat.Tags, "livros": livros,
-		"admin": a.cfg.Admin != adminDesligado})
+		"admin": a.cfg.Admin != adminDesligado, "versao": versao})
 }
