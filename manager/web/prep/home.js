@@ -38,6 +38,18 @@ function destacar(texto, q) {
 
 // ---------------------------------------------------------------- desenho
 
+// etiquetas do catálogo (ex.: "Lançamento"). A cor vem do catálogo: um nome da paleta ou "#rrggbb";
+// tag sem definição (ou cor desconhecida) aparece com o próprio nome, em cinza.
+const CORES_TAG = ["amarelo", "verde", "azul", "vermelho", "cinza"];
+function tagHtml(id, defs) {
+  const tg = (defs || []).find((x) => x.id === id) || { titulo: id };
+  const cor = String(tg.cor || "").trim().toLowerCase();
+  if (/^#[0-9a-f]{6}$/.test(cor)) {
+    return `<span class="etq tag" style="color:${cor};background:${cor}26">${esc(tg.titulo)}</span>`;
+  }
+  return `<span class="etq tag tag-${CORES_TAG.includes(cor) ? cor : "cinza"}">${esc(tg.titulo)}</span>`;
+}
+
 function card(l, q) {
   const grupo = grupos.find((g) => g.id === l.grupo);
   const sub = [l.tema || (grupo && grupo.titulo), l.edicao && `edição ${l.edicao}`].filter(Boolean).join(" · ");
@@ -50,10 +62,7 @@ function card(l, q) {
     <div class="card-topo">
       <span class="card-ico"><img src="${esc(l.icone)}" alt="" width="38" height="38" loading="lazy"></span>
       <div>
-        <div class="card-tit">${destacar(l.titulo, q)}${(l.tags || []).map((id) => {
-          const tg = tags.find((x) => x.id === id);
-          return tg ? ` <span class="etq tag tag-${esc(tg.cor || "cinza")}">${esc(tg.titulo)}</span>` : "";
-        }).join("")}</div>
+        <div class="card-tit">${destacar(l.titulo, q)}${(l.tags || []).map((id) => tagHtml(id, tags)).join("")}</div>
         ${sub ? `<div class="card-sub">${esc(sub)}</div>` : ""}
       </div>
     </div>

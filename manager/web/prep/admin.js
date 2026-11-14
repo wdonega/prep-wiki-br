@@ -97,12 +97,16 @@ const ABAS = [
   ["atualizacoes", "Atualizações", (it) => !!it.instalado && (it.situacao === "desatualizado" || ["na_fila", "baixando", "verificando"].includes(it.situacao))],
 ];
 
-// etiquetas do catálogo (ex.: "Lançamento"), com a cor definida lá
-function tagsHtml(ids) {
-  return (ids || []).map((id) => {
-    const tg = (est.tags || []).find((x) => x.id === id);
-    return tg ? `<span class="etq tag tag-${esc(tg.cor || "cinza")}">${esc(tg.titulo)}</span>` : "";
-  }).join("");
+// etiquetas do catálogo (ex.: "Lançamento"). A cor vem do catálogo: um nome da paleta ou "#rrggbb";
+// tag sem definição (ou cor desconhecida) aparece com o próprio nome, em cinza.
+const CORES_TAG = ["amarelo", "verde", "azul", "vermelho", "cinza"];
+function tagHtml(id, defs) {
+  const tg = (defs || []).find((x) => x.id === id) || { titulo: id };
+  const cor = String(tg.cor || "").trim().toLowerCase();
+  if (/^#[0-9a-f]{6}$/.test(cor)) {
+    return `<span class="etq tag" style="color:${cor};background:${cor}26">${esc(tg.titulo)}</span>`;
+  }
+  return `<span class="etq tag tag-${CORES_TAG.includes(cor) ? cor : "cinza"}">${esc(tg.titulo)}</span>`;
 }
 
 function linha(it) {
@@ -156,7 +160,7 @@ function linha(it) {
   return `<div class="lin s-${s}">
     <span class="lin-st">${ico(ICONE[s] || "package", s === "verificando" ? "" : "")}</span>
     <div class="lin-corpo">
-      <div class="lin-tit">${esc(it.titulo)}${tagsHtml(it.tags)}${etq}</div>
+      <div class="lin-tit">${esc(it.titulo)}${(it.tags || []).map((id) => tagHtml(id, est.tags)).join("")}${etq}</div>
       <div class="lin-desc">${esc(it.descricao)}</div>
       <div class="lin-meta">${meta.map((m) => (m.startsWith("<span") ? m : `<span>${m}</span>`)).join("")}</div>
     </div>

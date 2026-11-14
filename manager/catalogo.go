@@ -25,7 +25,7 @@ type ItemCatalogo struct {
 	Arquivo   string   `json:"arquivo,omitempty"`
 	Grupo     string   `json:"grupo"`
 	Tema      string   `json:"tema,omitempty"` // subdivisão dentro do grupo (só para organizar a lista do gerenciador)
-	Tags      []string `json:"tags,omitempty"` // ids de Catalogo.Tags, mostrados como etiquetas coloridas
+	Tags      []string `json:"tags,omitempty"` // etiquetas; as definidas em Catalogo.Tags ganham título e cor, as outras aparecem com o próprio nome em cinza
 	URL       string   `json:"url,omitempty"`  // só nos acervos acrescentados por link
 	Titulo    string   `json:"titulo"`
 	Descricao string   `json:"descricao"`
@@ -44,7 +44,7 @@ type Grupo struct {
 type Tag struct {
 	ID     string `json:"id"`
 	Titulo string `json:"titulo"`
-	Cor    string `json:"cor,omitempty"` // amarelo, verde, azul, vermelho ou cinza (o padrão)
+	Cor    string `json:"cor,omitempty"` // amarelo, verde, azul, vermelho, cinza (o padrão) ou hexadecimal (#7c3aed)
 }
 
 type Catalogo struct {
@@ -80,11 +80,6 @@ func lerCatalogo(b []byte) (*Catalogo, error) {
 		tags[tg.ID] = true
 	}
 	for _, it := range c.Itens {
-		for _, tg := range it.Tags {
-			if !tags[tg] {
-				return nil, fmt.Errorf("catálogo: %s usa uma tag que não existe: %q", it.ID, tg)
-			}
-		}
 		if it.ID == "" || c.porID[it.ID] != nil {
 			return nil, fmt.Errorf("catálogo: id vazio ou repetido: %q", it.ID)
 		}
