@@ -108,6 +108,13 @@ h1, h2, h3, p { margin: 0; }
 .etq-ok { background: var(--accent-soft); color: var(--accent); }
 .etq-aviso { background: var(--warn-soft); color: var(--warn); }
 .etq-info { background: var(--info-soft); color: var(--info); }
+/* tags do catálogo: a cor vem do catalogo.json (cinza se não vier ou não for uma destas) */
+.tag { vertical-align: middle; margin-left: 6px; }
+.tag-amarelo { background: rgba(250, 204, 21, .2); color: #8a6100; }
+.tag-verde { background: var(--accent-soft); color: var(--accent); }
+.tag-azul { background: var(--info-soft); color: var(--info); }
+.tag-vermelho { background: var(--danger-soft); color: var(--danger); }
+@media (prefers-color-scheme: dark) { .tag-amarelo { background: rgba(250, 204, 21, .15); color: #facc15; } }
 
 @keyframes surgir { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
 

@@ -47,12 +47,15 @@ type Estado struct {
 	Instalados     map[string]*Instalado     `json:"instalados"`
 	Disponiveis    map[string]*Disponivel    `json:"disponiveis"`
 	Personalizados map[string]*Personalizado `json:"personalizados,omitempty"`
-	VerificadoEm   time.Time                 `json:"verificado_em,omitempty"`
+	// Legados: itens que saíram do catálogo oficial mas continuam baixados aqui, com a definição que
+	// tinham no catálogo (para seguir reconhecendo o arquivo e mostrando título e descrição).
+	Legados      map[string]*ItemCatalogo `json:"legados,omitempty"`
+	VerificadoEm time.Time                `json:"verificado_em,omitempty"`
 }
 
 func novoEstado() *Estado {
 	return &Estado{Versao: 1, Instalados: map[string]*Instalado{}, Disponiveis: map[string]*Disponivel{},
-		Personalizados: map[string]*Personalizado{}}
+		Personalizados: map[string]*Personalizado{}, Legados: map[string]*ItemCatalogo{}}
 }
 
 func carregarEstado(caminho string) (*Estado, error) {
@@ -75,6 +78,14 @@ func carregarEstado(caminho string) (*Estado, error) {
 	}
 	if e.Personalizados == nil {
 		e.Personalizados = map[string]*Personalizado{}
+	}
+	if e.Legados == nil {
+		e.Legados = map[string]*ItemCatalogo{}
+	}
+	for id, it := range e.Legados {
+		if it == nil || it.ID != id || it.prepararPadrao() != nil {
+			delete(e.Legados, id) // definição que este binário não entende: sai da lista
+		}
 	}
 	return e, nil
 }
@@ -110,6 +121,12 @@ func (e *Estado) sincronizarComDisco(dir string, cat *Catalogo) error {
 	for id, inst := range e.Instalados {
 		if _, ok := existe[inst.Arquivo]; !ok || cat.porID[id] == nil {
 			delete(e.Instalados, id)
+		}
+	}
+	// um item fora do catálogo só fica na lista enquanto estiver baixado
+	for id := range e.Legados {
+		if e.Instalados[id] == nil {
+			delete(e.Legados, id)
 		}
 	}
 	nomes := make([]string, 0, len(existe))

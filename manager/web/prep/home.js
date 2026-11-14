@@ -5,6 +5,7 @@ const ico = (nome, cls = "") => `<svg class="i ${cls}" aria-hidden="true"><use h
 
 let livros = null;   // null = ainda carregando
 let grupos = [];
+let tags = [];       // etiquetas do catálogo (ex.: "Lançamento")
 let grupoSel = sessionStorage.getItem("prep.grupo") || "";   // "" = todos
 let consulta = "";
 
@@ -49,7 +50,10 @@ function card(l, q) {
     <div class="card-topo">
       <span class="card-ico"><img src="${esc(l.icone)}" alt="" width="38" height="38" loading="lazy"></span>
       <div>
-        <div class="card-tit">${destacar(l.titulo, q)}</div>
+        <div class="card-tit">${destacar(l.titulo, q)}${(l.tags || []).map((id) => {
+          const tg = tags.find((x) => x.id === id);
+          return tg ? ` <span class="etq tag tag-${esc(tg.cor || "cinza")}">${esc(tg.titulo)}</span>` : "";
+        }).join("")}</div>
         ${sub ? `<div class="card-sub">${esc(sub)}</div>` : ""}
       </div>
     </div>
@@ -176,7 +180,7 @@ async function carregar() {
     if (texto === ultima) return; // nada mudou: não redesenha (preserva foco e rolagem)
     ultima = texto;
     const j = JSON.parse(texto);
-    livros = j.livros; grupos = j.grupos; comAdmin = j.admin !== false;
+    livros = j.livros; grupos = j.grupos; tags = j.tags || []; comAdmin = j.admin !== false;
     $("b-admin").hidden = !comAdmin;
     render();
   } catch (e) {

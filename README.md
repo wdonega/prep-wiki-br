@@ -141,6 +141,8 @@ plantas-medicinais/   fonte da wiki de Plantas Medicinais
 ```
 
 - **Acrescentar um acervo ao catálogo:** inclua uma linha em `manager/catalogo.json` com o nome do arquivo no Kiwix (sem a data), a pasta em que ele fica em `download.kiwix.org/zim/`, o grupo, o título e a descrição. A edição mais recente é descoberta sozinha.
+- **O catálogo se atualiza sozinho:** antes de cada verificação de versões, o gerenciador baixa o `manager/catalogo.json` da branch `main` do GitHub e guarda uma cópia na pasta de dados. Uma mudança no catálogo chega a todas as instalações sem imagem nova (é ignorada se o arquivo for inválido ou tiver `versao` menor que a do catálogo embutido). O que sair do catálogo e estiver baixado não some: vai para o grupo **Fora do catálogo** até ser apagado, e volta ao lugar se reaparecer. `PREP_CATALOGO_URL` troca o endereço; `PREP_CATALOGO_URL=desligado` fica só com o catálogo embutido.
+- **Tags:** o catálogo define etiquetas em `tags` (id, título e cor: `amarelo`, `verde`, `azul`, `vermelho` ou `cinza`) e cada acervo lista as suas em `"tags": ["lancamento"]`. Elas aparecem na biblioteca e no gerenciador.
 - **Gerar uma das wikis na sua máquina:**
   ```bash
   python3 -m venv venv && venv/bin/pip install -r requirements.txt

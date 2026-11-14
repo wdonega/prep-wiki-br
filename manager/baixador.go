@@ -446,6 +446,14 @@ func (a *App) apagar(id string) error {
 			if err := a.est.salvar(a.caminhoEstado()); err != nil {
 				logf("salvar estado: %v", err)
 			}
+		} else if it.legado() {
+			// fora do catálogo oficial só fica enquanto estiver baixado
+			delete(a.est.Legados, id)
+			delete(a.est.Disponiveis, id)
+			a.remontarCatalogo()
+			if err := a.est.salvar(a.caminhoEstado()); err != nil {
+				logf("salvar estado: %v", err)
+			}
 		}
 		a.mu.Unlock()
 		logf("%s: apagado %s", id, inst.Arquivo)

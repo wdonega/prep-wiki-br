@@ -177,6 +177,7 @@ type livro struct {
 	Descricao string   `json:"descricao"`
 	Grupo     string   `json:"grupo"`
 	Tema      string   `json:"tema,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
 	Nome      string   `json:"nome"`  // nome do acervo nas URLs do Kiwix (/content/<nome>/, /viewer#<nome>)
 	Icone     string   `json:"icone"` // ilustração de 48 px servida pelo Kiwix
 	Idiomas   []string `json:"idiomas"`
@@ -212,7 +213,7 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 			nome = x.ID
 		}
 		l := livro{
-			ID: it.ID, Titulo: it.Titulo, Descricao: it.Descricao, Grupo: it.Grupo, Tema: it.Tema,
+			ID: it.ID, Titulo: it.Titulo, Descricao: it.Descricao, Grupo: it.Grupo, Tema: it.Tema, Tags: it.Tags,
 			Nome:    nome,
 			Icone:   "/catalog/v2/illustration/" + x.ID + "/?size=48",
 			Artigos: x.Artigos, Midias: x.Midias, Tamanho: inst.Tamanho, Edicao: inst.Edicao,
@@ -229,5 +230,6 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "no-store")
-	json.NewEncoder(w).Encode(map[string]any{"grupos": cat.Grupos, "livros": livros, "admin": a.cfg.Admin != adminDesligado})
+	json.NewEncoder(w).Encode(map[string]any{"grupos": cat.Grupos, "tags": cat.Tags, "livros": livros,
+		"admin": a.cfg.Admin != adminDesligado})
 }

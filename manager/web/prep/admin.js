@@ -97,6 +97,14 @@ const ABAS = [
   ["atualizacoes", "Atualizações", (it) => !!it.instalado && (it.situacao === "desatualizado" || ["na_fila", "baixando", "verificando"].includes(it.situacao))],
 ];
 
+// etiquetas do catálogo (ex.: "Lançamento"), com a cor definida lá
+function tagsHtml(ids) {
+  return (ids || []).map((id) => {
+    const tg = (est.tags || []).find((x) => x.id === id);
+    return tg ? `<span class="etq tag tag-${esc(tg.cor || "cinza")}">${esc(tg.titulo)}</span>` : "";
+  }).join("");
+}
+
 function linha(it) {
   const s = it.situacao, inst = it.instalado, disp = it.disponivel;
   const trava = travados.has(it.id) ? "disabled" : "";
@@ -148,7 +156,7 @@ function linha(it) {
   return `<div class="lin s-${s}">
     <span class="lin-st">${ico(ICONE[s] || "package", s === "verificando" ? "" : "")}</span>
     <div class="lin-corpo">
-      <div class="lin-tit">${esc(it.titulo)}${etq}</div>
+      <div class="lin-tit">${esc(it.titulo)}${tagsHtml(it.tags)}${etq}</div>
       <div class="lin-desc">${esc(it.descricao)}</div>
       <div class="lin-meta">${meta.map((m) => (m.startsWith("<span") ? m : `<span>${m}</span>`)).join("")}</div>
     </div>

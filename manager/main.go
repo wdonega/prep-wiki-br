@@ -52,6 +52,7 @@ type Config struct {
 	// Kiwix fora do gerenciador (PREP_KIWIX_EXTERNO=1, app Android): quem serve na KiwixPorta e
 	// monta a biblioteca é o app, pela libkiwix. Veja kiwix_externo.go.
 	KiwixExterno bool
+	CatalogoURL  string // de onde vem o catálogo oficial atualizado ("" = só o embutido); veja catalogo_remoto.go
 	Admin        string // "completo", "leitura" ou "desligado" (PREP_ADMIN)
 }
 
@@ -65,7 +66,8 @@ const (
 
 type App struct {
 	cfg      Config
-	base     *Catalogo                // o catálogo embutido, fixo
+	base     *Catalogo                // o catálogo oficial em uso (embutido, do cache ou do GitHub); troque com a.mu travado
+	embutido *Catalogo                // o que veio no binário: piso de versão para o cache e o GitHub
 	catAtual atomic.Pointer[Catalogo] // base + os acervos da pessoa; trocado inteiro quando eles mudam
 	http     *http.Client
 	httpFora *http.Client // para endereços informados pela pessoa: não alcança a própria máquina
@@ -89,7 +91,9 @@ type App struct {
 func (a *App) cat() *Catalogo { return a.catAtual.Load() }
 
 // remontarCatalogo refaz o catálogo depois de uma mudança nos acervos da pessoa. Chame com a.mu travado.
-func (a *App) remontarCatalogo() { a.catAtual.Store(comPersonalizados(a.base, a.est.Personalizados)) }
+func (a *App) remontarCatalogo() {
+	a.catAtual.Store(comPersonalizados(a.base, a.est.Legados, a.est.Personalizados))
+}
 
 func env(chave, padrao string) string {
 	if v := os.Getenv(chave); v != "" {
@@ -143,6 +147,10 @@ func lerConfig() Config {
 		c.KiwixArgs = extra
 	}
 	c.KiwixExterno = os.Getenv("PREP_KIWIX_EXTERNO") == "1"
+	c.CatalogoURL = env("PREP_CATALOGO_URL", urlCatalogoPadrao)
+	if c.CatalogoURL == "desligado" {
+		c.CatalogoURL = ""
+	}
 	switch c.Admin = strings.ToLower(strings.TrimSpace(env("PREP_ADMIN", adminCompleto))); c.Admin {
 	case adminCompleto, adminLeitura, adminDesligado:
 	default:
@@ -169,7 +177,7 @@ func main() {
 	if err := soltarRoot(cfg.Dados); err != nil { // antes de qualquer outra coisa
 		log.Fatal(err)
 	}
-	cat, err := carregarCatalogo()
+	embutido, err := carregarCatalogo()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -180,7 +188,7 @@ func main() {
 	defer parar()
 
 	a := &App{
-		cfg: cfg, base: cat, ctx: ctx,
+		cfg: cfg, embutido: embutido, ctx: ctx,
 		httpFora: clienteDeFora(),
 		http:     &http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment, ResponseHeaderTimeout: 60 * time.Second, IdleConnTimeout: 90 * time.Second}},
 		urlKiwix: &url.URL{Scheme: "http", Host: "127.0.0.1:" + strconv.Itoa(cfg.KiwixPorta)},
@@ -197,11 +205,21 @@ func main() {
 	if a.porteiro, err = novoPorteiro(cfg.Dados, senha); err != nil {
 		log.Fatalf("senha: %v", err)
 	}
+	// catálogo: o último baixado do GitHub (cache na pasta de dados) ou, se for mais antigo, o embutido.
+	// Partindo do cache, uma imagem nova com outro catálogo também move para "Fora do catálogo" o que saiu.
+	a.base = embutido
+	if cache := a.catalogoDoCache(); cache != nil {
+		a.base = cache
+	}
 	a.remontarCatalogo()
+	if a.base != embutido && a.base.Versao < embutido.Versao {
+		a.trocarCatalogo(embutido)
+	}
 	a.adotarArquivosSoltos()
 	if err := a.est.sincronizarComDisco(cfg.Dados, a.cat()); err != nil {
 		log.Fatal(err)
 	}
+	a.remontarCatalogo() // a sincronização pode ter tirado itens de "Fora do catálogo"
 	if err := a.est.salvar(a.caminhoEstado()); err != nil {
 		log.Fatal(err)
 	}
@@ -227,8 +245,8 @@ func main() {
 		defer cancel()
 		srv.Shutdown(c)
 	}()
-	logf("dados em %s · catálogo v%d com %d ZIMs · %d da pessoa · %d instalados", cfg.Dados, cat.Versao, len(cat.Itens),
-		len(a.est.Personalizados), len(a.est.Instalados))
+	logf("dados em %s · catálogo v%d com %d ZIMs · %d fora do catálogo · %d da pessoa · %d instalados", cfg.Dados,
+		a.base.Versao, len(a.base.Itens), len(a.est.Legados), len(a.est.Personalizados), len(a.est.Instalados))
 	if cfg.Admin == adminDesligado {
 		logf("Prep Wiki BR %s · biblioteca em http://%s/", versao, cfg.Endereco)
 	} else {
@@ -396,6 +414,7 @@ func (a *App) apiEstado(w http.ResponseWriter, r *http.Request) {
 		"modo":            a.cfg.Admin,
 		"catalogo_versao": a.cat().Versao,
 		"grupos":          a.cat().Grupos,
+		"tags":            a.cat().Tags,
 		"verificado_em":   a.est.VerificadoEm,
 		"verificando":     a.verificando,
 		"itens":           itens,
@@ -411,7 +430,7 @@ func (a *App) apiEstado(w http.ResponseWriter, r *http.Request) {
 
 // desatualizado compara o instalado com a edição mais recente conhecida.
 func desatualizado(it *ItemCatalogo, inst *Instalado, disp *Disponivel) bool {
-	if disp == nil || it.personalizado() { // acervo da pessoa não tem edição a acompanhar
+	if disp == nil || it.personalizado() || it.legado() { // sem edição a acompanhar
 		return false
 	}
 	if inst.SHA256 != "" && disp.SHA256 != "" {

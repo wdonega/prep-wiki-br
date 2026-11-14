@@ -9,24 +9,26 @@ import (
 	"strings"
 )
 
-// O catálogo base é fixo e vai embutido no binário: define QUAIS ZIMs existem.
-// A edição de cada um é descoberta na hora (a mais recente) e guardada no estado local.
+// O catálogo define QUAIS ZIMs existem. Vai embutido no binário e é atualizado pelo GitHub antes de
+// cada verificação de versões (catalogo_remoto.go). A edição de cada item é descoberta na hora
+// (a mais recente) e guardada no estado local.
 //
 //go:embed catalogo.json
 var catalogoJSON []byte
 
 type ItemCatalogo struct {
-	ID        string `json:"id"`
-	Origem    string `json:"origem"` // "kiwix" ou "github"
-	Pasta     string `json:"pasta,omitempty"`
-	Repo      string `json:"repo,omitempty"`
-	Tag       string `json:"tag,omitempty"`
-	Arquivo   string `json:"arquivo,omitempty"`
-	Grupo     string `json:"grupo"`
-	Tema      string `json:"tema,omitempty"` // subdivisão dentro do grupo (só para organizar a lista do gerenciador)
-	URL       string `json:"url,omitempty"`  // só nos acervos acrescentados por link
-	Titulo    string `json:"titulo"`
-	Descricao string `json:"descricao"`
+	ID        string   `json:"id"`
+	Origem    string   `json:"origem"` // "kiwix" ou "github"
+	Pasta     string   `json:"pasta,omitempty"`
+	Repo      string   `json:"repo,omitempty"`
+	Tag       string   `json:"tag,omitempty"`
+	Arquivo   string   `json:"arquivo,omitempty"`
+	Grupo     string   `json:"grupo"`
+	Tema      string   `json:"tema,omitempty"` // subdivisão dentro do grupo (só para organizar a lista do gerenciador)
+	Tags      []string `json:"tags,omitempty"` // ids de Catalogo.Tags, mostrados como etiquetas coloridas
+	URL       string   `json:"url,omitempty"`  // só nos acervos acrescentados por link
+	Titulo    string   `json:"titulo"`
+	Descricao string   `json:"descricao"`
 
 	padrao *regexp.Regexp // reconhece os arquivos deste item na pasta de dados
 }
@@ -38,54 +40,93 @@ type Grupo struct {
 	Dica   string `json:"dica,omitempty"` // ex.: "escolha uma"
 }
 
+// Tag: etiqueta que o catálogo põe em alguns itens (ex.: "Lançamento"), com uma cor da paleta da interface.
+type Tag struct {
+	ID     string `json:"id"`
+	Titulo string `json:"titulo"`
+	Cor    string `json:"cor,omitempty"` // amarelo, verde, azul, vermelho ou cinza (o padrão)
+}
+
 type Catalogo struct {
 	Versao int             `json:"versao"`
 	Grupos []*Grupo        `json:"grupos"`
+	Tags   []*Tag          `json:"tags,omitempty"`
 	Itens  []*ItemCatalogo `json:"zims"`
 	porID  map[string]*ItemCatalogo
 }
 
-func carregarCatalogo() (*Catalogo, error) {
+// carregarCatalogo lê o catálogo embutido no binário.
+func carregarCatalogo() (*Catalogo, error) { return lerCatalogo(catalogoJSON) }
+
+// lerCatalogo valida um catalogo.json (o embutido, o do cache ou o baixado do GitHub).
+func lerCatalogo(b []byte) (*Catalogo, error) {
 	var c Catalogo
-	if err := json.Unmarshal(catalogoJSON, &c); err != nil {
+	if err := json.Unmarshal(b, &c); err != nil {
 		return nil, fmt.Errorf("catalogo.json inválido: %w", err)
 	}
 	c.porID = map[string]*ItemCatalogo{}
 	grupos := map[string]bool{}
 	for _, g := range c.Grupos {
-		if g.ID == "" || g.Titulo == "" || grupos[g.ID] {
-			return nil, fmt.Errorf("catálogo: grupo sem id/título ou repetido: %q", g.ID)
+		if g.ID == "" || g.Titulo == "" || grupos[g.ID] || g.ID == grupoLegado.ID || g.ID == grupoMeus.ID {
+			return nil, fmt.Errorf("catálogo: grupo sem id/título, repetido ou reservado: %q", g.ID)
 		}
 		grupos[g.ID] = true
 	}
+	tags := map[string]bool{}
+	for _, tg := range c.Tags {
+		if tg.ID == "" || tg.Titulo == "" || tags[tg.ID] {
+			return nil, fmt.Errorf("catálogo: tag sem id/título ou repetida: %q", tg.ID)
+		}
+		tags[tg.ID] = true
+	}
 	for _, it := range c.Itens {
+		for _, tg := range it.Tags {
+			if !tags[tg] {
+				return nil, fmt.Errorf("catálogo: %s usa uma tag que não existe: %q", it.ID, tg)
+			}
+		}
 		if it.ID == "" || c.porID[it.ID] != nil {
 			return nil, fmt.Errorf("catálogo: id vazio ou repetido: %q", it.ID)
 		}
 		if !grupos[it.Grupo] {
 			return nil, fmt.Errorf("catálogo: %s está num grupo que não existe: %q", it.ID, it.Grupo)
 		}
-		switch it.Origem {
-		case "kiwix":
-			if it.Pasta == "" {
-				return nil, fmt.Errorf("catálogo: %s sem pasta", it.ID)
-			}
-			// ex.: wikipedia_pt_top_maxi_2026-10.zim, nhs.uk_en_medicines_2026-09b.zim
-			it.padrao = regexp.MustCompile(`^` + regexp.QuoteMeta(it.ID) + `_(\d{4}-\d{2}[a-z]?)\.zim$`)
-		case "github":
-			if it.Repo == "" || it.Tag == "" || it.Arquivo == "" {
-				return nil, fmt.Errorf("catálogo: %s sem repo/tag/arquivo", it.ID)
-			}
-			base := strings.TrimSuffix(it.Arquivo, ".zim")
-			// ex.: plantas-medicinais_pt.zim, plantas-medicinais_pt_2026-11.zim, plantas-medicinais_pt_2026-11-13.zim
-			it.padrao = regexp.MustCompile(`^` + regexp.QuoteMeta(base) + `(?:_(\d{4}-\d{2}(?:-\d{2})?))?\.zim$`)
-		default:
-			return nil, fmt.Errorf("catálogo: %s com origem desconhecida %q", it.ID, it.Origem)
+		if err := it.prepararPadrao(); err != nil {
+			return nil, err
 		}
 		c.porID[it.ID] = it
 	}
 	return &c, nil
 }
+
+// prepararPadrao monta a expressão que reconhece os arquivos do item na pasta de dados.
+func (it *ItemCatalogo) prepararPadrao() error {
+	switch it.Origem {
+	case "kiwix":
+		if it.Pasta == "" {
+			return fmt.Errorf("catálogo: %s sem pasta", it.ID)
+		}
+		// ex.: wikipedia_pt_top_maxi_2026-10.zim, nhs.uk_en_medicines_2026-09b.zim
+		it.padrao = regexp.MustCompile(`^` + regexp.QuoteMeta(it.ID) + `_(\d{4}-\d{2}[a-z]?)\.zim$`)
+	case "github":
+		if it.Repo == "" || it.Tag == "" || it.Arquivo == "" {
+			return fmt.Errorf("catálogo: %s sem repo/tag/arquivo", it.ID)
+		}
+		base := strings.TrimSuffix(it.Arquivo, ".zim")
+		// ex.: plantas-medicinais_pt.zim, plantas-medicinais_pt_2026-11.zim, plantas-medicinais_pt_2026-11-13.zim
+		it.padrao = regexp.MustCompile(`^` + regexp.QuoteMeta(base) + `(?:_(\d{4}-\d{2}(?:-\d{2})?))?\.zim$`)
+	default:
+		return fmt.Errorf("catálogo: %s com origem desconhecida %q", it.ID, it.Origem)
+	}
+	return nil
+}
+
+// grupoLegado recebe o que saiu do catálogo oficial mas continua baixado aqui: fica até a pessoa apagar.
+// Vem depois dos grupos do catálogo e antes de "Meus acervos".
+var grupoLegado = &Grupo{ID: "legado", Titulo: "Fora do catálogo", Dica: "saíram do catálogo oficial; ficam enquanto estiverem baixados"}
+
+// legado: item que saiu do catálogo oficial (sem edição nova a procurar, como os da pessoa).
+func (it *ItemCatalogo) legado() bool { return it.Grupo == grupoLegado.ID }
 
 // grupoMeus recebe os acervos que a própria pessoa acrescenta, por link ou por arquivo. Fica por último.
 var grupoMeus = &Grupo{ID: "meus", Titulo: "Meus acervos", Dica: "acrescentados por você"}
@@ -101,12 +142,29 @@ func itemPersonalizado(p *Personalizado) *ItemCatalogo {
 	}
 }
 
-// comPersonalizados devolve um catálogo novo: o de base mais os acervos da pessoa, no grupo "Meus acervos".
+// comPersonalizados devolve um catálogo novo: o de base, os que saíram dele mas seguem baixados
+// ("Fora do catálogo") e os acervos da pessoa ("Meus acervos").
 // O catálogo em uso nunca é alterado: é trocado inteiro, e quem estava lendo o antigo não é afetado.
-func comPersonalizados(base *Catalogo, meus map[string]*Personalizado) *Catalogo {
-	c := &Catalogo{Versao: base.Versao, porID: map[string]*ItemCatalogo{}}
-	c.Grupos = append(append([]*Grupo{}, base.Grupos...), grupoMeus)
+func comPersonalizados(base *Catalogo, legados map[string]*ItemCatalogo, meus map[string]*Personalizado) *Catalogo {
+	c := &Catalogo{Versao: base.Versao, Tags: base.Tags, porID: map[string]*ItemCatalogo{}}
+	c.Grupos = append([]*Grupo{}, base.Grupos...)
 	c.Itens = append([]*ItemCatalogo{}, base.Itens...)
+	if len(legados) > 0 {
+		c.Grupos = append(c.Grupos, grupoLegado)
+		ids := make([]string, 0, len(legados))
+		for id := range legados {
+			if base.porID[id] == nil { // se voltou ao catálogo, vale o do catálogo
+				ids = append(ids, id)
+			}
+		}
+		sort.Slice(ids, func(i, j int) bool { return legados[ids[i]].Titulo < legados[ids[j]].Titulo })
+		for _, id := range ids {
+			l := *legados[id]
+			l.Grupo, l.Tema, l.Tags = grupoLegado.ID, "", nil // as tags são do catálogo oficial, que não o tem mais
+			c.Itens = append(c.Itens, &l)
+		}
+	}
+	c.Grupos = append(c.Grupos, grupoMeus)
 	ordem := make([]*Personalizado, 0, len(meus))
 	for _, p := range meus {
 		ordem = append(ordem, p)

@@ -197,6 +197,9 @@ func (a *App) verificar(ctx context.Context) {
 	a.verificando = true
 	a.mu.Unlock()
 
+	// primeiro o catálogo: um acervo novo no catálogo oficial já entra nesta verificação
+	a.atualizarCatalogo(ctx)
+
 	// vários itens ao mesmo tempo (o catálogo tem dezenas), sem abrir conexões demais com os servidores
 	ls := novasListagens()
 	novos := map[string]*Disponivel{}
@@ -207,7 +210,7 @@ func (a *App) verificar(ctx context.Context) {
 		vagas = make(chan struct{}, 8)
 	)
 	for _, it := range a.cat().Itens {
-		if it.personalizado() { // acervo da pessoa: não tem edição nova a procurar
+		if it.personalizado() || it.legado() { // da pessoa ou fora do catálogo: não tem edição nova a procurar
 			continue
 		}
 		wg.Add(1)
