@@ -109,12 +109,20 @@ function tagHtml(id, defs) {
   return `<span class="etq tag tag-${CORES_TAG.includes(cor) ? cor : "cinza"}">${esc(tg.titulo)}</span>`;
 }
 
-// rodapé: "Prep Wiki BR · versão X", igual na biblioteca e no gerenciador
+// rodapé (igual na biblioteca e no gerenciador): "v0.1.1 · GitHub · Apoie" numa linha quando cabe;
+// quando não cabe, os dois links descem juntos para a linha de baixo, sem o "·" sobrando no fim
 function mostrarVersao(v) {
   if (!v) return;
-  $("versao-txt").textContent = v === "dev" ? "versão local" : `versão ${v}`;
+  $("versao-txt").textContent = /^\d/.test(v) ? `v${v}` : "versão local";
   $("versao").hidden = false;
+  ajustarRodape();
 }
+function ajustarRodape() {
+  const f = $("rodape"), links = f.querySelector(".rodape-links");
+  f.classList.remove("quebrado"); // mede com o "·" do meio, como seria numa linha só
+  if (!$("versao").hidden && links.offsetTop > $("versao").offsetTop + 4) f.classList.add("quebrado");
+}
+addEventListener("resize", ajustarRodape);
 
 function linha(it) {
   const s = it.situacao, inst = it.instalado, disp = it.disponivel;

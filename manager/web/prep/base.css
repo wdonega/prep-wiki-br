@@ -132,11 +132,9 @@ h1, h2, h3, p { margin: 0; }
 .rodape { margin-top: auto; padding: 44px 20px 28px; text-align: center; color: var(--muted); font-size: .8rem;
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center; row-gap: 8px; }
 .rodape-links { display: inline-flex; align-items: center; }
-/* no celular: "Prep Wiki BR · versão" numa linha e os dois links na de baixo */
-@media (max-width: 640px) {
-  .rodape-meio { display: none; }
-  .rodape-links { flex-basis: 100%; justify-content: center; }
-}
+/* sem espaço para uma linha só (ajustarRodape, em admin.js e home.js): os links vão juntos para baixo */
+.rodape.quebrado .rodape-meio { display: none; }
+.rodape.quebrado .rodape-links { flex-basis: 100%; justify-content: center; }
 .rodape a { color: var(--text-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
 .rodape a:hover { color: var(--accent); }
 .rodape .i { width: 14px; height: 14px; }
