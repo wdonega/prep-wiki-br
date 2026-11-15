@@ -1,0 +1,133 @@
+:root {
+  color-scheme: light dark;
+  --cor: #1e4d7b; --cor-esc: #163a5e; --cor-cl: #e6eef6; --topo: #1e4d7b;
+  --link: #0d47a1; --texto: #1f2328; --texto2: #444; --cinza: #666; --borda: #d3dae2; --fundo: #fbfcfd;
+  --cartao: #fff; --zebra: #f5f7fa; --codigo: #f1f3f6; --h3: #24476b; --marca: #fff3a3;
+  --linha: #e6eaef; --linha-sec: #cfdbe8;
+  --adm-fundo: #eef1f4; --adm-aviso: #fff6da; --adm-perigo: #fde8e8; --adm-dica: #e7f4e8; --adm-nota: #e6eef9;
+  --emerg: #b71c1c;
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  color: var(--texto); background: var(--fundo); line-height: 1.6; }
+a { color: var(--link); }
+header.topo { background: var(--topo); color: #fff; padding: .55rem 1rem; display: flex; gap: .4rem 1rem;
+  align-items: center; flex-wrap: wrap; }
+header.topo a { color: #fff; text-decoration: none; }
+header.topo .marca { font-weight: 700; font-size: 1.1rem; }
+header.topo .marca span { opacity: .8; font-weight: 400; }
+header.topo nav { margin-left: auto; display: flex; flex-wrap: wrap; gap: .2rem 1rem; font-size: .95rem; }
+.emergencia { background: var(--emerg); color: #fff; text-align: center; font-size: .85rem; padding: .25rem .6rem; }
+main { max-width: 56rem; margin: 0 auto; padding: 1rem; }
+.portal { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .8rem; margin: 1.5rem 0; }
+.portal h2 { grid-column: 1 / -1; margin: 0; }
+.portal .caixa { background: var(--cartao); border: 1px solid var(--borda); border-top: 4px solid var(--cor);
+  border-radius: 8px; padding: .3rem 1rem .7rem; }
+.portal h3 { margin: .4rem 0; font-size: 1rem; color: var(--cor-esc); }
+.portal ul, .nesta-secao ul { list-style: none; margin: 0; padding: 0; }
+.portal li a, .nesta-secao li a { display: block; padding: .35rem 0; text-decoration: none;
+  border-bottom: 1px solid var(--linha); }
+.portal li:last-child a { border-bottom: 0; }
+.nesta-secao { background: var(--cor-cl); border-radius: 8px; padding: .5rem 1rem .8rem; margin: 2rem 0 0; }
+.nesta-secao h4 { margin: .3rem 0 .4rem; color: var(--cor-esc); font-size: .8rem; text-transform: uppercase;
+  letter-spacing: .04em; }
+.nesta-secao li a { border-color: var(--linha-sec); }
+.nesta-secao li a.atual { font-weight: 700; color: var(--texto); }
+.nesta-secao li a.atual::before { content: "▸ "; color: var(--cor); }
+.todo-indice { display: inline-block; margin-top: .6rem; font-size: .9rem; }
+main h1 { color: var(--cor-esc); line-height: 1.25; margin-top: .3rem; }
+main h2 { color: var(--cor-esc); border-bottom: 2px solid var(--cor-cl); padding-bottom: .2rem; margin-top: 2rem;
+  line-height: 1.3; }
+main h3 { color: var(--h3); }
+.migalha { font-size: .85rem; color: var(--cinza); }
+.migalha a { color: var(--cinza); }
+table { border-collapse: collapse; margin: 1rem 0; display: block; overflow-x: auto; max-width: 100%; }
+th, td { border: 1px solid var(--borda); padding: .35rem .6rem; vertical-align: top; }
+th { background: var(--cor-cl); text-align: left; }
+tr:nth-child(even) td { background: var(--zebra); }
+img { max-width: 100%; height: auto; }
+blockquote { border-left: 4px solid var(--cor); margin: 1rem 0; padding: .3rem 1rem; background: var(--cor-cl); }
+pre { background: var(--codigo); padding: .8rem; overflow-x: auto; border-radius: 6px; font-size: .8rem; }
+li { margin: .2rem 0; }
+.admonition { border-left: 5px solid #607d8b; background: var(--adm-fundo); padding: .4rem 1rem; margin: 1rem 0;
+  border-radius: 4px; }
+.admonition-title { font-weight: 700; margin: .3rem 0; }
+.admonition.warning { border-color: #f9a825; background: var(--adm-aviso); }
+.admonition.danger { border-color: #c62828; background: var(--adm-perigo); }
+.admonition.tip { border-color: #2e7d32; background: var(--adm-dica); }
+.admonition.note { border-color: #1565c0; background: var(--adm-nota); }
+dl dt { font-weight: 700; margin-top: .8rem; color: var(--cor-esc); }
+dl dd { margin-left: 1.2rem; }
+.paginacao { display: flex; justify-content: space-between; gap: 1rem; margin: 2.5rem 0 1rem;
+  border-top: 1px solid var(--borda); padding-top: 1rem; font-size: .95rem; }
+.paginacao a { text-decoration: none; }
+footer { text-align: center; font-size: .8rem; color: var(--cinza); padding: 2rem 1rem; }
+.hero { background: linear-gradient(135deg, var(--cor-cl), var(--adm-aviso)); padding: 1rem 1.5rem 1.2rem;
+  border-radius: 10px; margin-bottom: 1rem; }
+.hero h1 { font-size: 2rem; margin-bottom: .2rem; }
+form.busca { display: flex; gap: .5rem; margin: 1rem 0; }
+form.busca input { flex: 1; min-width: 0; font-size: 1.05rem; padding: .55rem .8rem; border: 2px solid var(--cor);
+  border-radius: 6px; }
+form.busca button { background: var(--topo); color: #fff; border: 0; border-radius: 6px; padding: 0 1.2rem;
+  font-size: 1rem; cursor: pointer; }
+.resultado { margin: 1rem 0; }
+.resultado a { font-weight: 600; font-size: 1.05rem; }
+.resultado .sec { font-size: .8rem; color: var(--cor); }
+.resultado p { margin: .2rem 0; font-size: .92rem; }
+.nres { color: var(--cinza); font-size: .85rem; }
+mark { background: var(--marca); }
+
+/* cartões "o que fazer agora" da página inicial */
+.cartoes { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: .8rem; margin: 1rem 0 1.5rem; }
+.cartoes a { display: block; background: var(--cartao); border: 1px solid var(--borda); border-left: 6px solid var(--emerg);
+  border-radius: 8px; padding: .7rem 1rem; text-decoration: none; color: var(--texto); }
+.cartoes a b { display: block; color: var(--cor-esc); font-size: 1.05rem; margin-bottom: .15rem; }
+.cartoes a span { font-size: .9rem; color: var(--texto2); }
+.telefones { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: .6rem; margin: 1rem 0; }
+.telefones div { background: var(--cartao); border: 1px solid var(--borda); border-radius: 8px; padding: .5rem .8rem;
+  text-align: center; }
+.telefones b { display: block; font-size: 1.6rem; color: var(--emerg); line-height: 1.2; }
+.telefones span { font-size: .85rem; color: var(--texto2); }
+
+/* citações e fontes */
+sup.ref { font-size: .68rem; line-height: 0; color: var(--cinza); white-space: nowrap; font-weight: 400; }
+sup.ref a { text-decoration: none; }
+.fontes-pagina { margin-top: 2.5rem; font-size: .85rem; color: var(--texto2); }
+.fontes-pagina h2 { font-size: 1.05rem; }
+.fontes-pagina ol { padding-left: 1.6rem; }
+.fontes-pagina li:target, .lista-fontes li:target { background: var(--marca); }
+.lista-fontes { font-size: .9rem; padding-left: 1.2rem; }
+.lic { color: var(--cinza); }
+figure.fig { margin: 1.2rem auto; text-align: center; max-width: 100%; }
+figure.fig img { max-height: 30rem; width: auto; max-width: 100%; border: 1px solid var(--borda); border-radius: 6px;
+  background: #fff; }
+figure.fig figcaption { font-size: .88rem; color: var(--texto2); margin-top: .3rem; text-align: left; }
+figure.fig .cred { display: block; font-size: .78rem; color: var(--cinza); }
+.par-figs { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; margin: 1.2rem 0; }
+.par-figs figure.fig { flex: 1 1 15rem; margin: 0; }
+.par-figs figure.fig img { max-height: 18rem; }
+@media (max-width: 860px) { html { font-size: 16px; } }
+@media (max-width: 600px) {
+  .hero { padding: .6rem 1rem .4rem; }
+  .hero h1 { font-size: 1.5rem; }
+  .hero p { margin: .4rem 0; font-size: .95rem; }
+  .telefones { grid-template-columns: repeat(3, 1fr); gap: .4rem; }
+  .telefones div { padding: .35rem .3rem; }
+  .telefones b { font-size: 1.25rem; }
+  .telefones span { font-size: .72rem; line-height: 1.25; display: block; }
+}
+@media print { header.topo, .paginacao, .nesta-secao, form.busca { display: none; } }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cor: #7fb2e5; --cor-esc: #a9cdf0; --cor-cl: #1a2633; --topo: #163a5e;
+    --link: #8ab4f8; --texto: #e3e6ea; --texto2: #c4c9d0; --cinza: #9aa3ad; --borda: #38424d; --fundo: #111418;
+    --cartao: #191e24; --zebra: #161a20; --codigo: #191e24; --h3: #c0d8f0; --marca: #5c5000;
+    --linha: #283039; --linha-sec: #2b3a4a;
+    --adm-fundo: #1e2429; --adm-aviso: #2e2812; --adm-perigo: #331a1a; --adm-dica: #1a2a1c; --adm-nota: #172433;
+    --emerg: #8e1b1b;
+  }
+  .telefones b { color: #ef9a9a; }
+  mark { color: inherit; }
+}

@@ -1,0 +1,2250 @@
+{
+ "mma-inund": {
+  "titulo": "Comunidades Preparadas — Caderno Temático Inundações, enchentes e alagamentos",
+  "orgao": "MMA (Dep. de Educação Ambiental) + MCTI/Cemaden Educação",
+  "ano": "2026",
+  "url": "https://www.gov.br/mma/pt-br/centrais-de-conteudo/publicacoes/educacao-ambiental/protocolo-inundacoes.pdf",
+  "licenca": "Reprodução permitida, total ou parcial e por qualquer meio, desde que sem fins lucrativos e citando o MMA ou o endereço do arquivo (p.4). Atenção: as ilustrações foram geradas pelo ChatGPT (p.4).",
+  "arquivo": "mma-inundacoes.pdf"
+ },
+ "mma-desliz": {
+  "titulo": "Comunidades Preparadas — Caderno Temático Deslizamentos de terra",
+  "orgao": "MMA + MCTI/Cemaden Educação",
+  "ano": "2026",
+  "url": "https://www.gov.br/mma/pt-br/centrais-de-conteudo/publicacoes/educacao-ambiental/protocolo-deslizamentos.pdf",
+  "licenca": "Mesma regra: reprodução sem fins lucrativos, citando a fonte (p.4). Ilustrações geradas pelo ChatGPT (p.4).",
+  "arquivo": "mma-deslizamentos.pdf"
+ },
+ "mma-guia": {
+  "titulo": "Comunidades Preparadas — Guia para Diálogos Autogestionados",
+  "orgao": "MMA + MCTI/Cemaden Educação",
+  "ano": "2026",
+  "url": "https://www.gov.br/mma/pt-br/centrais-de-conteudo/publicacoes/educacao-ambiental/guia-eventos-extremos.pdf",
+  "licenca": "Mesma regra: reprodução sem fins lucrativos, citando a fonte (p.4). Ilustrações geradas pelo ChatGPT (p.4).",
+  "arquivo": "mma-eventos-extremos.pdf"
+ },
+ "mcid-riscos": {
+  "titulo": "Periferia sem Risco — Guia básico para lideranças comunitárias atuarem na prevenção de riscos de deslizamento e inundação",
+  "orgao": "Ministério das Cidades, Secretaria Nacional de Periferias",
+  "ano": "2023",
+  "url": "https://www.gov.br/cidades/pt-br/assuntos/publicacoes/arquivos/arquivos/CARTILHAPREVENCAORISCOSMCID.pdf",
+  "licenca": "não informada",
+  "arquivo": "mcid-cartilha-riscos.pdf"
+ },
+ "cemaden-ebook": {
+  "titulo": "Prevenção de deslizamentos se aprende na escola: ciência cidadã na redução de riscos de desastres",
+  "orgao": "Cemaden/MCTI (com Unifesp e Defesas Civis de Cubatão e Santos); Editora Letraria",
+  "ano": "2023",
+  "url": "https://www.gov.br/cemaden/pt-br/acesso-a-informacao/acoes-e-programas-1/ebook_cemaden_prevencao_risco_final.pdf/@@download/file/E-book_VersaoFinal2.pdf",
+  "licenca": "não informada (só a ficha catalográfica e o ISBN, p.3)",
+  "arquivo": "cemaden-ebook.pdf"
+ },
+ "rio-prepare": {
+  "titulo": "Cartilha PREPARE — Prevenção, Preparação e Ações para Resiliência Escolar",
+  "orgao": "Subsecretaria de Proteção e Defesa Civil do Rio de Janeiro (município) + Universidade Veiga de Almeida",
+  "ano": "2025",
+  "url": "https://defesacivil.prefeitura.rio/wp-content/uploads/sites/35/2025/04/PREPARE_Defesa-Civil-2025_final.pdf",
+  "licenca": "não informada (diz apenas que os autores respondem pelo conteúdo, p.3)",
+  "arquivo": "rio-prepare.pdf"
+ },
+ "jlle-inund": {
+  "titulo": "Como agir? Inundações",
+  "orgao": "Defesa Civil de Joinville/SC",
+  "ano": "2025",
+  "url": "https://www.joinville.sc.gov.br/wp-content/uploads/2025/04/Cartilha-Inundacoes-como-agir.pdf",
+  "licenca": "não informada",
+  "arquivo": "joinville-inundacoes.pdf"
+ },
+ "jlle-enx": {
+  "titulo": "Como agir? Enxurradas",
+  "orgao": "Defesa Civil de Joinville/SC",
+  "ano": "2025",
+  "url": "https://www.joinville.sc.gov.br/wp-content/uploads/2025/04/Cartilha-Enxurradas-como-agir.pdf",
+  "licenca": "não informada",
+  "arquivo": "joinville-enxurradas.pdf"
+ },
+ "rj-vendaval": {
+  "titulo": "Vendavais — O que são? (Como agir em desastres)",
+  "orgao": "Secretaria de Estado de Defesa Civil do RJ",
+  "ano": "sem data (acesso 2026-11-14)",
+  "url": "https://defesacivil.rj.gov.br/index.php/para-o-cidadao/como-agir-em-desastres/19-vendavais",
+  "licenca": "não informada",
+  "arquivo": "rj-vendavais.md"
+ },
+ "pr-cbm": {
+  "titulo": "Corpo de Bombeiros do Paraná alerta sobre cuidados diante de fortes chuvas e ventos",
+  "orgao": "AEN-PR / Corpo de Bombeiros Militar do Paraná",
+  "ano": "2025 (22/09)",
+  "url": "https://www.parana.pr.gov.br/aen/Noticia/Corpo-de-Bombeiros-do-Parana-alerta-sobre-cuidados-diante-de-fortes-chuvas-e-ventos",
+  "licenca": "não informada",
+  "arquivo": "pr-bombeiros-chuvas-ventos.md"
+ },
+ "rs-vendaval": {
+  "titulo": "Saiba como agir em caso de vendaval",
+  "orgao": "Governo do RS (Secom), com orientações da Defesa Civil estadual",
+  "ano": "2026 (15/07)",
+  "url": "https://www.estado.rs.gov.br/saiba-como-agir-em-caso-de-vendaval",
+  "licenca": "não informada",
+  "arquivo": "rs-vendaval.md"
+ },
+ "rs-granizo": {
+  "titulo": "Saiba como agir em caso de queda de granizo",
+  "orgao": "Governo do RS / Defesa Civil RS",
+  "ano": "2026 (14/07)",
+  "url": "https://www.estado.rs.gov.br/saiba-como-agir-em-caso-de-granizo",
+  "licenca": "não informada",
+  "arquivo": "rs-granizo.md"
+ },
+ "rs-temporal": {
+  "titulo": "Saiba como agir em caso de temporal",
+  "orgao": "Governo do RS / Defesa Civil RS",
+  "ano": "2026 (14/07)",
+  "url": "https://www.estado.rs.gov.br/saiba-como-agir-em-caso-de-temporal",
+  "licenca": "não informada",
+  "arquivo": "rs-temporal.md"
+ },
+ "rs-inund": {
+  "titulo": "Saiba como agir em caso de inundações",
+  "orgao": "Governo do RS / Defesa Civil RS",
+  "ano": "2026 (15/07)",
+  "url": "https://estado.rs.gov.br/saiba-como-agir-em-caso-de-inundacoes",
+  "licenca": "não informada",
+  "arquivo": "rs-inundacoes.md"
+ },
+ "rs-tornado": {
+  "titulo": "Saiba como agir em caso de tornado",
+  "orgao": "Governo do RS / Defesa Civil RS",
+  "ano": "2026 (15/07)",
+  "url": "https://estado.rs.gov.br/saiba-como-agir-em-caso-de-tornado",
+  "licenca": "não informada",
+  "arquivo": "rs-tornado.md"
+ },
+ "rs-desliz": {
+  "titulo": "Saiba como agir em caso de deslizamentos",
+  "orgao": "Governo do RS / Defesa Civil RS",
+  "ano": "2026 (14/07)",
+  "url": "https://www.estado.rs.gov.br/saiba-como-agir-em-caso-de-deslizamentos",
+  "licenca": "não informada",
+  "arquivo": "rs-deslizamentos.md"
+ },
+ "rs-energia": {
+  "titulo": "Saiba como agir para evitar acidentes com energia elétrica durante eventos meteorológicos severos",
+  "orgao": "Governo do RS (Secom)",
+  "ano": "2026 (17/07)",
+  "url": "https://estado.rs.gov.br/saiba-como-agir-para-evitar-acidentes-com-energia-eletrica-durante-eventos-climaticos-severos",
+  "licenca": "não informada",
+  "arquivo": "rs-energia-eletrica.md"
+ },
+ "pr-nt005": {
+  "titulo": "Nota Técnica Conjunta nº 05/2026 — Monitoramento e projeções do El Niño 2026/2027 e impactos no Paraná",
+  "orgao": "Defesa Civil PR / Simepar",
+  "ano": "2026 (14/08)",
+  "url": "https://www.defesacivil.pr.gov.br/sites/defesa-civil/arquivos_restritos/files/documento/2026-08/nota_tecnicandeg005_2026.pdf",
+  "licenca": "não informada",
+  "arquivo": "pr-defesacivil-nt005-2026-elnino.pdf"
+ },
+ "recife": {
+  "titulo": "Práticas seguras: cartilha educativa nas áreas de risco",
+  "orgao": "Prefeitura do Recife, Secretaria Executiva de Defesa Civil",
+  "ano": "2014",
+  "url": "https://www2.recife.pe.gov.br/wp-content/uploads/cartilha_15x21cm_area-vulneravel-Alterado-1.pdf",
+  "licenca": "não informada",
+  "arquivo": "recife-cartilha-praticas-seguras-areas-risco.pdf"
+ },
+ "ms-enchentes-pagina": {
+  "titulo": "Enchentes (Saúde de A a Z)",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025 (rodapé ©2025)",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/e/enchentes",
+  "licenca": "CC BY-ND 3.0 (rodapé gov.br): citar; não publicar versão modificada como se fosse do MS",
+  "arquivo": "ms-enchentes-pagina.md"
+ },
+ "ms-enchentes-agua": {
+  "titulo": "Cuidados com a água",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/e/enchentes/cuidados-com-a-agua",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-enchentes-agua.md"
+ },
+ "ms-enchentes-alimentos": {
+  "titulo": "Cuidados com os alimentos",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/e/enchentes/cuidados-com-os-alimentos",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-enchentes-alimentos.md"
+ },
+ "ms-enchentes-leptospirose": {
+  "titulo": "Cuidados com a leptospirose",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/e/enchentes/cuidados-com-a-leptospirose",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-enchentes-leptospirose.md"
+ },
+ "ms-enchentes-tetano": {
+  "titulo": "Cuidados com risco de tétano",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/e/enchentes/cuidados-com-risco-de-tetano",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-enchentes-tetano.md"
+ },
+ "ms-enchentes-peconhentos": {
+  "titulo": "Cuidados com animais peçonhentos",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/e/enchentes/cuidados-com-animais-peconhentos",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-enchentes-peconhentos.md"
+ },
+ "ms-leptospirose": {
+  "titulo": "Leptospirose",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/l/leptospirose",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-leptospirose.md"
+ },
+ "ms-leptospirose-quimioprofilaxia": {
+  "titulo": "Leptospirose — Quimioprofilaxia",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/l/leptospirose/quimioprofilaxia",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-leptospirose-quimioprofilaxia.md"
+ },
+ "ms-hepatite-a": {
+  "titulo": "Hepatite A",
+  "orgao": "Ministério da Saúde",
+  "ano": "2025 (cita Portaria 6.623/2025)",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hepatites-virais/hepatite-a",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-hepatite-a.md"
+ },
+ "ms-dda": {
+  "titulo": "Doenças diarreicas agudas",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dda",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-dda.md"
+ },
+ "ms-tetano": {
+  "titulo": "Tétano acidental",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/t/tetano-acidental",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-tetano.md"
+ },
+ "ms-peconhentos": {
+  "titulo": "Animais peçonhentos",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-peconhentos.md"
+ },
+ "ms-ofidicos": {
+  "titulo": "Acidentes ofídicos (+ subpáginas Prevenção e Tratamento)",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-ofidicos",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-ofidicos.md"
+ },
+ "ms-escorpioes": {
+  "titulo": "Acidentes por escorpiões",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-por-escorpioes",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-escorpioes.md"
+ },
+ "ms-aranhas": {
+  "titulo": "Acidentes por aranhas",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-por-aranhas",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-aranhas.md"
+ },
+ "ms-suicidio-prevencao": {
+  "titulo": "Suicídio: prevenção",
+  "orgao": "Ministério da Saúde",
+  "ano": "s/d",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-suicidio-prevencao.md"
+ },
+ "ms-pcp-desastres-2026": {
+  "titulo": "Respostas emocionais e primeiros cuidados psicológicos em desastres e emergências (Série Saúde Mental e Atenção Psicossocial em Desastres, v.1)",
+  "orgao": "MS (DEMSP/SVSA)",
+  "ano": "2026 (fev.)",
+  "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/cartilhas/2026/respostas-emocionais-e-primeiros-cuidados-psicologicos-em-desastres-e-emergencias",
+  "licenca": "licença não declarada no PDF; portal gov.br = CC BY-ND 3.0",
+  "arquivo": "ms-pcp-desastres-2026.pdf"
+ },
+ "ms-inundacoes-saude-mental": {
+  "titulo": "Inundações: diretrizes para profissionais de saúde — cuidados em saúde mental (versão preliminar)",
+  "orgao": "MS (SAPS)",
+  "ano": "2024",
+  "url": "https://www.gov.br/saude/pt-br/composicao/saps/publicacoes/livro/inundacoes-diretrizes-para-profissionais-de-saude-cuidados-em-saude-mental",
+  "licenca": "CC BY-NC-SA 4.0 (p.3) — permite adaptar com atribuição, uso não comercial, mesma licença",
+  "arquivo": "ms-inundacoes-saude-mental.pdf"
+ },
+ "ms-abrigos-temporarios-2024": {
+  "titulo": "Inundações: diretrizes para profissionais de saúde — abrigos temporários (versão preliminar)",
+  "orgao": "MS (SAPS); cópia hospedada pela SES-MG",
+  "ano": "2024",
+  "url": "https://www.saude.mg.gov.br/wp-content/uploads/2017/12/Publicacao-Para-Emergencias-AbrigosTemporarios-95e.pdf",
+  "licenca": "CC BY-NC-SA 4.0 (p.3). Público-alvo: profissionais",
+  "arquivo": "ms-abrigos-temporarios-2024.pdf"
+ },
+ "rs-guia-enchentes-2024": {
+  "titulo": "Guia de cuidados de saúde nas enchentes",
+  "orgao": "Governo do RS / SES-RS (Cevs)",
+  "ano": "2024 (maio)",
+  "url": "https://estado.rs.gov.br/upload/arquivos/202405/guia-de-cuidados-de-saude-nas-enchentes-gov-rs-maio-de-2024.pdf",
+  "licenca": "licença não declarada → citar e parafrasear; não reproduzir",
+  "arquivo": "rs-guia-enchentes-2024.pdf"
+ },
+ "anvisa-disque-intoxicacao": {
+  "titulo": "Disque intoxicação",
+  "orgao": "Anvisa",
+  "ano": "2020 (mod. 2023)",
+  "url": "https://www.gov.br/anvisa/pt-br/assuntos/agrotoxicos/disque-intoxicacao",
+  "licenca": "CC BY-ND 3.0 (rodapé gov.br)",
+  "arquivo": "anvisa-disque-intoxicacao.md"
+ },
+ "cdc-reentrar-casa-alagada": {
+  "titulo": "Safety Guidelines: Reentering Your Flooded Home",
+  "orgao": "CDC (EUA)",
+  "ano": "2026 (atual. 24/08)",
+  "url": "https://www.cdc.gov/floods/safety/reentering-your-flooded-home-safety.html",
+  "licenca": "domínio público (gov. federal EUA); infográficos podem ter partes de terceiros",
+  "arquivo": "cdc-reentrar-casa-alagada.md"
+ },
+ "cdc-limpeza-segura": {
+  "titulo": "Guidelines for Cleaning Safely After a Disaster",
+  "orgao": "CDC",
+  "ano": "2026 (atual. 26/08)",
+  "url": "https://www.cdc.gov/natural-disasters/safety/index.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-limpeza-segura.md"
+ },
+ "cdc-voltar-casa": {
+  "titulo": "Safety Guidelines: Returning Home After a Natural Disaster",
+  "orgao": "CDC",
+  "ano": "2026 (30/04)",
+  "url": "https://www.cdc.gov/natural-disasters/safety/returning-home-after-natural-disaster.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-voltar-casa.md"
+ },
+ "cdc-depois-desastre": {
+  "titulo": "What to Do to Prevent Getting Hurt or Sick After a Disaster",
+  "orgao": "CDC",
+  "ano": "2026",
+  "url": "https://www.cdc.gov/natural-disasters/response/index.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-depois-desastre.md"
+ },
+ "cdc-falta-energia": {
+  "titulo": "What to Do to Protect Yourself During a Power Outage",
+  "orgao": "CDC",
+  "ano": "2026 (rev. 26/08)",
+  "url": "https://www.cdc.gov/natural-disasters/response/what-to-do-protect-yourself-during-a-power-outage.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-falta-energia.md"
+ },
+ "cdc-monoxido-carbono": {
+  "titulo": "Carbon Monoxide (CO) Poisoning Basics",
+  "orgao": "CDC",
+  "ano": "2026 (26/10)",
+  "url": "https://www.cdc.gov/carbon-monoxide/about/index.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-monoxido-carbono.md"
+ },
+ "cdc-riscos-eletricos": {
+  "titulo": "What to Do to Protect Yourself From Electrical Hazards",
+  "orgao": "CDC",
+  "ano": "2026 (rev.)",
+  "url": "https://www.cdc.gov/natural-disasters/response/what-to-do-protect-yourself-from-electrical-hazards.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-riscos-eletricos.md"
+ },
+ "cdc-agua-enchente": {
+  "titulo": "Safety Guidelines: Floodwater",
+  "orgao": "CDC",
+  "ano": "2026 (24/08)",
+  "url": "https://www.cdc.gov/floods/safety/floodwater-after-a-disaster-or-emergency-safety.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-agua-enchente.md"
+ },
+ "cdc-agua-emergencia": {
+  "titulo": "How to Make Water Safe in an Emergency",
+  "orgao": "CDC",
+  "ano": "2024 (19/09)",
+  "url": "https://www.cdc.gov/water-emergency/about/index.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-agua-emergencia.md"
+ },
+ "cdc-diarreia-desastre": {
+  "titulo": "What You Can Do to Prevent Diarrheal Illness After a Disaster",
+  "orgao": "CDC",
+  "ano": "2024",
+  "url": "https://www.cdc.gov/water-emergency/safety/index.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-diarreia-desastre.md"
+ },
+ "cdc-higiene-emergencia": {
+  "titulo": "Guidelines for Personal Hygiene During an Emergency",
+  "orgao": "CDC",
+  "ano": "2024",
+  "url": "https://www.cdc.gov/water-emergency/safety/guidelines-for-personal-hygiene-during-an-emergency.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-higiene-emergencia.md"
+ },
+ "cdc-alimentos-emergencia": {
+  "titulo": "Keep Food Safe After a Disaster or Emergency",
+  "orgao": "CDC",
+  "ano": "2025 (24/11)",
+  "url": "https://www.cdc.gov/food-safety/foods/keep-food-safe-after-emergency.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-alimentos-emergencia.md"
+ },
+ "cdc-mofo-guia": {
+  "titulo": "Homeowner's and Renter's Guide to Mold Cleanup After Disasters",
+  "orgao": "CDC/EPA/FEMA/HUD/NIH (Hurricane Sandy Task Force)",
+  "ano": "2015 (página 2024)",
+  "url": "https://www.cdc.gov/mold-health/media/Homeowners_and_Renters_Guide.pdf",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-mofo-guia.pdf"
+ },
+ "cdc-animais-desastre": {
+  "titulo": "What to Do to Protect Yourself From Animals After a Disaster",
+  "orgao": "CDC",
+  "ano": "2026",
+  "url": "https://www.cdc.gov/natural-disasters/response/what-to-do-protect-yourself-from-animals-after-a-disaster.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-animais-desastre.md"
+ },
+ "cdc-animais-mortos": {
+  "titulo": "Safety Guidelines: Disposing of Dead Animals After a Disaster",
+  "orgao": "CDC",
+  "ano": "2026",
+  "url": "https://www.cdc.gov/natural-disasters/safety/safety-guidelines-disposing-dead-animals-after-a-disaster.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-animais-mortos.md"
+ },
+ "cdc-criancas-lidar": {
+  "titulo": "Helping Children Cope with a Disaster",
+  "orgao": "CDC",
+  "ano": "2026 (12/01)",
+  "url": "https://www.cdc.gov/children-and-school-preparedness/before-during-after/helping-children-cope.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-criancas-lidar.md"
+ },
+ "cdc-lidar-desastre": {
+  "titulo": "Coping with a Disaster or Traumatic Event (factsheet)",
+  "orgao": "CDC",
+  "ano": "2024",
+  "url": "https://www.cdc.gov/natural-disasters/media/pdfs/2024/08/Coping_with_Disaster_2_English.pdf",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-lidar-desastre.pdf"
+ },
+ "cdc-gestantes-desastre": {
+  "titulo": "Safety Messages for Pregnant, Postpartum, and Breastfeeding Women During Natural Disasters and Severe Weather",
+  "orgao": "CDC",
+  "ano": "2024",
+  "url": "https://www.cdc.gov/reproductive-health/emergency-preparation-response/safety-messages.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-gestantes-desastre.md"
+ },
+ "cdc-alimentar-bebe-desastre": {
+  "titulo": "Feeding Your Child Safely During a Disaster",
+  "orgao": "CDC",
+  "ano": "2025",
+  "url": "https://www.cdc.gov/breastfeeding/php/guidelines-recommendations/feeding-your-child-safely-during-a-disaster.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-alimentar-bebe-desastre.md"
+ },
+ "cdc-enchentes-sobre": {
+  "titulo": "Floods and Your Safety (índice)",
+  "orgao": "CDC",
+  "ano": "2026",
+  "url": "https://www.cdc.gov/floods/about/index.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "cdc-enchentes-sobre.md"
+ },
+ "fda-medicamentos-desastre": {
+  "titulo": "Safe Drug Use After a Natural Disaster",
+  "orgao": "FDA (EUA)",
+  "ano": "2026 (01/09)",
+  "url": "https://www.fda.gov/drugs/emergency-preparedness-drugs/safe-drug-use-after-natural-disaster",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fda-medicamentos-desastre.md"
+ },
+ "fda-insulina-emergencia": {
+  "titulo": "Information Regarding Insulin Storage and Switching Between Products in an Emergency",
+  "orgao": "FDA",
+  "ano": "2026",
+  "url": "https://www.fda.gov/drugs/emergency-preparedness-drugs/information-regarding-insulin-storage-and-switching-between-products-emergency",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fda-insulina-emergencia.md"
+ },
+ "epa-mofo-guia": {
+  "titulo": "A Brief Guide to Mold, Moisture, and Your Home (EPA 402-K-02-003)",
+  "orgao": "EPA (EUA)",
+  "ano": "2012 (reimpr.)",
+  "url": "https://www.epa.gov/sites/default/files/2016-10/documents/moldguide12.pdf",
+  "licenca": "domínio público; foto da p.16 é de terceiro (P. Ellringer)",
+  "arquivo": "epa-mofo-guia.pdf"
+ },
+ "epa-casas-alagadas": {
+  "titulo": "Flooded Homes Cleanup Guidance (índice + subpáginas Coming Home, Protecting Your Health, Doing it Yourself, Additional Resources)",
+  "orgao": "EPA",
+  "ano": "2026",
+  "url": "https://www.epa.gov/flooded-homes",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "epa-casas-alagadas.md"
+ },
+ "epa-o-que-guardar": {
+  "titulo": "What Can I Keep? (infográfico)",
+  "orgao": "EPA",
+  "ano": "2022",
+  "url": "https://www.epa.gov/system/files/documents/2022-06/FH-What-to-Keep.pdf",
+  "licenca": "domínio público (ícones podem ser de terceiros)",
+  "arquivo": "epa-o-que-guardar.pdf"
+ },
+ "epa-perigos-casa-alagada": {
+  "titulo": "Hazards in a Flooded Home (infográfico)",
+  "orgao": "EPA",
+  "ano": "2022",
+  "url": "https://www.epa.gov/system/files/documents/2022-05/Hazards%20in%20a%20Flooded%20Home.pdf",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "epa-perigos-casa-alagada.pdf"
+ },
+ "inmet-painel5": {
+  "titulo": "Painel El Niño 2026-2027, Boletim Mensal nº 05 (outubro/2026)",
+  "orgao": "Inmet, Inpe, ANA, Cemaden, SGB, Sedec, Censipam",
+  "ano": "divulgado em 29/10/2026 (Inmet e Cemaden); Inpe publicou em 31/10/2026",
+  "url": "https://portal.inmet.gov.br/uploads/notastecnicas/Painel-El-Ni%C3%B1o-5-edi%C3%A7%C3%A3o1.pdf",
+  "licenca": "documento público federal; licença não informada no PDF; citar com atribuição",
+  "arquivo": "inmet-painel-el-nino-5ed-out2026.pdf"
+ },
+ "inpe-painel4": {
+  "titulo": "Painel El Niño 2026-2027, Boletim Mensal nº 04 (setembro/2026)",
+  "orgao": "mesmas 7 instituições",
+  "ano": "01/10/2026 (notícia Inpe)",
+  "url": "https://www.gov.br/inpe/pt-br/assuntos/ultimas-noticias/painel-el-nino-2026-2027-quarto-boletim-sobre-o-monitoramento-do-fenomeno-no-brasil-e-publicado/painel-el-nino-4.pdf",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "inpe-painel-el-nino-4ed-set2026.pdf"
+ },
+ "inpe-painel3": {
+  "titulo": "Painel El Niño 2026-2027, Boletim Mensal nº 03 (agosto/2026)",
+  "orgao": "mesmas 7 instituições",
+  "ano": "02/09/2026 (notícia Inpe)",
+  "url": "https://www.gov.br/inpe/pt-br/assuntos/ultimas-noticias/painel-el-nino-2026-2027-terceiro-boletim-sobre-o-monitoramento-do-fenomeno-no-brasil-e-publicado/PainelElNio3Edio.pdf",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "inpe-painel-el-nino-3ed-ago2026.pdf"
+ },
+ "cemaden-painel2": {
+  "titulo": "Painel El Niño 2026-2027, Boletim Mensal nº 02 (julho/2026)",
+  "orgao": "mesmas 7 instituições",
+  "ano": "julho/2026 (página Cemaden atualizada em 03/08/2026)",
+  "url": "https://www.gov.br/cemaden/pt-br/assuntos/monitoramento/el-nino/copy_of_lancado-o-primeiro-boletim-do-painel-do-el-nino-2026-2027-apresentando-potenciais-impactos-e-orientacoes/painel-el-nino-2edicao-final.pdf",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "cemaden-painel-el-nino-2ed-jul2026.pdf"
+ },
+ "cemaden-painel1": {
+  "titulo": "Painel El Niño 2026-2027, Boletim Mensal nº 01 (junho/2026)",
+  "orgao": "Inpe, Inmet, ANA, Cemaden, SGB, Sedec",
+  "ano": "junho/2026 (data exata de publicação não encontrada)",
+  "url": "https://www.gov.br/cemaden/pt-br/assuntos/monitoramento/el-nino/lancado-o-primeiro-boletim-do-painel-do-el-nino-2026-2027-apresentando-potenciais-impactos-e-orientacoes/PainelElNioJunho20262027.pdf",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "cemaden-painel-el-nino-1ed-jun2026.pdf"
+ },
+ "inmet-noticia5": {
+  "titulo": "Painel El Niño: Boletim de outubro é divulgado",
+  "orgao": "Inmet",
+  "ano": "29/10/2026",
+  "url": "https://portal.inmet.gov.br/noticias/painel-el-nino-boletim-de-outubro-e-divulgado",
+  "licenca": "não informada; citar",
+  "arquivo": "inmet-noticia-painel-el-nino-5ed.md"
+ },
+ "inpe-noticia5": {
+  "titulo": "Painel El Niño 2026-2027: quinto boletim é publicado",
+  "orgao": "Inpe",
+  "ano": "31/10/2026 (atualizada 06/11/2026)",
+  "url": "https://www.gov.br/inpe/pt-br/assuntos/ultimas-noticias/painel-el-nino-2026-2027-quinto-boletim-sobre-o-monitoramento-do-fenomeno-no-brasil-e-publicado",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "inpe-noticia-painel-el-nino-5ed.md"
+ },
+ "inmet-fim2027": {
+  "titulo": "El Niño deve perder força a partir do início de 2027 e chegar ao fim no outono",
+  "orgao": "Inmet (com dados NOAA/CPC de 12/11/2026)",
+  "ano": "13/11/2026",
+  "url": "https://portal.inmet.gov.br/noticias/el-niño-deve-atingir-sua-intensidade-máxima-no-trimestre-novembro-dezembro-janeiro-e-deve-persistir-até-o-outono-de-2027",
+  "licenca": "não informada; citar",
+  "arquivo": "inmet-el-nino-fim-2027-nov2026.md"
+ },
+ "inmet-temporais": {
+  "titulo": "Temporais no Sul e Sudeste: entenda a influência do El Niño nos eventos meteorológicos extremos",
+  "orgao": "Inmet",
+  "ano": "11/11/2026",
+  "url": "https://portal.inmet.gov.br/noticias/temporais-no-sul-e-sudeste-entenda-a-influência-do-el-niño-nos-eventos-meteorológicos-extremos",
+  "licenca": "não informada; citar",
+  "arquivo": "inmet-temporais-el-nino-nov2026.md"
+ },
+ "inpe-entrevista": {
+  "titulo": "O que precisamos saber sobre o El Niño e seus impactos para o Brasil?",
+  "orgao": "Inpe",
+  "ano": "15/05/2026 (atualizada 26/06/2026)",
+  "url": "https://www.gov.br/inpe/pt-br/assuntos/ultimas-noticias/o-que-precisamos-saber-sobre-o-el-nino-e-seus-impactos-para-o-brasil",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "inpe-o-que-saber-el-nino.md"
+ },
+ "rs-nota3": {
+  "titulo": "Nota Técnica nº 3 – El Niño 2026-27: evolução e possíveis impactos no RS",
+  "orgao": "Comitê Científico de Adaptação e Resiliência Climática do RS (governo do RS; coordenação Cemaden)",
+  "ano": "maio/2026",
+  "url": "https://admin.planoriogrande.rs.gov.br/upload/arquivos/202605/08094346-nota-tecnica-el-nino.pdf",
+  "licenca": "oficial estadual; licença não informada; citar",
+  "arquivo": "rs-comite-cientifico-nota-tecnica-el-nino-mai2026.pdf"
+ },
+ "planalto-l8036": {
+  "titulo": "Lei 8.036/1990 (FGTS), art. 20, XVI",
+  "orgao": "Presidência (Planalto)",
+  "ano": "lei de 11/05/1990; inciso XVI incluído pela Lei 10.878/2004; texto compilado acessado em 14/11/2026",
+  "url": "https://www.planalto.gov.br/ccivil_03/leis/l8036consol.htm",
+  "licenca": "domínio público (texto legal)",
+  "arquivo": "planalto-lei-8036-art20.md"
+ },
+ "planalto-d5113": {
+  "titulo": "Decreto 5.113/2004 (saque FGTS por desastre natural), compilado",
+  "orgao": "Presidência (Planalto)",
+  "ano": "22/06/2004, com alterações até Decretos 12.016 e 12.019 de 2024",
+  "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5113.htm",
+  "licenca": "domínio público",
+  "arquivo": "planalto-decreto-5113.md"
+ },
+ "planalto-d10593": {
+  "titulo": "Decreto 10.593/2020 (Sinpdec; definições; declaração e reconhecimento de SE/ECP)",
+  "orgao": "Presidência (Planalto)",
+  "ano": "24/12/2020, compilado",
+  "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2020/decreto/d10593.htm",
+  "licenca": "domínio público",
+  "arquivo": "planalto-decreto-10593.md"
+ },
+ "planalto-d3048": {
+  "titulo": "Decreto 3.048/1999 (Regulamento da Previdência), art. 169",
+  "orgao": "Presidência (Planalto)",
+  "ano": "06/05/1999; §1º com redação do Decreto 9.700/2019",
+  "url": "https://www.planalto.gov.br/ccivil_03/decreto/d3048compilado.htm",
+  "licenca": "domínio público",
+  "arquivo": "planalto-decreto-3048-art169.md"
+ },
+ "fgts-calamidade": {
+  "titulo": "Saque Calamidade (página oficial do FGTS, operada pela Caixa)",
+  "orgao": "Caixa / FGTS",
+  "ano": "\"Última atualização: 13/11/2026 09h47\"",
+  "url": "https://www.fgts.gov.br/paginas/trabalhador/saque-calamidade.aspx",
+  "licenca": "oficial; licença não informada; citar",
+  "arquivo": "fgts-saque-calamidade.md"
+ },
+ "fgts-guia-app": {
+  "titulo": "Solicitar o Saque Calamidade pelo app FGTS (Android)",
+  "orgao": "Caixa / FGTS",
+  "ano": "sem data",
+  "url": "https://www.fgts.gov.br/Paginas/downloads/guias/guia_rapido_saque_calamidade_APP_FGTS_sistema_Android_3.pdf",
+  "licenca": "oficial; marcado \"#PÚBLICO\"",
+  "arquivo": "fgts-guia-saque-calamidade-app-android.pdf"
+ },
+ "midr-portaria3646": {
+  "titulo": "Portaria MDR 3.646/2022 (altera a Portaria MDR 260/2022: critérios para SE/ECP e reconhecimento federal)",
+  "orgao": "MDR (atual MIDR), DOU",
+  "ano": "20/12/2022, vigência 02/01/2023",
+  "url": "https://www.gov.br/mdr/pt-br/acesso-a-informacao/legislacao/secretaria-nacional-de-protecao-e-defesa-civil/PORTARIAMDRN3.646DE20DEDEZEMBRODE2022.pdf",
+  "licenca": "ato oficial (DOU)",
+  "arquivo": "midr-portaria-3646-2022.pdf"
+ },
+ "midr-22bo": {
+  "titulo": "Ação 22BO – Socorro e Assistência Humanitária",
+  "orgao": "MIDR/Sedec",
+  "ano": "publicada 02/07/2021, atualizada 08/07/2026",
+  "url": "https://www.gov.br/mdr/pt-br/assuntos/protecao-e-defesa-civil/solicitacao-de-recursos-1/acao-22bo-socorro-e-assistencia-humanitaria",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-acao-22bo-socorro-assistencia-humanitaria.md"
+ },
+ "midr-oo03": {
+  "titulo": "Orientação Operacional nº 03/2025 – assistência humanitária em desastres meteorológicos, hidrológicos e geológicos",
+  "orgao": "MIDR/Sedec",
+  "ano": "assinada 29/07/2025; listada como \"vigente\" na página atualizada em 08/07/2026",
+  "url": "https://www.gov.br/mdr/pt-br/assuntos/protecao-e-defesa-civil/solicitacao-de-recursos-1/OO032025_CHUVAS.pdf",
+  "licenca": "ato oficial",
+  "arquivo": "midr-orientacao-operacional-03-2025-chuvas.pdf"
+ },
+ "midr-normadec": {
+  "titulo": "NORMADEC 00.001-R02 – Telhados e coberturas (restabelecimento)",
+  "orgao": "MIDR/Sedec",
+  "ano": "vigência a partir de outubro/2021",
+  "url": "https://www.gov.br/mdr/pt-br/acesso-a-informacao/legislacao/NORMADEC_00.001_R02.pdf",
+  "licenca": "ato oficial",
+  "arquivo": "midr-normadec-00001-r02.pdf"
+ },
+ "midr-vendaval": {
+  "titulo": "Saiba como proceder em casos de vendaval",
+  "orgao": "MIDR",
+  "ano": "11/08/2022",
+  "url": "https://www.gov.br/mdr/pt-br/ultimas-noticias/saiba-como-proceder-em-casos-de-vendaval",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-como-proceder-vendaval.md"
+ },
+ "govbr-aux-mg": {
+  "titulo": "Receber o Auxílio-Reconstrução – MG (serviço)",
+  "orgao": "MIDR (gov.br)",
+  "ano": "última modificação 07/04/2026",
+  "url": "https://www.gov.br/pt-br/servicos/receber-o-auxilio-reconstrucao-mg",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "govbr-servico-auxilio-reconstrucao-mg.md"
+ },
+ "midr-aux-mg": {
+  "titulo": "Auxílio Reconstrução MG (página do programa e perguntas frequentes)",
+  "orgao": "MIDR",
+  "ano": "sem data na página",
+  "url": "https://www.gov.br/mdr/pt-br/auxilio-mg",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-auxilio-mg.md"
+ },
+ "midr-criterios-mg": {
+  "titulo": "Critérios de elegibilidade e validação – Auxílio Reconstrução Zona da Mata/MG",
+  "orgao": "MIDR",
+  "ano": "nome do arquivo indica 04/05/2026",
+  "url": "https://www.gov.br/mdr/pt-br/auxilio-mg/criterios-aux-rec-mg-para-site-20260504-final2.docx",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-criterios-auxilio-reconstrucao-mg-2026.docx"
+ },
+ "agenciagov-aux-mg": {
+  "titulo": "Auxílio Reconstrução: mais 110 famílias mineiras estão com o benefício na conta",
+  "orgao": "Agência Gov, via MIDR",
+  "ano": "11/05/2026",
+  "url": "https://agenciagov.ebc.com.br/noticias/202605/auxilio-reconstrucao-mais-110-familias-mineiras-estao-com-o-beneficio-na-conta",
+  "licenca": "reprodução livre com citação",
+  "arquivo": "agenciagov-auxilio-reconstrucao-mg-mai2026.md"
+ },
+ "congresso-mpv1338": {
+  "titulo": "MPV 1.338/2026, tramitação",
+  "orgao": "Congresso Nacional",
+  "ano": "consulta em 14/11/2026 (atos de 06/03 a 10/07/2026)",
+  "url": "https://www.congressonacional.leg.br/materias/medidas-provisorias/-/mpv/172953",
+  "licenca": "dado público",
+  "arquivo": "congresso-mpv-1338-2026.md"
+ },
+ "govbr-aux-rs": {
+  "titulo": "Receber o Auxílio-Reconstrução – RS (serviço)",
+  "orgao": "MIDR (gov.br)",
+  "ano": "última modificação 24/03/2026",
+  "url": "https://www.gov.br/pt-br/servicos/receber-o-auxilio-reconstrucao",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "govbr-servico-auxilio-reconstrucao-rs.md"
+ },
+ "agenciabrasil-aux-rs": {
+  "titulo": "Governo Federal repassou 94% do Auxílio Reconstrução para o RS",
+  "orgao": "Agência Brasil (EBC)",
+  "ano": "07/05/2026",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-05/governo-federal-repassou-94-do-auxilio-reconstrucao-para-o-rs",
+  "licenca": "imprensa pública; conferir licença",
+  "arquivo": "agenciabrasil-auxilio-reconstrucao-rs-mai2026.md"
+ },
+ "agenciagov-golpe": {
+  "titulo": "Ministério da Integração alerta para golpe envolvendo o Auxílio Reconstrução",
+  "orgao": "Agência Gov, via MIDR",
+  "ano": "30/10/2026",
+  "url": "https://agenciagov.ebc.com.br/noticias/202610/midr-alerta-para-golpe-envolvendo-o-auxilio-reconstrucao",
+  "licenca": "reprodução livre com citação",
+  "arquivo": "agenciagov-golpe-auxilio-reconstrucao-out2026.md"
+ },
+ "mds-bpc": {
+  "titulo": "El Niño – Benefício de Prestação Continuada (BPC) em calamidades",
+  "orgao": "MDS",
+  "ano": "sem data na página",
+  "url": "https://www.gov.br/mds/pt-br/acoes-e-programas/calamidades-publicas-e-emergencias/el-nino/beneficio-de-prestacao-continuada-bpc",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "mds-el-nino-bpc.md"
+ },
+ "mds-pbf": {
+  "titulo": "El Niño – Programa Bolsa Família em calamidades",
+  "orgao": "MDS",
+  "ano": "sem data; cita IN Senarc/MDS 55 de 10/08/2026",
+  "url": "https://www.gov.br/mds/pt-br/acoes-e-programas/calamidades-publicas-e-emergencias/el-nino/programa-bolsa-familia-pbf",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "mds-el-nino-bolsa-familia.md"
+ },
+ "agenciagov-pbf": {
+  "titulo": "Pagamento unificado do Bolsa Família alcança 176 municípios",
+  "orgao": "Agência Gov, via MDS",
+  "ano": "19/01/2026",
+  "url": "https://agenciagov.ebc.com.br/noticias/202601/pagamento-unificadoo-bolsa-familia-176-municipios-segunda-feira-19-01",
+  "licenca": "reprodução livre com citação",
+  "arquivo": "agenciagov-bolsa-familia-pagamento-unificado-jan2026.md"
+ },
+ "midr-sms": {
+  "titulo": "Alertas de Desastres (SMS 40199)",
+  "orgao": "MIDR/Sedec",
+  "ano": "atualizada 11/11/2026",
+  "url": "https://www.gov.br/mdr/pt-br/assuntos/protecao-e-defesa-civil/alertas-de-desastres",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-alertas-sms-40199.md"
+ },
+ "midr-canais": {
+  "titulo": "Alertas de Desastres – canais (SMS, WhatsApp, Telegram, TV, Google, cell broadcast)",
+  "orgao": "MIDR/Sedec",
+  "ano": "sem data na página",
+  "url": "https://www.gov.br/mdr/pt-br/assuntos/protecao-e-defesa-civil/alertas-de-desastres-1",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-alertas-canais.md"
+ },
+ "midr-dca": {
+  "titulo": "Defesa Civil Alerta (página e perguntas frequentes)",
+  "orgao": "MIDR",
+  "ano": "sem data; trecho \"Etapa atual\" desatualizado",
+  "url": "https://www.gov.br/mdr/pt-br/assuntos/protecao-e-defesa-civil/defesa-civil-alerta",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-defesa-civil-alerta.md"
+ },
+ "agenciagov-dca-out2025": {
+  "titulo": "Defesa Civil Alerta entra em operação em todo território nacional",
+  "orgao": "Agência Gov, via MIDR",
+  "ano": "01/10/2025",
+  "url": "https://agenciagov.ebc.com.br/noticias/202510/defesa-civil-alerta-entra-em-operacao-em-todo-territorio-nacional",
+  "licenca": "reprodução livre com citação",
+  "arquivo": "agenciagov-defesa-civil-alerta-nacional-out2025.md"
+ },
+ "agenciagov-dca-mar2026": {
+  "titulo": "Defesa Civil Alerta: mais de dois mil alertas enviados",
+  "orgao": "Agência Gov, via MIDR",
+  "ano": "29/03/2026",
+  "url": "https://agenciagov.ebc.com.br/noticias/202603/defesa-civil-alerta-mais-de-dois-mil-alertas-enviados-por-meio-de-tecnologia-de-ponta",
+  "licenca": "reprodução livre com citação",
+  "arquivo": "agenciagov-defesa-civil-alerta-mar2026.md"
+ },
+ "agenciagov-alerta-falso": {
+  "titulo": "Polícia Federal vai investigar alerta falso da Defesa Civil",
+  "orgao": "Agência Gov, via MIDR",
+  "ano": "20/06/2026",
+  "url": "https://agenciagov.ebc.com.br/noticias/202606/policia-federal-investigar-alerta-falso-defesa-civil-alerta-invasao-hacker",
+  "licenca": "reprodução livre com citação",
+  "arquivo": "agenciagov-alerta-falso-jun2026.md"
+ },
+ "mcom-telefones": {
+  "titulo": "Emergência: você sabe para quem ligar quando precisa de ajuda?",
+  "orgao": "Ministério das Comunicações",
+  "ano": "11/09/2026 (atualizada 27/10/2026)",
+  "url": "https://www.gov.br/mcom/pt-br/noticias/2026/setembro/emergencia-voce-sabe-para-quem-ligar-quando-precisa-de-ajuda",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "mcom-telefones-emergencia-set2026.md"
+ },
+ "ready-tornadoes": {
+  "titulo": "Tornadoes",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "atualizado 02/06/2026",
+  "url": "https://www.ready.gov/tornadoes",
+  "licenca": "Sim. Links de parceiros (Cruz Vermelha americana, guia de safe room) não foram usados.",
+  "arquivo": "ready-tornadoes.md"
+ },
+ "ready-thunderstorms-lightning": {
+  "titulo": "Thunderstorms & Lightning",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "11/05/2026",
+  "url": "https://www.ready.gov/thunderstorms-lightning",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-thunderstorms-lightning.md"
+ },
+ "ready-severe-weather": {
+  "titulo": "Severe Weather",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "11/05/2026",
+  "url": "https://www.ready.gov/severe-weather",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-severe-weather.md"
+ },
+ "ready-power-outages": {
+  "titulo": "Power Outages",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "04/06/2026",
+  "url": "https://www.ready.gov/power-outages",
+  "licenca": "Sim. Links para Cruz Vermelha não usados.",
+  "arquivo": "ready-power-outages.md"
+ },
+ "ready-floods": {
+  "titulo": "Floods",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "20/10/2026",
+  "url": "https://www.ready.gov/floods",
+  "licenca": "Sim. A parte de seguro (NFIP) não se aplica ao Brasil.",
+  "arquivo": "ready-floods.md"
+ },
+ "ready-landslides-debris-flow": {
+  "titulo": "Landslides & Debris Flow",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "11/05/2026",
+  "url": "https://www.ready.gov/landslides-debris-flow",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-landslides-debris-flow.md"
+ },
+ "ready-kit": {
+  "titulo": "Build A Kit",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "01/07/2026",
+  "url": "https://www.ready.gov/kit",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-kit.md"
+ },
+ "ready-plan": {
+  "titulo": "Make A Plan",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "01/09/2026",
+  "url": "https://www.ready.gov/plan",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-plan.md"
+ },
+ "ready-alerts": {
+  "titulo": "Emergency Alerts",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "27/05/2026",
+  "url": "https://www.ready.gov/alerts",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-alerts.md"
+ },
+ "ready-recovering-disaster": {
+  "titulo": "Recovering from Disaster",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "11/05/2026",
+  "url": "https://www.ready.gov/recovering-disaster",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-recovering-disaster.md"
+ },
+ "ready-pets": {
+  "titulo": "Prepare Your Pets for Disasters",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "20/03/2026",
+  "url": "https://www.ready.gov/pets",
+  "licenca": "Sim. Links para ASPCA e American Humane não usados.",
+  "arquivo": "ready-pets.md"
+ },
+ "ready-people-disabilities": {
+  "titulo": "People with Disabilities",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "09/09/2026",
+  "url": "https://www.ready.gov/people-disabilities",
+  "licenca": "Sim. \"Direct Express®\" é marca. Benefícios dos EUA não se aplicam.",
+  "arquivo": "ready-people-disabilities.md"
+ },
+ "ready-older-adults": {
+  "titulo": "Older Adults",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "26/03/2026",
+  "url": "https://www.ready.gov/older-adults",
+  "licenca": "Sim. Links AARP (privado) não usados.",
+  "arquivo": "ready-older-adults.md"
+ },
+ "ready-financial-preparedness": {
+  "titulo": "Financial Preparedness",
+  "orgao": "FEMA / Ready.gov",
+  "ano": "13/03/2026",
+  "url": "https://www.ready.gov/financial-preparedness",
+  "licenca": "Página: sim. O \"Emergency Financial First Aid Kit\" é coedição com a Operation HOPE (ONG): não lido e não usado.",
+  "arquivo": "ready-financial-preparedness.md"
+ },
+ "nws-lightning": {
+  "titulo": "Lightning Safety Tips and Resources",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data; cita \"U.S. Lightning Deaths in 2026: 16\"",
+  "url": "https://www.weather.gov/safety/lightning",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning.md"
+ },
+ "nws-lightning-safety": {
+  "titulo": "Lightning Safety",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-safety",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-safety.md"
+ },
+ "nws-lightning-tips": {
+  "titulo": "Lightning Tips",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-tips",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-tips.md"
+ },
+ "nws-lightning-indoors": {
+  "titulo": "Lightning Indoors",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-indoors",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-indoors.md"
+ },
+ "nws-lightning-outdoors": {
+  "titulo": "When a Safe Building or Vehicle is Nearby",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-outdoors",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-outdoors.md"
+ },
+ "nws-lightning-safety-overview": {
+  "titulo": "Overview: Lightning Safety",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-safety-overview",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-safety-overview.md"
+ },
+ "nws-lightning-struck": {
+  "titulo": "Five Ways Lightning Strikes People",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-struck",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-struck.md"
+ },
+ "nws-lightning-myths": {
+  "titulo": "Lightning Myths",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-myths",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-myths.md"
+ },
+ "nws-lightning-odds": {
+  "titulo": "How Dangerous is Lightning?",
+  "orgao": "NOAA / NWS",
+  "ano": "dados de 2009–2018",
+  "url": "https://www.weather.gov/safety/lightning-odds",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-odds.md"
+ },
+ "nws-lightning-rods": {
+  "titulo": "Lightning Rods",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/lightning-rods",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-lightning-rods.md"
+ },
+ "nws-lightning-brochure": {
+  "titulo": "Lightning Safety for You and Your Family (folheto)",
+  "orgao": "NOAA / NWS",
+  "ano": "NOAA PA 201752",
+  "url": "https://www.weather.gov/media/safety/Lightning-Brochure18.pdf",
+  "licenca": "Texto: sim. Foto \"Lightning discharge on a golf green\" com crédito de E. Philip Krider: terceiro, não reproduzir.",
+  "arquivo": "nws-lightning-brochure.pdf"
+ },
+ "nws-flood-turn-around-dont-drown": {
+  "titulo": "Turn Around Don't Drown®",
+  "orgao": "NOAA / NWS",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/safety/flood-turn-around-dont-drown",
+  "licenca": "Texto informativo: sim. \"Turn Around Don't Drown®\" é marca registrada da NOAA. Uso impresso por terceiros exige ® e pedido de licença à NWS. Na wiki, usar uma frase própria em português (ex.: \"Água na pista? Dê meia-volta\") e não o slogan em inglês como título.",
+  "arquivo": "nws-flood-turn-around-dont-drown.md"
+ },
+ "noaa-jetstream-hail": {
+  "titulo": "Thunderstorm Hazards – Hail",
+  "orgao": "NOAA / NWS JetStream",
+  "ano": "sem data",
+  "url": "https://www.noaa.gov/jetstream/hail",
+  "licenca": "Texto e tabela: sim. Imagens não baixadas.",
+  "arquivo": "noaa-jetstream-hail.md"
+ },
+ "noaa-jetstream-wind_damage": {
+  "titulo": "Thunderstorm Hazards – Damaging Wind",
+  "orgao": "NOAA / NWS JetStream",
+  "ano": "sem data",
+  "url": "https://www.noaa.gov/jetstream/wind_damage",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "noaa-jetstream-wind_damage.md"
+ },
+ "noaa-jetstream-sound-of-thunder": {
+  "titulo": "The Sound of Thunder",
+  "orgao": "NOAA / NWS JetStream",
+  "ano": "sem data",
+  "url": "https://www.noaa.gov/jetstream/lightning/sound-of-thunder",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "noaa-jetstream-sound-of-thunder.md"
+ },
+ "fema-severe-wind-2023": {
+  "titulo": "Protect Your Property from Severe Winds (folheto)",
+  "orgao": "FEMA",
+  "ano": "2023",
+  "url": "https://www.fema.gov/sites/default/files/documents/fema_severe-wind-protect_2023.pdf",
+  "licenca": "Texto: sim. Fotos são de banco de imagens: os metadados citam Getty Images (Rehman Asad). Não reproduzir as fotos.",
+  "arquivo": "fema-severe-wind-2023.pdf"
+ },
+ "fema-howto-shingle-roof": {
+  "titulo": "Secure Composition Shingle Roofs (série \"Protecting Your Property from High Winds\")",
+  "orgao": "FEMA",
+  "ano": "abr/2011",
+  "url": "https://webarchive.library.unt.edu/web/20161109211501/https://www.fema.gov/media-library-data/20130726-1627-20490-4813/how2031_shingle_roof_4_11_r1.pdf",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fema-howto-shingle-roof.pdf"
+ },
+ "fema-howto-gable-end": {
+  "titulo": "Brace Gable End Roof Framing",
+  "orgao": "FEMA",
+  "ano": "2011 (cópia no UNT Web Archive)",
+  "url": "https://www.fema.gov/",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fema-howto-gable-end.pdf"
+ },
+ "fema-howto-metal-roof": {
+  "titulo": "Secure Metal Siding and Metal Roofs",
+  "orgao": "FEMA",
+  "ano": "2011 (cópia no UNT Web Archive)",
+  "url": "https://www.fema.gov/",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fema-howto-metal-roof.pdf"
+ },
+ "fema-howto-trees": {
+  "titulo": "Remove Trees and Potential Windborne Missiles",
+  "orgao": "FEMA",
+  "ano": "2011 (cópia no UNT Web Archive)",
+  "url": "https://www.fema.gov/",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fema-howto-trees.pdf"
+ },
+ "fema-p804-2010": {
+  "titulo": "FEMA P-804 Wind Retrofit Guide for Residential Buildings (1ª ed.)",
+  "orgao": "FEMA",
+  "ano": "dez/2010 (**substituída pela 2ª ed., abr/2023, não obtida**)",
+  "url": "https://www.wbdg.org/FFC/DHS/fema_p_804.pdf",
+  "licenca": "Ressalva: escrita por empresas contratadas (URS Corp., PBS&J) sob contrato da FEMA. Pode não estar coberta pelo §105, embora a FEMA a distribua livremente. Usar só as ideias, com redação própria. O Apêndice A resume o programa FORTIFIED™ (IBHS, privado, marca). Revisores de empresas (ex.: Simpson Strong-Tie).",
+  "arquivo": "fema-p804-2010.pdf"
+ },
+ "usace-self-help-tarp": {
+  "titulo": "How-to-Install Self-Help Tarp",
+  "orgao": "U.S. Army Corps of Engineers (USACE)",
+  "ano": "PDF de mai/2011",
+  "url": "https://s3.eu-west-1.amazonaws.com/sheltercluster.org/public/docs/c/Self-Help_Instructions_for_Roof_Tarp_Installation.pdf",
+  "licenca": "Provável domínio público (obra do USACE). Ressalvas: (1) o logotipo do USACE não pode ser reproduzido; (2) não achei cópia no site do USACE, só no espelho do Shelter Cluster; (3) o texto está quase todo em imagem: as páginas foram lidas visualmente.",
+  "arquivo": "usace-self-help-tarp.pdf"
+ },
+ "usace-blue-roof-qa-texas": {
+  "titulo": "Operation Blue Roof Q&A's",
+  "orgao": "USACE (distrito de Fort Worth)",
+  "ano": "c. 2008–2016 (sem data; arquivado em 2016)",
+  "url": "https://webarchive.library.unt.edu/web/20161021191739/https://media.swf.usace.army.mil/pubdata/hurricane/PDF/Blue_Roof_QA_Texas.pdf",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "usace-blue-roof-qa-texas.pdf"
+ },
+ "fema-blue-roof-faq": {
+  "titulo": "Frequently Asked Questions about Operation Blue Roof",
+  "orgao": "FEMA",
+  "ano": "impresso em 14/11/2026",
+  "url": "https://www.fema.gov/fact-sheet/frequently-asked-questions-about-operation-blue-roof",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fema-blue-roof-faq.pdf"
+ },
+ "fema-tarps-blue-roof-pr": {
+  "titulo": "FEMA Tarps and USACE Blue Roofs Aid in Protecting Homes From Further Damage (comunicado, Porto Rico)",
+  "orgao": "FEMA",
+  "ano": "19/10/2017",
+  "url": "https://www.fema.gov/press-release/20250602/fema-tarps-and-usace-blue-roofs-aid-protecting-homes-further-damage",
+  "licenca": "Texto: sim. A foto com equipe da Cruz Vermelha de San Juan tem autoria não indicada: não usar.",
+  "arquivo": "fema-tarps-blue-roof-pr.pdf"
+ },
+ "osha-roof-tarp": {
+  "titulo": "Hurricane eMatrix – Roof inspection, tarping and repair",
+  "orgao": "OSHA (Dep. do Trabalho)",
+  "ano": "sem data",
+  "url": "https://www.osha.gov/etools/hurricane/activity-sheets/building/roof-inspection",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "osha-roof-tarp.md"
+ },
+ "usgs-landslide-signs": {
+  "titulo": "What are the signs of landslide development? What do I do if a landslide occurs?",
+  "orgao": "USGS",
+  "ano": "sem data",
+  "url": "https://www.usgs.gov/programs/landslide-hazards/what-are-signs-landslide-development-what-do-i-do-if-a-landslide-occurs",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "usgs-landslide-signs.md"
+ },
+ "usgs-landslide-preparedness": {
+  "titulo": "Landslide Preparedness",
+  "orgao": "USGS",
+  "ano": "sem data",
+  "url": "https://www.usgs.gov/programs/landslide-hazards/landslide-preparedness",
+  "licenca": "Sim. Uma colagem de folheto de Porto Rico é marcada \"some content may have restrictions\". Paráfrase via WebFetch.",
+  "arquivo": "usgs-landslide-preparedness.md"
+ },
+ "cbmmg-veic": {
+  "titulo": "Orientações para pessoas em veículos durante inundações",
+  "orgao": "Corpo de Bombeiros Militar de Minas Gerais",
+  "ano": "2023 (PDF de 27/11/2023)",
+  "url": "https://www.bombeiros.mg.gov.br/storage/files/13/Cartilha%20de%20Dicas%20Preventivas%20-%20Pessoas%20em%20ve%C3%ADculos%20em%20inunda%C3%A7%C3%B5es%20-%20MOBILE.pdf",
+  "licenca": "não informada; reescrever e citar",
+  "arquivo": "cbmmg-veiculos-inundacoes.pdf"
+ },
+ "cbmmg-folder": {
+  "titulo": "A chuva está cheia de perigos que você não vê (folder)",
+  "orgao": "Corpo de Bombeiros Militar de Minas Gerais",
+  "ano": "2011",
+  "url": "https://bombeiros.mg.gov.br/images/stories/bm5midia/pdf/folderchuvas.pdf",
+  "licenca": "não informada; antigo, usar só como reforço",
+  "arquivo": "cbmmg-folder-chuvas.pdf"
+ },
+ "mcid-prev": {
+  "titulo": "Cartilha de prevenção (deslizamentos e inundações) — material do PMRR",
+  "orgao": "Ministério das Cidades (elaborada pela H2GEO)",
+  "ano": "2025 (PDF de 02/09/2025)",
+  "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/convenios-e-transferencias/repasses-e-transferencias-de-recursos-financeiros/acordos/acordos-de-adesao-municipios-pmrr/CartilhaPrevencao.pdf",
+  "licenca": "não informada (gov.br: tratar como CC BY-ND, reescrever e citar)",
+  "arquivo": "mcid-cartilha-prevencao.pdf"
+ },
+ "rs-ssp-alag": {
+  "titulo": "Autoridades de segurança pública alertam para riscos de circulação durante alagamentos",
+  "orgao": "Governo do RS — Secretaria da Segurança Pública, com Bombeiros e Defesa Civil",
+  "ano": "2026 (23/09)",
+  "url": "https://estado.rs.gov.br/autoridades-de-seguranca-publica-alertam-para-riscos-de-circulacao-durante-alagamentos",
+  "licenca": "não informada. O site recusou acesso direto; o texto veio do web.archive.org.",
+  "arquivo": "rs-ssp-alagamentos-circulacao.md"
+ },
+ "sp-semil": {
+  "titulo": "O que fazer em casos de tempestades, com raios, granizo e inundações?",
+  "orgao": "Governo de SP — Secretaria de Meio Ambiente, Infraestrutura e Logística (Portal de Educação Ambiental)",
+  "ano": "2025 (03/02)",
+  "url": "https://semil.sp.gov.br/educacaoambiental/2025/02/o-que-fazer-em-casos-de-tempestades-com-raios-granizo-e-inundacoes/",
+  "licenca": "não informada; reescrever e citar",
+  "arquivo": "sp-semil-tempestades-granizo.md"
+ },
+ "mg-granizo": {
+  "titulo": "Defesa Civil pede atenção à temporada de ventanias e chuvas de granizo",
+  "orgao": "Agência Minas (Governo de MG), com falas da Defesa Civil de MG",
+  "ano": "2020 (08/10)",
+  "url": "https://www.agenciaminas.mg.gov.br/noticia/defesa-civil-pede-atencao-a-temporada-de-ventanias-e-chuvas-de-granizo",
+  "licenca": "não informada; reescrever e citar",
+  "arquivo": "mg-defesacivil-granizo-2020.md"
+ },
+ "jlle-granizo": {
+  "titulo": "Como agir? Granizo",
+  "orgao": "Defesa Civil de Joinville/SC",
+  "ano": "2025",
+  "url": "https://www.joinville.sc.gov.br/wp-content/uploads/2025/04/Cartillha-Granizo-como-agir.pdf",
+  "licenca": "não informada (mesma série de jlle-inund e jlle-enx)",
+  "arquivo": "joinville-granizo.pdf"
+ },
+ "rj-granizo": {
+  "titulo": "Granizo (Como agir em desastres)",
+  "orgao": "Secretaria de Estado de Defesa Civil do RJ",
+  "ano": "sem data",
+  "url": "https://defesacivil.rj.gov.br/index.php/para-o-cidadao/como-agir-em-desastres/20-granizo",
+  "licenca": "não informada (mesma série de rj-vendaval)",
+  "arquivo": "rj-granizo.md"
+ },
+ "aen-granizo-100g": {
+  "titulo": "Granizo de 100g e ventos de 95 km/h: Defesa Civil prepara ajuda a municípios afetados",
+  "orgao": "Agência Estadual de Notícias do PR, com Simepar e Defesa Civil PR",
+  "ano": "2025 (02/11)",
+  "url": "https://www.parana.pr.gov.br/aen/Noticia/Granizo-de-100g-e-ventos-de-95-kmh-Defesa-Civil-prepara-ajuda-municipios-afetados",
+  "licenca": "não informada; só dados",
+  "arquivo": "aen-pr-granizo-100g-nov2025.md"
+ },
+ "ufpr-granizo-rmc": {
+  "titulo": "Ocorrência, frequência e danos das precipitações de granizo na Região Metropolitana de Curitiba (Caminhos de Geografia v.20 n.70)",
+  "orgao": "UTFPR, IAPAR, Simepar e UFPR (Caldana et al.); revista da UFU",
+  "ano": "2019",
+  "url": "https://seer.ufu.br/index.php/caminhosdegeografia/article/download/42823/26630/206516",
+  "licenca": "artigo científico; citar",
+  "arquivo": "ufpr-utfpr-granizo-curitiba-2019.pdf"
+ },
+ "fiocruz-amianto": {
+  "titulo": "Manual \"Troca limpa\": o descarte de telhas e caixas d'água com amianto nas obras de melhorias habitacionais do Setor 1 da Colônia Juliano Moreira (1ª ed.)",
+  "orgao": "Fiocruz (PDCFMA e CESTEH/ENSP)",
+  "ano": "2014",
+  "url": "https://fiocruz.br/sites/fiocruz.br/files/documentos/manual.troca_.limpa_15.maio_.pdf",
+  "licenca": "não informada; reescrever e citar. É manual de obra, não de morador.",
+  "arquivo": "fiocruz-amianto-telhas-2014.pdf"
+ },
+ "nws-mlb-hail": {
+  "titulo": "Hail Safety Rules",
+  "orgao": "NOAA / NWS, escritório de Melbourne (Flórida)",
+  "ano": "sem data",
+  "url": "https://www.weather.gov/mlb/hail_rules",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-mlb-hail-rules.md"
+ },
+ "usfs-granizo": {
+  "titulo": "Hail (Know Before You Go)",
+  "orgao": "USDA Forest Service (cita FEMA e NOAA)",
+  "ano": "sem data (cópia de 29/11/2025)",
+  "url": "https://www.fs.usda.gov/visit/know-before-you-go/hail",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "usfs-granizo.md"
+ },
+ "nhtsa-quebra-vidro": {
+  "titulo": "Federal Motor Vehicle Safety Standards — negação de petição para exigir ferramenta quebra-vidro (Federal Register 81 FR 86684)",
+  "orgao": "NHTSA / Departamento de Transportes dos EUA",
+  "ano": "2016 (01/12)",
+  "url": "https://www.govinfo.gov/content/pkg/FR-2016-12-01/html/2016-28126.htm",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nhtsa-quebra-vidro-2016.md"
+ },
+ "niehs-amianto": {
+  "titulo": "Asbestos: Worker and Employer Guide to Hazards and Recommended Controls",
+  "orgao": "NIEHS / NIH (EUA)",
+  "ano": "2015 (rev. 2017)",
+  "url": "https://www.niehs.nih.gov/sites/default/files/health/materials/asbestos_508.pdf",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "niehs-amianto.pdf"
+ },
+ "epa-entulho": {
+  "titulo": "Dealing with Debris and Damaged Buildings",
+  "orgao": "EPA (EUA)",
+  "ano": "sem data",
+  "url": "https://www.epa.gov/natural-disasters/dealing-debris-and-damaged-buildings",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "epa-entulho-predios-danificados.md"
+ },
+ "ifrc-granizo": {
+  "titulo": "Hailstorms — Public awareness and public education for disaster risk reduction: key messages (p.104–107 do guia)",
+  "orgao": "Federação Internacional da Cruz Vermelha e do Crescente Vermelho (IFRC)",
+  "ano": "2018",
+  "url": "https://www.ifrc.org/sites/default/files/2021-06/19-HAILSTORMS-HR.pdf",
+  "licenca": "não informada no trecho; reescrever e citar",
+  "arquivo": "ifrc-granizo.pdf"
+ },
+ "umanitoba-swoc": {
+  "titulo": "Public knowledge, attitudes and practices of vehicle submersion incidents: a pilot study (Injury Epidemiology 6:21)",
+  "orgao": "Universidade de Manitoba (McDonald e Giesbrecht) — universidade pública do Canadá",
+  "ano": "2019",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6545703/",
+  "licenca": "CC BY 4.0: pode traduzir, citando",
+  "arquivo": "umanitoba-swoc-2019.md"
+ },
+ "rws-janelas": {
+  "titulo": "Raambediening en deurvergrendeling: effect van water op het functioneren van raambedieningen en deurvergrendelingen (resumo em inglês nas p.13–15)",
+  "orgao": "Rijkswaterstaat / Ministério de Transportes e Águas da Holanda (estudo feito pela HAN Automotive)",
+  "ano": "2008 (01/07)",
+  "url": "https://open.rijkswaterstaat.nl/@177587/raambediening-deurvergrendeling-effect",
+  "licenca": "publicação oficial aberta; citar",
+  "arquivo": "rijkswaterstaat-janelas-portas-2008.pdf"
+ },
+ "rcmp-swoc": {
+  "titulo": "Don't panic — Saskatchewan RCMP's Underwater Recover Team shares vehicle submersion survival tips",
+  "orgao": "Real Polícia Montada do Canadá (RCMP), Saskatchewan",
+  "ano": "2025 (08/09)",
+  "url": "https://rcmp.ca/en/saskatchewan/news/2025/09/dont-panic-saskatchewan-rcmps-underwater-recover-team-urt-shares-vehicle-submersion-survival-tips",
+  "licenca": "Crown copyright; só referência",
+  "arquivo": "rcmp-swoc-2025.md"
+ },
+ "nfcc-veic": {
+  "titulo": "Protect people at risk: Water survival guidance for people in road vehicles (Fire Control Guidance)",
+  "orgao": "National Fire Chiefs Council (Reino Unido)",
+  "ano": "sem data",
+  "url": "https://nfcc.org.uk/control-measure/protect-people-at-risk-water-survival-guidance-for-people-in-road-vehicles-fcg/",
+  "licenca": "não informada; só referência. É orientação para os atendentes das centrais de bombeiros, não para o público.",
+  "arquivo": "nfcc-veiculo-na-agua.md"
+ },
+ "canada-granizo": {
+  "titulo": "Hailstorms – Get prepared",
+  "orgao": "Governo do Canadá (Public Safety Canada)",
+  "ano": "2025 (modificada em 12/09)",
+  "url": "https://www.canada.ca/en/services/policing/emergencies/preparedness/get-prepared/hazards-emergencies/hailstorms/how-prepare.html",
+  "licenca": "Crown copyright; secundária. Texto do web.archive.org; o acesso direto falhou.",
+  "arquivo": "canada-granizo.md"
+ },
+ "ndes-granizo": {
+  "titulo": "Hail Safety",
+  "orgao": "North Dakota Department of Emergency Services (governo **estadual** dos EUA)",
+  "ano": "2008 (rev. 2026)",
+  "url": "https://www.ndresponse.gov/sites/www/files/documents/docs/hailsafety.pdf",
+  "licenca": "secundária: não é federal. Usar só para reforçar o que outras fontes dizem.",
+  "arquivo": "ndes-hail-safety.pdf"
+ },
+ "pmm-reconh": {
+  "titulo": "Maringá tem situação de emergência reconhecida pelo Governo Federal após tornado",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "13/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/maringa-tem-situacao-de-emergencia-reconhecida-pelo-governo-federal-apos-tornado/43524",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-reconhecimento-federal-nov2026.md"
+ },
+ "pmm-decreto": {
+  "titulo": "Prefeito Silvio Barros decreta situação de emergência em Maringá após tornado de categoria 2",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "04/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43435",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-decreto-emergencia-tornado-nov2026.md"
+ },
+ "pmm-form": {
+  "titulo": "Prefeitura disponibiliza formulário para registro de ocorrências causadas pelo temporal",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "03/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43421",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-formulario-ocorrencias-nov2026.md"
+ },
+ "pmm-errata": {
+  "titulo": "Prefeitura orienta famílias a aguardarem novas informações sobre solicitações de telhas",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "05/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43439",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-errata-telhas-193-nov2026.md"
+ },
+ "pmm-recursos": {
+  "titulo": "Prefeitura se antecipa e organiza levantamentos para garantir recursos federais",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "06/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43456",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-recursos-federais-reconstrucao-nov2026.md"
+ },
+ "pmm-telhas1": {
+  "titulo": "Maringá recebe 4,4 mil telhas para cobertura de casas atingidas pelo tornado",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "06/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43465",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-recebe-telhas-nov2026.md"
+ },
+ "pmm-cadastro": {
+  "titulo": "Pós-tornado: limpeza das vias, retirada de resíduos e cadastro de famílias atingidas avançam",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "07/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43470",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-cadastro-familias-nov2026.md"
+ },
+ "pmm-telhas2": {
+  "titulo": "Cerca de 30 famílias atingidas pelo tornado receberam telhas neste fim de semana",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "08/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43472",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-entrega-telhas-30-familias-nov2026.md"
+ },
+ "pmm-mil": {
+  "titulo": "Cerca de mil famílias atingidas pelo tornado já pediram auxílio da Prefeitura",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "10/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43485",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-mil-familias-auxilio-nov2026.md"
+ },
+ "pmm-visitas": {
+  "titulo": "Famílias atingidas por tornado recebem visitas e atendimento social",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "11/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43505",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-visitas-atendimento-social-nov2026.md"
+ },
+ "pmm-telhas3": {
+  "titulo": "Mais de 80 famílias afetadas pelo tornado já receberam telhas",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "11/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43506",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-telhas-82-familias-nov2026.md"
+ },
+ "pmm-caixa": {
+  "titulo": "Famílias afetadas pelo tornado podem ter acesso a benefícios por meio da Caixa",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "12/11/2026",
+  "url": "https://www.maringa.pr.gov.br/noticias/x/43512",
+  "licenca": "não informada; citar",
+  "arquivo": "maringa-beneficios-caixa-nov2026.md"
+ },
+ "domm4958": {
+  "titulo": "Diário Oficial do Município de Maringá nº 4958 (Decreto 2003/2026)",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "05/11/2026",
+  "url": "https://webpmm.maringa.pr.gov.br/domm/?d=domm%204958.pdf",
+  "licenca": "ato oficial, sem direito autoral",
+  "arquivo": "maringa-diario-oficial-4958.pdf"
+ },
+ "domm4959": {
+  "titulo": "Diário Oficial do Município de Maringá nº 4959 (Decreto 2015/2026)",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "05/11/2026",
+  "url": "https://webpmm.maringa.pr.gov.br/domm/?d=domm%204959.pdf",
+  "licenca": "ato oficial",
+  "arquivo": "maringa-diario-oficial-4959.pdf"
+ },
+ "domm4964": {
+  "titulo": "Diário Oficial do Município de Maringá nº 4964 (Decretos 2.047 e 2055/2026)",
+  "orgao": "Prefeitura de Maringá",
+  "ano": "11/11/2026",
+  "url": "https://webpmm.maringa.pr.gov.br/domm/?d=domm%204964.pdf",
+  "licenca": "ato oficial",
+  "arquivo": "maringa-diario-oficial-4964.pdf"
+ },
+ "dou-receita": {
+  "titulo": "Portaria SRRF09 nº 1.208/2026 (CAC da Receita em Maringá fechado pelo temporal)",
+  "orgao": "Receita Federal, 9ª RF",
+  "ano": "DOU 04/11/2026",
+  "url": "https://www.in.gov.br/web/dou/-/portaria-srrf09-n-1.208-de-3-de-novembro-de-2026-741520957",
+  "licenca": "ato oficial",
+  "arquivo": "dou-receita-cac-maringa-temporal-nov2026.md"
+ },
+ "dou-sedec": {
+  "titulo": "Portarias Sedec de reconhecimento de SE publicadas de 03/11 a 13/11/2026 (compilação)",
+  "orgao": "MIDR/Sedec",
+  "ano": "DOU 03/11 a 13/11/2026",
+  "url": "https://www.in.gov.br",
+  "licenca": "ato oficial",
+  "arquivo": "dou-sedec-reconhecimentos-nov2026.md"
+ },
+ "aen-maringa": {
+  "titulo": "Governo do Paraná mobiliza equipes para atender cidades atingidas por tempestades e vendavais",
+  "orgao": "AEN-PR",
+  "ano": "02/11/2026",
+  "url": "https://www.parana.pr.gov.br/aen/Noticia/Governo-do-Parana-mobiliza-equipes-para-atender-cidades-atingidas-por-tempestades-e",
+  "licenca": "não informada; citar",
+  "arquivo": "aen-pr-maringa-temporal-nov2026.md"
+ },
+ "pr-d15104": {
+  "titulo": "Decreto Estadual PR nº 15.104/2026 (apoio financeiro de até R$ 50 mil a famílias atingidas)",
+  "orgao": "Governo do Paraná",
+  "ano": "assinado 15/09/2026",
+  "url": "https://www.parana.pr.gov.br/sites/novo-parana/arquivos_restritos/files/documento/2026-09/15104_1.pdf",
+  "licenca": "ato oficial",
+  "arquivo": "pr-decreto-15104-2026-apoio-financeiro.pdf"
+ },
+ "aen-fecap": {
+  "titulo": "Estado vai repassar até R$ 50 mil para reconstrução de imóveis de pessoas vulneráveis",
+  "orgao": "AEN-PR",
+  "ano": "17/09/2026",
+  "url": "https://www.parana.pr.gov.br/aen/Noticia/Estado-vai-repassar-ate-R-50-mil-para-reconstrucao-de-imoveis-de-pessoas-vulneraveis",
+  "licenca": "não informada; citar",
+  "arquivo": "aen-pr-fecap-reconstrucao-set2026.md"
+ },
+ "ren1000": {
+  "titulo": "Resolução Normativa ANEEL nº 1.000/2021 (texto original)",
+  "orgao": "ANEEL",
+  "ano": "DOU 20/12/2021",
+  "url": "https://www.in.gov.br/web/dou/-/resolucao-normativa-aneel-n-1.000-de-7-de-dezembro-de-2021-368359651",
+  "licenca": "ato oficial",
+  "arquivo": "dou-ren-aneel-1000-2021.md"
+ },
+ "aneel-rs": {
+  "titulo": "Enchentes no RS: ANEEL flexibiliza regras de prestação do serviço para distribuidoras gaúchas",
+  "orgao": "ANEEL",
+  "ano": "14/05/2024 (modificada 03/07/2026)",
+  "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2024/enchentes-no-rs-aneel-flexibiliza-regras-de-prestacao-do-servico-para-distribuidoras-de-energia-gauchas",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "aneel-enchentes-rs-flexibiliza-2024.md"
+ },
+ "pc11": {
+  "titulo": "Portaria Conjunta MPS/MDS nº 11/2026 (INSS: antecipação em calamidade, Juiz de Fora e Ubá)",
+  "orgao": "MPS e MDS",
+  "ano": "DOU 06/03/2026",
+  "url": "https://www.in.gov.br/web/dou/-/portaria-conjunta-mps/mds-n-11-de-4-de-marco-de-2026-690847568",
+  "licenca": "ato oficial",
+  "arquivo": "dou-portaria-conjunta-mps-mds-11-2026.md"
+ },
+ "pc16": {
+  "titulo": "Portaria Conjunta MPS/MDS nº 16/2026 (exclui Matias Barbosa)",
+  "orgao": "MPS e MDS",
+  "ano": "DOU 09/04/2026",
+  "url": "https://www.in.gov.br/web/dou/-/portaria-conjunta-mps/mds-n-16-de-25-de-marco-de-2026-698606301",
+  "licenca": "ato oficial",
+  "arquivo": "dou-portaria-conjunta-mps-mds-16-2026.md"
+ },
+ "mds-inf133": {
+  "titulo": "Informe Bolsa Família nº 133 (calendário extraordinário out-dez/2026)",
+  "orgao": "MDS",
+  "ano": "19/10/2026",
+  "url": "https://www.gov.br/mds/pt-br/acoes-e-programas/bolsa-familia/informes/2026/informe_bolsa_familia_n_133.pdf",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "mds-informe-bolsa-familia-133-out2026.pdf"
+ },
+ "p260": {
+  "titulo": "Portaria MDR nº 260/2022, consolidada com a Portaria MDR nº 3.646/2022",
+  "orgao": "MDR (consolidação feita pela Defesa Civil do RS; \"não substitui\" o DOU)",
+  "ano": "jan/2023 (pasta do arquivo)",
+  "url": "https://defesacivil.rs.gov.br/upload/arquivos/202301/10135036-portaria-260-e-3646-consolidao.pdf",
+  "licenca": "texto de ato oficial; consolidação não oficial",
+  "arquivo": "rs-defesacivil-portaria-mdr-260-consolidada.pdf"
+ },
+ "l8036-20d": {
+  "titulo": "Lei 8.036/1990, arts. 20-A a 20-D (saque-aniversário, alienação fiduciária, bloqueio)",
+  "orgao": "Planalto",
+  "ano": "compilado acessado 14/11/2026",
+  "url": "https://www.planalto.gov.br/ccivil_03/leis/l8036consol.htm",
+  "licenca": "domínio público",
+  "arquivo": "planalto-lei-8036-art20a-20d.md"
+ },
+ "fgts-aniv": {
+  "titulo": "Saque-Aniversário (página oficial)",
+  "orgao": "Caixa / FGTS",
+  "ano": "sem data",
+  "url": "https://www.fgts.gov.br/paginas/trabalhador/saque-aniversario.aspx",
+  "licenca": "oficial; citar",
+  "arquivo": "fgts-saque-aniversario.md"
+ },
+ "midr-painel": {
+  "titulo": "Painel El Niño 2026-2027 (página com a lista de boletins)",
+  "orgao": "MIDR/Sedec",
+  "ano": "publicada 26/08/2026, modificada 29/10/2026",
+  "url": "https://www.gov.br/mdr/pt-br/assuntos/protecao-e-defesa-civil/painel-el-nino-2026-2027-1",
+  "licenca": "gov.br, CC BY-ND 3.0",
+  "arquivo": "midr-painel-el-nino-pagina.md"
+ },
+ "rs-vpc": {
+  "titulo": "Programa Volta por Cima",
+  "orgao": "Governo do RS (Plano Rio Grande)",
+  "ano": "sem data; status \"Finalizado\"",
+  "url": "https://planoriogrande.rs.gov.br/programa-volta-por-cima",
+  "licenca": "não informada; citar",
+  "arquivo": "rs-planoriogrande-volta-por-cima.md"
+ },
+ "rs-temporais": {
+  "titulo": "Municípios afetados por temporais recebem suporte da Defesa Civil estadual",
+  "orgao": "Governo do RS",
+  "ano": "06/11/2026",
+  "url": "https://www.estado.rs.gov.br/municipios-afetados-por-temporais-recebem-suporte-da-defesa-civil-estadual",
+  "licenca": "não informada; citar",
+  "arquivo": "rs-defesacivil-temporais-nov2026.md"
+ },
+ "cwb-familia": {
+  "titulo": "Família Resiliente — Treinamento comunitário: Plano de ação em caso de inundação (apresentação)",
+  "orgao": "Coordenadoria Municipal de Proteção e Defesa Civil de Curitiba (COMPDEC)",
+  "ano": "2026 (arquivo de 26/08/2026)",
+  "url": "https://mid.curitiba.pr.gov.br/2026/00465880.pdf",
+  "licenca": "Municipal, sem licença declarada: reescrever e citar. Slides em PowerPoint impressos em PDF; muitas páginas são só imagem.",
+  "arquivo": "curitiba-defesacivil-inundacao-2026.pdf"
+ },
+ "rio-plancon": {
+  "titulo": "Plano de Contingência 2023-2024",
+  "orgao": "Subsecretaria de Proteção e Defesa Civil, Prefeitura do Rio de Janeiro",
+  "ano": "2023",
+  "url": "https://defesacivil.prefeitura.rio/wp-content/uploads/sites/35/2023/11/PLANO-DE-CONTINGENCIA-SUBPDEC-2023.2024.V2-211123.pdf",
+  "licenca": "Municipal, sem licença declarada: reescrever e citar. Documento operacional (para a Defesa Civil), não para o público.",
+  "arquivo": "rio-plano-contingencia-chuvas-2023-2024.pdf"
+ },
+ "anatel-dca": {
+  "titulo": "Guia Defesa Civil Alerta",
+  "orgao": "Anatel",
+  "ano": "sem data (link na página da Anatel atualizada em 17/11/2025)",
+  "url": "https://www.gov.br/anatel/pt-br/dados/utilidade-publica/alertas-de-desastres/defesa-civil-alerta",
+  "licenca": "gov.br, CC BY-ND 3.0: reescrever e citar. Arquivo grande (37 MB).",
+  "arquivo": "anatel-guia-defesa-civil-alerta.pdf"
+ },
+ "anatel-aml": {
+  "titulo": "Novo Serviço de Localização de Emergência está em operação no Brasil",
+  "orgao": "Anatel",
+  "ano": "2024 (16/12, atualizado 19/12)",
+  "url": "https://www.gov.br/anatel/pt-br/assuntos/noticias/novo-servico-de-localizacao-de-emergencia-esta-em-operacao-no-brasil",
+  "licenca": "gov.br, CC BY-ND 3.0: reescrever e citar. Texto obtido pelo web.archive.org (gov.br pede captcha).",
+  "arquivo": "anatel-localizacao-emergencia-aml-dez2024.md"
+ },
+ "rs-gabcrise": {
+  "titulo": "Gabinete de Crise mobiliza forças de resposta e alinha plano de ação transversal para enfrentamento das cheias",
+  "orgao": "Governo do Estado do RS (Secom)",
+  "ano": "2024 (01/05)",
+  "url": "https://www.estado.rs.gov.br/gabinete-de-crise-mobiliza-forcas-de-resposta-e-alinha-plano-de-acao-transversal-para-enfrentamento-das-cheias",
+  "licenca": "Estadual, sem licença declarada: reescrever e citar. Texto via web.archive.org.",
+  "arquivo": "rs-gabinete-crise-190-193-roaming-mai2024.md"
+ },
+ "ab-fab": {
+  "titulo": "Número de pessoas resgatadas no Rio Grande do Sul chega a 20 mil",
+  "orgao": "Agência Brasil (EBC); orientação atribuída à FAB",
+  "ano": "2024 (05/05)",
+  "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2024-05/numero-de-pessoas-resgatadas-no-rio-grande-do-sul-chega-20-mil",
+  "licenca": "Agência pública federal; Agência Brasil costuma publicar em CC BY 4.0 (conferir no rodapé). Citar como notícia oficial que repassa orientação da FAB.",
+  "arquivo": "agenciabrasil-resgatados-rs-fab-sinalizar-mai2024.md"
+ },
+ "ex-taquari": {
+  "titulo": "Operação Taquari II (apresentação do Comando de Operações Terrestres à Comissão Especial sobre Prevenção e Auxílio a Desastres, Câmara dos Deputados)",
+  "orgao": "Exército Brasileiro (COTER)",
+  "ano": "2025 (12/02)",
+  "url": "https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-temporarias/especiais/57a-legislatura/comissao-especial-sobre-prevencao-e-auxilio-a-desastres-e-calamidades-naturais/apresentacoes-em-eventos/2025.02.12GUSTAVOQUEIROZDEOLIVEIRACoronelComandodeOperaesTerrestresdoExrcito.pdf",
+  "licenca": "Institucional, sem licença declarada: só para contexto, reescrever e citar.",
+  "arquivo": "exercito-coter-op-taquari-camara-2025.pdf"
+ },
+ "fcc-com": {
+  "titulo": "FCC/FEMA Emergency Communications Tips",
+  "orgao": "Federal Communications Commission + FEMA (EUA)",
+  "ano": "2023 (revisada 24/04)",
+  "url": "https://www.fcc.gov/fcc-fema-emergency-tips",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "fcc-comunicacao-emergencia.md"
+ },
+ "faa-aim": {
+  "titulo": "Aeronautical Information Manual, cap. 6, seção 2 (6-2-6 Search and Rescue; figura \"Ground-Air Visual Code for Use by Survivors\")",
+  "orgao": "Federal Aviation Administration (EUA)",
+  "ano": "edição vigente em 2026-11-14",
+  "url": "https://www.faa.gov/air_traffic/publications/atpubs/aim_html/chap6_section_2.html",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "faa-aim-sinais-sobreviventes.md"
+ },
+ "nws-jax": {
+  "titulo": "Sheltering & Hunker Down (Weather-Ready Nation, \"Day 3\")",
+  "orgao": "NWS Jacksonville / NOAA (EUA)",
+  "ano": "sem data (cópia de 25/07/2025)",
+  "url": "https://www.weather.gov/media/jax/pdf/Day3_Hunker_Down_PDF_English%20(1",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-jax-abrigar-evacuacao-vertical.pdf"
+ },
+ "pnnl-telhado": {
+  "titulo": "Roof Escape Openings for Flood-Prone Areas (Building America Solution Center)",
+  "orgao": "Pacific Northwest National Laboratory para o Dep. de Energia dos EUA (DOE)",
+  "ano": "sem data na página",
+  "url": "https://basc.pnnl.gov/resource-guides/roof-escape-openings-flood-prone-areas",
+  "licenca": "Laboratório federal operado por contratada (Battelle): não é certo que seja domínio público. Reescrever e citar.",
+  "arquivo": "pnnl-basc-saida-telhado-enchente.md"
+ },
+ "ready-water": {
+  "titulo": "Water (Determine Water Needs / Storage / Treatment)",
+  "orgao": "Ready.gov / FEMA (EUA)",
+  "ano": "2021 (atualizada 22/02)",
+  "url": "https://www.ready.gov/water",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "ready-water.md"
+ },
+ "ncdhhs-banheiro": {
+  "titulo": "Toilet Use During an Emergency",
+  "orgao": "North Carolina Department of Health and Human Services (governo estadual, EUA)",
+  "ano": "2024 (10/2024, furacão Helene)",
+  "url": "https://www.ncdhhs.gov/toilet-use-during-emergency/open",
+  "licenca": "Estadual, não é domínio público federal: reescrever e citar.",
+  "arquivo": "ncdhhs-banheiro-emergencia.pdf"
+ },
+ "utah-sinal": {
+  "titulo": "Emergency Signaling (Be Ready Utah)",
+  "orgao": "Division of Emergency Management, Department of Public Safety, Estado de Utah (EUA)",
+  "ano": "sem data",
+  "url": "https://beready.utah.gov/?p=4067",
+  "licenca": "Estadual, não é domínio público federal: reescrever e citar. Texto via web.archive.org (o site bloqueia robôs).",
+  "arquivo": "utah-sinalizacao-emergencia.md"
+ },
+ "ms-guia-vigilancia-v1-2024": {
+  "titulo": "Guia de Vigilância em Saúde, volume 1, 6ª ed. revisada (capítulo \"Tétano acidental\", p.325–336)",
+  "orgao": "MS / SVSA",
+  "ano": "2024",
+  "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/svsa/vigilancia/guia-de-vigilancia-em-saude-volume-1-6a-edicao",
+  "licenca": "CC BY-NC-SA 4.0 (p.3). Público: profissionais",
+  "arquivo": "ms-guia-vigilancia-v1-2024.pdf"
+ },
+ "ms-manual-vacinacao-2024": {
+  "titulo": "Manual de Normas e Procedimentos para Vacinação, 2ª ed. revisada",
+  "orgao": "MS / SVSA / DPNI",
+  "ano": "2024",
+  "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/guias-e-manuais/2024/manual-de-normas-e-procedimentos-para-vacinacao.pdf",
+  "licenca": "CC BY-NC-SA 4.0 (p.3). Público: profissionais",
+  "arquivo": "ms-manual-vacinacao-2024.pdf"
+ },
+ "ms-calendario-vacinacao": {
+  "titulo": "Calendário de Vacinação (adolescente, adulto, idoso, gestante)",
+  "orgao": "Ministério da Saúde",
+  "ano": "©2025 (sem data de atualização)",
+  "url": "https://www.gov.br/saude/pt-br/vacinacao/calendario",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-calendario-vacinacao.md"
+ },
+ "ms-ofidicos-faq": {
+  "titulo": "Acidentes ofídicos — Perguntas frequentes",
+  "orgao": "Ministério da Saúde",
+  "ano": "2022 (atual. 10/02/2023)",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-ofidicos/faq",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-ofidicos-faq.md"
+ },
+ "ms-escorpioes-faq": {
+  "titulo": "Acidentes por escorpiões — Perguntas frequentes",
+  "orgao": "Ministério da Saúde",
+  "ano": "2022 (atual. 13/12/2023)",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-por-escorpioes/faq",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-escorpioes-faq.md"
+ },
+ "ms-aranhas-faq": {
+  "titulo": "Acidentes por aranhas — Perguntas frequentes",
+  "orgao": "Ministério da Saúde",
+  "ano": "2022 (atual. 10/02/2023)",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-por-aranhas/faq",
+  "licenca": "CC BY-ND 3.0",
+  "arquivo": "ms-aranhas-faq.md"
+ },
+ "sp-ses-peconhentos": {
+  "titulo": "Acidentes com animais peçonhentos (série de temas de saúde nº 9; ficha técnica: médicas do Hospital Vital Brazil / Instituto Butantan)",
+  "orgao": "SES-SP",
+  "ano": "s/d (ortografia anterior a 2009)",
+  "url": "https://saude.sp.gov.br/resources/ses/perfil/cidadao/temas-de-saude/animais_peconhentos.pdf",
+  "licenca": "não declarada → parafrasear. Telefones do Hospital Vital Brazil (p.4) podem estar desatualizados",
+  "arquivo": "sp-ses-peconhentos.pdf"
+ },
+ "ms-folder-alimentos-enchentes-2017": {
+  "titulo": "Cuidados com os alimentos para consumo humano em situação de enchentes (folder)",
+  "orgao": "MS / SVS",
+  "ano": "2017",
+  "url": "https://bvsms.saude.gov.br/bvs/folder/cuidados_alimentos_consumo_humano_situacao_enchentes.pdf",
+  "licenca": "não declarada; \"distribuição gratuita\"",
+  "arquivo": "ms-folder-alimentos-enchentes-2017.pdf"
+ },
+ "ms-folder-agua-desastres-2016": {
+  "titulo": "Orientações para o tratamento intradomiciliar da água de consumo humano em situações de desastres (folder)",
+  "orgao": "MS / SVS; cópia hospedada pela SES-MG (anexo do PPR Chuva 2024)",
+  "ano": "2016",
+  "url": "https://www.saude.mg.gov.br/wp-content/uploads/2017/12/PPR_Chuva-2024_Anexo-4-do-anexo-J-47d.pdf",
+  "licenca": "não declarada",
+  "arquivo": "ms-folder-agua-desastres-2016.pdf"
+ },
+ "rio-sms-cuidados-enchentes": {
+  "titulo": "Cuidados básicos em situação de enchentes",
+  "orgao": "SMS Rio de Janeiro",
+  "ano": "2014 (metadados)",
+  "url": "https://saude.prefeitura.rio/wp-content/uploads/sites/47/2023/04/CUIDADOSBASICOSEMSITUACAODEENCHENTES.pdf",
+  "licenca": "não declarada",
+  "arquivo": "rio-sms-cuidados-enchentes.pdf"
+ },
+ "sp-sms-folder-enchentes-2023": {
+  "titulo": "Enchentes (folder)",
+  "orgao": "Prefeitura de São Paulo / SMS – Coordenadoria de Vigilância em Saúde",
+  "ano": "2023",
+  "url": "https://www.prefeitura.sp.gov.br/cidade/secretarias/upload/saude/vigilancia_em_saude/Folder%20_enchentes%20vers%C3%A3o_2023_V2.pdf",
+  "licenca": "não declarada",
+  "arquivo": "sp-sms-folder-enchentes-2023.pdf"
+ },
+ "sp-cve-hipoclorito-2025": {
+  "titulo": "Hipoclorito de sódio 2,5% — orientações para uso diário e em situação de desastre ou emergência (folder)",
+  "orgao": "SES-SP / CVE",
+  "ano": "2025 (metadados ago/2025)",
+  "url": "https://www.saude.sp.gov.br/resources/cve-centro-de-vigilancia-epidemiologica/areas-de-vigilancia/doencas-transmitidas-por-agua-e-alimentos/folder/folder_hipoclorito_de_sodio.pdf",
+  "licenca": "não declarada",
+  "arquivo": "sp-cve-hipoclorito-2025.pdf"
+ },
+ "anvisa-cartilha-boas-praticas-rio": {
+  "titulo": "Cartilha sobre Boas Práticas para Serviços de Alimentação (RDC 216/2004, 3ª ed.), versão reproduzida pela Vigilância Sanitária do Rio",
+  "orgao": "Anvisa (original) / SUBVISA-Rio",
+  "ano": "2016 (metadados)",
+  "url": "https://vigilanciasanitaria.prefeitura.rio/wp-content/uploads/sites/84/2023/06/CartilhaBoasPraticas_Livreto.pdf",
+  "licenca": "\"reprodução permitida citando a fonte; proibida comercialização\" (p.2). Público: serviços de alimentação",
+  "arquivo": "anvisa-cartilha-boas-praticas-rio.pdf"
+ },
+ "ac-see-boas-praticas-escolar-2025": {
+  "titulo": "Manual de Boas Práticas — Alimentação Escolar, rede pública do Acre",
+  "orgao": "SEE-AC (Departamento de Alimentação e Nutrição Escolar)",
+  "ano": "2025",
+  "url": "https://cae.see.ac.gov.br/wp-content/uploads/2025/05/Manual_de_Boas_Praticas_para_Alimentacao_Escolar_ACRE___2025_compressed.pdf",
+  "licenca": "não declarada. Usada só para a equivalência \"1 colher de sopa/L ≈ 200 ppm\"",
+  "arquivo": "ac-see-boas-praticas-escolar-2025.pdf"
+ },
+ "sp-cvs-portaria-3-2026": {
+  "titulo": "Portaria CVS nº 3, de 3/7/2026 — regulamento de boas práticas (revoga a CVS 5/2013 após 90 dias)",
+  "orgao": "SES-SP / CVS (DOE-SP 6/7/2026)",
+  "ano": "2026",
+  "url": "https://cmscientifica.com.br/wp-content/uploads/2026/07/portaria-cvs-3-de-julho-de-2026-20260708.pdf",
+  "licenca": "ato normativo. Não dá ppm nem tempo (manda seguir o rótulo do produto)",
+  "arquivo": "sp-cvs-portaria-3-2026.pdf"
+ },
+ "ms-linhas-cuidado-insulina": {
+  "titulo": "Cuidados com insulinoterapia — Armazenamento e Transporte (Linha de Cuidado DM2 no adulto)",
+  "orgao": "MS (portal Linhas de Cuidado)",
+  "ano": "s/d (tabela adaptada da Diretriz SBD 2019–2020)",
+  "url": "https://linhasdecuidado.saude.gov.br/portal/diabetes-mellitus-tipo-2-(DM2",
+  "licenca": "não declarada",
+  "arquivo": "ms-linhas-cuidado-insulina.md"
+ },
+ "rs-ses-insulina-sem-energia-2024": {
+  "titulo": "O que fazer com sua insulina quando não há energia elétrica (informe; fonte citada: MS, Linhas de Cuidado)",
+  "orgao": "SES-RS",
+  "ano": "2024 (maio, metadados)",
+  "url": "https://saude.rs.gov.br/upload/arquivos/202405/03121024-armaz-insulina-sem-energia-para-usuarios.pdf",
+  "licenca": "não declarada. Baixado via WebFetch (curl recusado pelo site)",
+  "arquivo": "rs-ses-insulina-sem-energia-2024.pdf"
+ },
+ "rs-ses-medicamentos-energia-2026": {
+  "titulo": "Como conservar medicamentos durante a falta de energia elétrica",
+  "orgao": "Governo do RS / SES (Ascom SES, Secom)",
+  "ano": "2026 (23/07)",
+  "url": "https://estado.rs.gov.br/como-conservar-medicamentos-durante-a-falta-de-energia-eletrica",
+  "licenca": "não declarada",
+  "arquivo": "rs-ses-medicamentos-energia-2026.md"
+ },
+ "ms-manejo-diarreia-2023": {
+  "titulo": "Manejo do paciente com diarreia (cartaz)",
+  "orgao": "MS / SVSA",
+  "ano": "2023 (metadados jul/2023)",
+  "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/svsa/doencas-diarreicas-agudas/manejo-do-paciente-com-diarreia-avaliacao-do-estado-do-paciente",
+  "licenca": "portal gov.br (CC BY-ND 3.0). Público: profissionais",
+  "arquivo": "ms-manejo-diarreia-2023.pdf"
+ },
+ "anvisa-nt04-2020-rev2024": {
+  "titulo": "Nota Técnica GVIMS/GGTES/Anvisa nº 04/2020 (covid-19 em serviços de saúde), atualizada em 24/06/2024",
+  "orgao": "Anvisa",
+  "ano": "2024",
+  "url": "https://www.gov.br/anvisa/pt-br/centraisdeconteudo/publicacoes/servicosdesaude/notas-tecnicas/notas-tecnicas-vigentes/NOTATCNICAGVIMS0420covid1925.06.2024.pdf",
+  "licenca": "portal gov.br. Usada só para a equivalência N95/PFF2",
+  "arquivo": "anvisa-nt04-2020-rev2024.pdf"
+ },
+ "sp-cve-falta-energia": {
+  "titulo": "Falta de energia (folder)",
+  "orgao": "SES-SP / CVE",
+  "ano": "2009 (metadados)",
+  "url": "https://www.saude.sp.gov.br/resources/cve-centro-de-vigilancia-epidemiologica/areas-de-vigilancia/doencas-transmitidas-por-agua-e-alimentos/folder/energia_folder.pdf",
+  "licenca": "não declarada",
+  "arquivo": "sp-cve-falta-energia.pdf"
+ },
+ "rio-sms-falta-energia": {
+  "titulo": "Falta de energia (folder)",
+  "orgao": "SMS Rio de Janeiro",
+  "ano": "2014 (metadados)",
+  "url": "https://saude.prefeitura.rio/wp-content/uploads/sites/47/2023/04/09.FALTADEENERGIA.pdf",
+  "licenca": "não declarada",
+  "arquivo": "rio-sms-falta-energia.pdf"
+ },
+ "abracit-lista-ciatox": {
+  "titulo": "Lista de Centros de Informação e Assistência Toxicológica do Brasil",
+  "orgao": "Abracit",
+  "ano": "sem data (rodapé ©2023)",
+  "url": "https://abracit.org.br/lista-dos-centros/",
+  "licenca": "não declarada; telefones são dado factual",
+  "arquivo": "abracit-lista-ciatox.md"
+ },
+ "ms-portaria-12151-2026-ciatox": {
+  "titulo": "Portaria GM/MS nº 12.151, de 14/09/2026 (habilitação e financiamento dos CIATox)",
+  "orgao": "Ministério da Saúde",
+  "ano": "2026 (DOU extra 15/09)",
+  "url": "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2026/prt12151_15_09_2026.html",
+  "licenca": "ato normativo",
+  "arquivo": "ms-portaria-12151-2026-ciatox.md"
+ },
+ "sinapi-telh": {
+  "titulo": "Caderno Técnico de Composições SINAPI — Telhamento para Cobertura",
+  "orgao": "Caixa Econômica Federal (SINAPI; aferição FDTE)",
+  "ano": "06/2026",
+  "url": "https://www.caixa.gov.br/Downloads/sinapi-cadernos-tecnicos/SINAPI-CT-TELHAMENTO-PARA-COBERTURA.pdf",
+  "licenca": "Não informada. Documento público de referência de custos. Reescrever e citar. É o melhor texto público que repete a prática das normas ABNT (lista as normas na p.9).",
+  "arquivo": "caixa-sinapi-telhamento.pdf"
+ },
+ "sinapi-estr": {
+  "titulo": "Caderno Técnico de Composições SINAPI — Estrutura e Trama para Cobertura",
+  "orgao": "Caixa (SINAPI)",
+  "ano": "10/2025",
+  "url": "https://www.caixa.gov.br/Downloads/sinapi-cadernos-tecnicos/SINAPI-CT-ESTRUTURA-E-TRAMA-PARA-COBERTURA.pdf",
+  "licenca": "Não informada. Reescrever e citar. O download só funciona com cookies (o site redireciona em laço sem eles).",
+  "arquivo": "caixa-sinapi-estrutura-cobertura.pdf"
+ },
+ "fad018": {
+  "titulo": "Ficha de Avaliação de Desempenho nº 18 — Sistema de cobertura com estrutura metálica, telhas cerâmicas de encaixe (modelo americana) e forro de PVC",
+  "orgao": "PBQP-H/SiNAT (Ministério do Desenvolvimento Regional, Secretaria Nacional de Habitação); avaliação ITA Tecomat",
+  "ano": "jun/2019",
+  "url": "https://pbqp-h.mdr.gov.br/wp-content/uploads/2021/09/FAD-018.pdf",
+  "licenca": "Não informada. Ato de programa federal. Vale para um sistema específico, mas a p.11 traz o resultado da análise de vento da ABNT NBR 15575-5 (Anexo J) para telha cerâmica, que é a regra geral que buscávamos.",
+  "arquivo": "mcid-pbqph-fad018-cobertura-ceramica.pdf"
+ },
+ "brasilit-ond": {
+  "titulo": "Catálogo Técnico Ondulada (telha ondulada de fibrocimento sem amianto, 5, 6 e 8 mm)",
+  "orgao": "Saint-Gobain Brasilit",
+  "ano": "set/2007",
+  "url": "https://aecweb.com.br/cls/catalogos/brasilit/ondulada.pdf",
+  "licenca": "Material de fabricante: usar só para dados de produto e montagem. Reescrever. Edição antiga (2007): o Guia Técnico 2026 da Brasilit não pôde ser baixado. Conferir se os números mudaram.",
+  "arquivo": "brasilit-ondulada-catalogo.pdf"
+ },
+ "eternit-ond": {
+  "titulo": "Telha Ondulada 6 e 8 mm (catálogo)",
+  "orgao": "Eternit",
+  "ano": "c. 2009 (arquivo de 27/01/2009)",
+  "url": "https://api.aecweb.com.br/cls/catalogos/eternit/catalogo_ondulada.pdf",
+  "licenca": "Material de fabricante. Reescrever. Esta edição é de telha COM amianto crisotila (composição, p.3). Serve também como prova de que telhas Eternit vendidas até pelo menos 2009 tinham amianto.",
+  "arquivo": "eternit-ondulada-catalogo.pdf"
+ },
+ "orse-telh": {
+  "titulo": "Especificação 1.05.03 — Telhamento (Obras Civis / Coberturas)",
+  "orgao": "Governo de Sergipe — CEHOP, sistema ORSE",
+  "ano": "sem data (publicado no portal em ago/2025)",
+  "url": "https://orse-portal.cehop.se.gov.br/wp-content/uploads/2025/08/ES00072.pdf",
+  "licenca": "Não informada. Especificação de obra pública estadual. Uso secundário (inclinação mínima e argamassa da cumeeira cerâmica).",
+  "arquivo": "se-orse-telhamento.pdf"
+ },
+ "normadec": {
+  "titulo": "NORMADEC 00.001-R02 — Telhados e coberturas (restabelecimento)",
+  "orgao": "MIDR/Sedec",
+  "ano": "vigente desde out/2021",
+  "url": "https://www.gov.br/mdr/pt-br/acesso-a-informacao/legislacao/NORMADEC_00.001_R02.pdf",
+  "licenca": "Ato oficial. Já usado em `direitos-alertas-elnino.md`; aqui relido para o material de fixação.",
+  "arquivo": "midr-normadec-00001-r02.pdf"
+ },
+ "pr-tr-lona": {
+  "titulo": "Termo de Referência — Aquisição de até 3.000 bobinas de lona plástica",
+  "orgao": "Casa Militar / Coordenadoria Estadual de Proteção e Defesa Civil do Paraná (CEPDEC)",
+  "ano": "01/06/2015 (arquivo publicado em dez/2018)",
+  "url": "https://www.defesacivil.pr.gov.br/sites/defesa-civil/arquivos_restritos/files/documento/2018-12/TRbobinasdelonaplasticaV5.pdf",
+  "licenca": "Documento público de licitação. É a especificação real da lona que a Defesa Civil do PR distribui (ou distribuía em 2015). Não achei edição mais nova.",
+  "arquivo": "pr-defesacivil-tr-lona.pdf"
+ },
+ "ifrc-lona": {
+  "titulo": "Plastic sheeting — A guide to the specification and use of plastic sheeting in humanitarian relief",
+  "orgao": "Federação Internacional da Cruz Vermelha (IFRC) e Oxfam",
+  "ano": "2007",
+  "url": "https://policy-practice.oxfam.org/resources/plastic-sheeting-a-guide-to-the-specification-and-use-of-plastic-sheeting-in-hu-126734/",
+  "licenca": "© IFRC e Oxfam 2007, download gratuito (p.4). Não é domínio público: reescrever e citar. Manual humanitário internacional: marcar ⚠️ ADAPTAR.",
+  "arquivo": "ifrc-oxfam-lona-plastica.pdf"
+ },
+ "inca-amianto": {
+  "titulo": "Amianto, câncer e outras doenças",
+  "orgao": "Instituto Nacional de Câncer (INCA) / Ministério da Saúde",
+  "ano": "2020",
+  "url": "https://ninho.inca.gov.br/jspui/bitstream/123456789/12742/1/Amianto-%20Cancer-e-outras-Doencas-2020.pdf",
+  "licenca": "CC BY-NC-SA 4.0. Reprodução parcial ou total permitida citando a fonte.",
+  "arquivo": "inca-amianto.pdf"
+ },
+ "fundacentro-amianto": {
+  "titulo": "FAQ — Boas práticas em desamiantagem",
+  "orgao": "Fundacentro (Ministério do Trabalho e Emprego)",
+  "ano": "sem data na página",
+  "url": "https://www.gov.br/fundacentro/pt-br/centrais-de-conteudo/faq-desamiantagem/boas-praticas-em-desamiantagem",
+  "licenca": "Site sob CC BY-ND 3.0. Reescrever e citar.",
+  "arquivo": "fundacentro-faq-desamiantagem.md"
+ },
+ "nr35": {
+  "titulo": "NR 35 — Trabalho em altura (texto com alterações até a Portaria MTE nº 1.259/2026)",
+  "orgao": "Ministério do Trabalho e Emprego",
+  "ano": "2012, atualizada em 15/07/2026",
+  "url": "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/nr-35-atualizada-2025-1.pdf",
+  "licenca": "Ato oficial. Vale para trabalhador, não para o morador. Serve de referência.",
+  "arquivo": "mte-nr35-trabalho-altura.pdf"
+ },
+ "aen-apucarana": {
+  "titulo": "Após temporal, Estado envia 3,2 mil telhas e lonas para atender moradores de Apucarana",
+  "orgao": "AEN-PR (Defesa Civil Estadual)",
+  "ano": "22/09/2026",
+  "url": "https://www.parana.pr.gov.br/aen/Noticia/Apos-temporal-Estado-envia-32-mil-telhas-e-lonas-para-atender-moradores-de-Apucarana",
+  "licenca": "Não informada.",
+  "arquivo": "aen-pr-apucarana-telhas-lonas-set2026.md"
+ },
+ "aen-laranjeiras": {
+  "titulo": "Estado envia 5.200 telhas para Laranjeiras do Sul após vendaval",
+  "orgao": "AEN-PR (Cedec)",
+  "ano": "05/10/2026",
+  "url": "https://www.parana.pr.gov.br/aen/Noticia/Estado-envia-5200-telhas-para-Laranjeiras-do-Sul-apos-vendaval",
+  "licenca": "Não informada.",
+  "arquivo": "aen-pr-laranjeiras-telhas-out2026.md"
+ },
+ "jlle-vend": {
+  "titulo": "Como agir? Vendavais",
+  "orgao": "Defesa Civil de Joinville/SC",
+  "ano": "2025",
+  "url": "https://www.joinville.sc.gov.br/wp-content/uploads/2025/04/Cartilha-Vendavais-como-agir.pdf",
+  "licenca": "Não informada.",
+  "arquivo": "joinville-vendavais.pdf"
+ },
+ "nws-flood-during": {
+  "titulo": "Fonte: nws-flood-during",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/flood-during",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-flood-during.md"
+ },
+ "nws-flood-before": {
+  "titulo": "Fonte: nws-flood-before",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/flood-before",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-flood-before.md"
+ },
+ "epa-casas-alagadas-recursos": {
+  "titulo": "Additional Resources and Help",
+  "orgao": "EPA",
+  "ano": "",
+  "url": "https://www.epa.gov/flooded-homes/additional-resources-and-help",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "epa-casas-alagadas-recursos.md"
+ },
+ "nws-flood-hazards": {
+  "titulo": "Fonte: nws-flood-hazards",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/flood-hazards",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-flood-hazards.md"
+ },
+ "nws-wind-ww": {
+  "titulo": "Fonte: nws-wind-ww",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/wind-ww",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-wind-ww.md"
+ },
+ "nws-flood-after": {
+  "titulo": "Fonte: nws-flood-after",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/flood-after",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-flood-after.md"
+ },
+ "nws-tornado-prepare": {
+  "titulo": "Fonte: nws-tornado-prepare",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/tornado-prepare",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-tornado-prepare.md"
+ },
+ "nws-wind-before": {
+  "titulo": "Fonte: nws-wind-before",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/wind-before",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-wind-before.md"
+ },
+ "nws-thunderstorm": {
+  "titulo": "Fonte: nws-thunderstorm",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/thunderstorm",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-thunderstorm.md"
+ },
+ "nws-tornado-during": {
+  "titulo": "Fonte: nws-tornado-during",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/tornado-during",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-tornado-during.md"
+ },
+ "nws-tornado-after": {
+  "titulo": "Fonte: nws-tornado-after",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/tornado-after",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-tornado-after.md"
+ },
+ "nws-thunderstorm-during": {
+  "titulo": "Fonte: nws-thunderstorm-during",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/thunderstorm-during",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-thunderstorm-during.md"
+ },
+ "nws-thunderstorm-prepare": {
+  "titulo": "Fonte: nws-thunderstorm-prepare",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/thunderstorm-prepare",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-thunderstorm-prepare.md"
+ },
+ "nws-wind": {
+  "titulo": "Fonte: nws-wind",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/wind",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-wind.md"
+ },
+ "nws-wind-during": {
+  "titulo": "Fonte: nws-wind-during",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/wind-during",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-wind-during.md"
+ },
+ "epa-casas-alagadas-saude": {
+  "titulo": "Protecting Your Health",
+  "orgao": "EPA",
+  "ano": "",
+  "url": "https://www.epa.gov/flooded-homes/protecting-your-health",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "epa-casas-alagadas-saude.md"
+ },
+ "epa-casas-alagadas-voltar": {
+  "titulo": "Coming Home",
+  "orgao": "EPA",
+  "ano": "",
+  "url": "https://www.epa.gov/flooded-homes/coming-home",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "epa-casas-alagadas-voltar.md"
+ },
+ "epa-casas-alagadas-faca-voce": {
+  "titulo": "Doing it Yourself",
+  "orgao": "EPA",
+  "ano": "",
+  "url": "https://www.epa.gov/flooded-homes/doing-it-yourself",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "epa-casas-alagadas-faca-voce.md"
+ },
+ "nws-tornado-ww": {
+  "titulo": "Fonte: nws-tornado-ww",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/tornado-ww",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-tornado-ww.md"
+ },
+ "nws-flood-watch-warning": {
+  "titulo": "Fonte: nws-flood-watch-warning",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/flood-watch-warning",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-flood-watch-warning.md"
+ },
+ "ms-ofidicos-tratamento": {
+  "titulo": "Tratamento",
+  "orgao": "Ministério da Saúde",
+  "ano": "",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-ofidicos/tratamento",
+  "licenca": "gov.br (CC BY-ND 3.0): reescrito e citado",
+  "arquivo": "ms-ofidicos-tratamento.md"
+ },
+ "ms-ofidicos-prevencao": {
+  "titulo": "Prevenção",
+  "orgao": "Ministério da Saúde",
+  "ano": "",
+  "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-ofidicos/prevencao",
+  "licenca": "gov.br (CC BY-ND 3.0): reescrito e citado",
+  "arquivo": "ms-ofidicos-prevencao.md"
+ },
+ "nws-thunderstorm-ww": {
+  "titulo": "Fonte: nws-thunderstorm-ww",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/thunderstorm-ww",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-thunderstorm-ww.md"
+ },
+ "nws-wind-after": {
+  "titulo": "Fonte: nws-wind-after",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/wind-after",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-wind-after.md"
+ },
+ "nws-thunderstorm-after": {
+  "titulo": "Fonte: nws-thunderstorm-after",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/thunderstorm-after",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-thunderstorm-after.md"
+ },
+ "nws-tornado": {
+  "titulo": "Fonte: nws-tornado",
+  "orgao": "NOAA / National Weather Service",
+  "ano": "",
+  "url": "https://www.weather.gov/safety/tornado",
+  "licenca": "domínio público (governo federal dos EUA)",
+  "arquivo": "nws-tornado.md"
+ }
+}

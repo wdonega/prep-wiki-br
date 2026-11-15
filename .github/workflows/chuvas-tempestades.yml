@@ -1,0 +1,15 @@
+name: chuvas-tempestades
+on:
+  push:
+    branches: [main]
+    paths: ["chuvas-tempestades/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  zim:
+    uses: ./.github/workflows/_build-zim.yml
+    with:
+      projeto: chuvas-tempestades

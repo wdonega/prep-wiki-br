@@ -170,7 +170,7 @@ Lista completa das pesquisas, com licença de cada uma.
 
 | Imagem | Fonte | Motivo |
 |---|---|---|
-| (a preencher na escrita das páginas) | | |
+| (nenhuma até agora) | | A wiki só usa 6 ilustrações do manual de lona do USACE, que são de domínio público e ficam |
 
 Candidatas já conhecidas que **não** podem ser usadas nem provisoriamente sem registro aqui: fotos do folheto de vento da FEMA 2023 (Getty Images), foto do folheto de raio do NWS (crédito de E. Philip Krider), fotos do Blue Roof em Porto Rico (autoria não indicada), imagens do USGS com restrição.
 
