@@ -1,6 +1,6 @@
 <p><b>Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.</b></p>
 
-<p>Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar no celular. Você escolhe o que baixar numa lista pronta de 81 acervos e, depois de baixado, tudo funciona sem internet.</p>
+<p>Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar no celular. Você escolhe o que baixar numa lista pronta de 82 acervos e, depois de baixado, tudo funciona sem internet.</p>
 
 <p><b>O que dá para baixar</b></p>
 <ul>

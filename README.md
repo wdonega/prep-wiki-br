@@ -2,7 +2,7 @@
 
 **Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.**
 
-Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar na sua máquina. O Prep Wiki BR é uma biblioteca offline que você instala num computador, num mini PC ou num Raspberry Pi e acessa pelo navegador de qualquer aparelho da casa. Você escolhe o que baixar numa lista pronta de 81 acervos, e depois tudo funciona sem internet.
+Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar na sua máquina. O Prep Wiki BR é uma biblioteca offline que você instala num computador, num mini PC ou num Raspberry Pi e acessa pelo navegador de qualquer aparelho da casa. Você escolhe o que baixar numa lista pronta de 82 acervos, e depois tudo funciona sem internet.
 
 ![Página inicial da biblioteca, com os acervos instalados](docs/img/biblioteca.png)
 
@@ -10,7 +10,7 @@ Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que vo
 [O que é](#o-que-é) ·
 [O que tem](#o-que-tem) ([em português](#em-português), [Prepper em inglês](#prepper-em-inglês)) ·
 [Como instalar](#como-instalar) ·
-[As duas wikis do projeto](#as-duas-wikis-do-projeto) ·
+[As três wikis do projeto](#as-três-wikis-do-projeto) ·
 [Para quem quer mexer](#para-quem-quer-mexer) ·
 [Apoie](#apoie-o-projeto) ·
 [Licenças](#licenças) ·
@@ -26,7 +26,7 @@ São três partes, servidas numa porta só:
 - **Gerenciador:** a lista de acervos disponíveis. Você baixa, atualiza e apaga com um clique. Ele mostra o tamanho de cada um e o espaço livre em disco.
 - **Leitor:** cada acervo abre como um site, com busca própria e artigo aleatório.
 
-O projeto também produz **duas wikis próprias**, reescritas a partir de publicações oficiais brasileiras: [Sisteminha Embrapa](#sisteminha-embrapa) e [Plantas Medicinais](#plantas-medicinais).
+O projeto também produz **três wikis próprias**, escritas a partir de publicações oficiais: [Sisteminha Embrapa](#sisteminha-embrapa), [Plantas Medicinais](#plantas-medicinais) e [Chuva forte e tempestade](#chuvas-tempestades).
 
 Para conferir o conteúdo antes de instalar, o acervo em português está no ar em **[prep.bigode.org](https://prep.bigode.org/#lang=por)**. Esse endereço ainda mostra a interface padrão do Kiwix, não a das imagens deste README.
 
@@ -38,13 +38,13 @@ Para conferir o conteúdo antes de instalar, o acervo em português está no ar 
 
 ## O que tem
 
-São 81 acervos no catálogo, em novembro de 2026. Você instala só os que quiser. Os tamanhos mudam um pouco a cada edição.
+São 82 acervos no catálogo, em novembro de 2026. Você instala só os que quiser. Os tamanhos mudam um pouco a cada edição.
 
 ### Em português
 
 | Grupo | Acervos | Tamanho |
 |---|---|---|
-| **Deste projeto** | [Sisteminha Embrapa](#sisteminha-embrapa) e [Plantas Medicinais](#plantas-medicinais) | 45 MB |
+| **Deste projeto** | [Sisteminha Embrapa](#sisteminha-embrapa), [Plantas Medicinais](#plantas-medicinais) e [Chuva forte e tempestade](#chuvas-tempestades) | 46 MB |
 | **Wikipédia** (escolha uma) | Completa com imagens (20,6 GB), sem imagens (7,1 GB) ou resumida (1,7 GB). Só os 50 mil melhores artigos: com imagens (3,0 GB), sem imagens (1,1 GB) ou resumida (153 MB) | 153 MB a 20,6 GB |
 | **Wikipédia por tema** | Medicina, Química, Física, Matemática, Biologia molecular e celular, História, Geografia, Computação | 1,8 GB |
 | **Estudo** | Vikidia (enciclopédia para crianças), Wikilivros, Wikiversidade, PhET (simulações de ciências) | 371 MB |
@@ -54,7 +54,7 @@ São 81 acervos no catálogo, em novembro de 2026. Você instala só os que quis
 | **Língua e viagem** | Wikcionário, Portuguese Language Q&A, Wikivoyage | 448 MB |
 | **Mapas** | Brasil (3,1 GB) e América do Sul (5,5 GB), com estradas e pontos de referência. A interface do mapa é em inglês | 8,6 GB |
 
-Um conjunto enxuto em português (as duas wikis, a Wikipédia dos 50 mil melhores com imagens, Medicina, iFixit, Estudo e Língua e viagem) fica em torno de 8 GB.
+Um conjunto enxuto em português (as três wikis, a Wikipédia dos 50 mil melhores com imagens, Medicina, iFixit, Estudo e Língua e viagem) fica em torno de 8 GB.
 
 ### Prepper, em inglês
 
@@ -117,9 +117,9 @@ Os acervos ficam em `manager/dados/`. Porta, pasta, usuário e senha mudam num a
 
 </details>
 
-## As duas wikis do projeto
+## As três wikis do projeto
 
-Cada uma é um arquivo `.zim` gerado a partir de publicações oficiais, com o texto reorganizado para leitura, busca, índice e citação da página de origem. Os PDFs originais vão junto dentro do arquivo.
+Cada uma é um arquivo `.zim` gerado a partir de publicações oficiais, com o texto reorganizado para leitura, busca, índice e citação da página de origem. Nas duas primeiras, os PDFs originais vão junto dentro do arquivo.
 
 Elas já vêm no catálogo do Prep Wiki BR, mas não dependem dele: o arquivo abre em qualquer Kiwix, seja o aplicativo de celular, o [Kiwix Desktop](https://kiwix.org/pt-br/applications/) ou um `kiwix-serve`. É só baixar e abrir.
 
@@ -127,6 +127,8 @@ Elas já vêm no catálogo do Prep Wiki BR, mas não dependem dele: o arquivo ab
 |---|---|---|---|
 | <a id="sisteminha-embrapa"></a>**[Sisteminha Embrapa](sisteminha-embrapa)** | Produção integrada de alimentos para a agricultura familiar: tanque de peixes com biofiltro, aves, horta e compostagem. Com figuras, as 52 perguntas e respostas da Embrapa e uma calculadora de ração. | [prep.bigode.org](https://prep.bigode.org/content/sisteminha-embrapa_pt/index) | [sisteminha-embrapa_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/sisteminha-embrapa-latest/sisteminha-embrapa_pt.zim) (16 MB)<br><sub>[sha256](https://github.com/wdonega/prep-wiki-br/releases/download/sisteminha-embrapa-latest/sisteminha-embrapa_pt.zim.sha256) · [versões anteriores](https://github.com/wdonega/prep-wiki-br/releases?q=sisteminha-embrapa&expanded=true)</sub> |
 | <a id="plantas-medicinais"></a>**[Plantas Medicinais](plantas-medicinais)** | 85 plantas do Formulário de Fitoterápicos da Anvisa (fórmula, preparo, dose, advertências e foto), com seções de preparo caseiro, cultivo e uso seguro no SUS. | [prep.bigode.org](https://prep.bigode.org/content/plantas-medicinais_pt/index) | [plantas-medicinais_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/plantas-medicinais-latest/plantas-medicinais_pt.zim) (29 MB)<br><sub>[sha256](https://github.com/wdonega/prep-wiki-br/releases/download/plantas-medicinais-latest/plantas-medicinais_pt.zim.sha256) · [versões anteriores](https://github.com/wdonega/prep-wiki-br/releases?q=plantas-medicinais&expanded=true)</sub> |
+
+| <a id="chuvas-tempestades"></a>**[Chuva forte e tempestade](chuvas-tempestades)** | O que fazer antes, durante e depois de alagamento, enchente, enxurrada, deslizamento, vendaval, granizo, raio e tornado: ficar ilhado, carro na água, lona no telhado passo a passo, limpeza, saúde, direitos (FGTS e ajuda) e El Niño. 36 páginas, com a fonte de cada orientação. | [prep.bigode.org](https://prep.bigode.org/content/chuvas-tempestades_pt/index) | [chuvas-tempestades_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/chuvas-tempestades-latest/chuvas-tempestades_pt.zim) (0,6 MB)<br><sub>[sha256](https://github.com/wdonega/prep-wiki-br/releases/download/chuvas-tempestades-latest/chuvas-tempestades_pt.zim.sha256) · [versões anteriores](https://github.com/wdonega/prep-wiki-br/releases?q=chuvas-tempestades&expanded=true)</sub> |
 
 O link de download é fixo e aponta sempre para a versão mais recente. Os acervos de saúde são educativos e **não substituem um profissional de saúde**.
 
@@ -138,6 +140,7 @@ manager/              o Prep Wiki BR: gerenciador em Go, páginas e catálogo
   web/                página inicial, gerenciador e o estilo aplicado ao leitor
 sisteminha-embrapa/   fonte da wiki do Sisteminha (textos, figuras, build.py)
 plantas-medicinais/   fonte da wiki de Plantas Medicinais
+chuvas-tempestades/   fonte da wiki Chuva forte e tempestade (textos, fontes, pesquisa, build.py)
 ```
 
 - **Acrescentar um acervo ao catálogo:** inclua uma linha em `manager/catalogo.json` com o nome do arquivo no Kiwix (sem a data), a pasta em que ele fica em `download.kiwix.org/zim/`, o grupo, o título e a descrição. A edição mais recente é descoberta sozinha.
@@ -155,7 +158,7 @@ plantas-medicinais/   fonte da wiki de Plantas Medicinais
 Ideias para as próximas wikis, todas a partir de material de órgãos públicos:
 
 - **Embrapa** ([Infoteca-e](https://www.infoteca.cnptia.embrapa.br/)): cisternas, conservação de alimentos, pequenos animais, horta e biodigestor.
-- **Defesa Civil:** cartilhas de enchente, deslizamento, seca e kit de emergência.
+- **Defesa Civil:** seca e estiagem, calor extremo e incêndio florestal (chuva e tempestade já têm a sua wiki).
 - **Ministério da Saúde** ([BVS](https://bvsms.saude.gov.br/)): primeiros socorros, tratamento de água e doenças de veiculação hídrica.
 - **ASA Brasil:** cisterna de placas e convivência com o semiárido.
 
@@ -166,7 +169,7 @@ O Prep Wiki BR é gratuito e sem anúncios. Se ele foi útil, dá para apoiar po
 ## Licenças
 
 - O **código** deste repositório (gerenciador, app Android, scripts de build, CSS e JS) é software livre, sob a [GPLv3 ou posterior](LICENSE): pode usar, estudar, modificar e redistribuir, desde que as versões modificadas sigam abertas sob a mesma licença.
-- O **conteúdo das duas wikis** vem de publicações públicas da Embrapa, da Anvisa e do Ministério da Saúde, reorganizadas para uso **pessoal e educativo, sem fins comerciais**. Toda página cita a fonte. Os créditos completos estão no README de cada wiki e dentro de cada ZIM.
+- O **conteúdo das três wikis** vem de publicações públicas (Embrapa, Anvisa, Ministério da Saúde, Defesa Civil e, na de chuva e tempestade, também do governo federal dos EUA, em domínio público), reorganizadas para uso **pessoal e educativo, sem fins comerciais**. Toda página cita a fonte. Os créditos completos estão no README de cada wiki e dentro de cada ZIM.
 - As **fotos** da wiki de plantas vêm do Wikimedia Commons, com licenças livres, e o autor é creditado em cada imagem.
 - Os **outros acervos** não são deste projeto. Cada um segue a licença da sua origem (os da Wikimedia, por exemplo, são CC BY-SA). Alguns, como o iFixit, não permitem uso comercial.
 
@@ -176,6 +179,6 @@ O Prep Wiki BR é um projeto independente, sem relação oficial com nenhum dos 
 
 - **[Kiwix](https://kiwix.org/) e [openZIM](https://openzim.org/):** o formato ZIM, o `kiwix-serve` que roda por baixo do leitor, os aplicativos de celular e computador, os mirrors de download e a maior parte dos acervos do catálogo, que eles empacotam e mantêm atualizados.
 - **Wikimedia e seus voluntários:** Wikipédia, Wikcionário, Wikilivros, Wikiversidade, Wikisource, Wikiquote, Wikivoyage e o Wikimedia Commons, de onde vêm as fotos das plantas.
-- **Embrapa, Anvisa e Ministério da Saúde:** as publicações que deram origem às duas wikis do projeto.
+- **Embrapa, Anvisa, Ministério da Saúde, Defesas Civis, Corpos de Bombeiros e os órgãos federais dos EUA (NWS, FEMA, USACE, CDC, EPA):** as publicações que deram origem às três wikis do projeto.
 - **Quem produz os outros acervos do catálogo:** iFixit, Stack Exchange, PhET, Vikidia, Projeto Gutenberg, freeCodeCamp, OpenStreetMap, Low-tech Magazine, Hundred Rabbits, Appropedia, energypedia, CD3WD, Survivor Library, MDWiki e WikiProjectMed, MedlinePlus, NHS, CDC, WikiVet, Ready.gov, e os canais e sites de preparação listados no gerenciador.
 - **[Lucide](https://lucide.dev/):** os ícones da interface.

@@ -1,6 +1,6 @@
 <p><b>An offline library for preparedness, self-reliance and health, in Brazilian Portuguese.</b></p>
 
-<p>When the network goes down (a flood, a blackout, out in the countryside or on the road) what you need to know has to be on your phone. Pick what to download from a curated list of 81 collections; once downloaded, everything works without internet.</p>
+<p>When the network goes down (a flood, a blackout, out in the countryside or on the road) what you need to know has to be on your phone. Pick what to download from a curated list of 82 collections; once downloaded, everything works without internet.</p>
 
 <p><b>What you can download</b></p>
 <ul>
