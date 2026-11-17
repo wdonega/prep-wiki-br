@@ -1,0 +1,91 @@
+/* Leitor de PDF (leitor.html): barra em cima, o PDF (PDF.js) ou o texto das páginas embaixo.
+   As cores e os botões vêm de base.css; o desenho das páginas, de pdfjs/pdf_viewer.css. */
+html, body { height: 100%; }
+body { min-height: 0; height: 100vh; height: 100dvh; overflow: hidden; background: var(--bg); }
+
+.lp-barra { flex: none; display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 6px max(12px, calc((100% - 1140px) / 2));
+  background: var(--surface); border-bottom: 1px solid var(--border); }
+.lp-titulo { flex: 1 1 auto; min-width: 0; font-weight: 600; font-size: .94rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.lp-modos { flex: none; display: flex; padding: 3px; border-radius: 11px; background: var(--surface-2); }
+.lp-modos button { height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: var(--text-2);
+  font: inherit; font-size: .84rem; font-weight: 600; cursor: pointer; }
+.lp-modos button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(16, 24, 20, .14); }
+
+.lp-zoom { flex: none; display: flex; }
+.lp-pag { flex: none; display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: .84rem; white-space: nowrap; }
+.lp-pag input { width: 3.6em; height: 34px; padding: 0 6px; text-align: right; border: 1px solid var(--border-2); border-radius: 9px;
+  background: var(--surface); color: var(--text); font: inherit; font-size: .88rem; -moz-appearance: textfield; appearance: textfield; }
+.lp-pag input::-webkit-outer-spin-button, .lp-pag input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.lp-pag input:focus-visible { outline: none; border-color: var(--accent-line); box-shadow: 0 0 0 4px var(--accent-soft); }
+
+.lp-estado { flex: none; display: flex; align-items: center; gap: 9px; min-height: 38px; padding: 4px max(14px, calc((100% - 1140px) / 2));
+  background: var(--surface); border-bottom: 1px solid var(--border); color: var(--text-2); font-size: .84rem; line-height: 1.35; }
+.lp-estado .i { width: 17px; height: 17px; color: var(--accent); }
+.lp-estado[data-estado="preparando"], .lp-estado[data-estado="traduzindo"] { color: var(--muted); }
+.lp-estado > span { flex: 1 1 auto; min-width: 0; }
+.lp-longo { display: none; }
+@media (min-width: 760px) { .lp-longo { display: inline; } }
+.lp-estado .btn { height: 30px; font-size: .8rem; }
+
+#palco { flex: 1 1 auto; min-height: 0; position: relative; }
+
+/* modo Página: o PDF.js exige a caixa que rola em posição absoluta */
+#viewerContainer { position: absolute; inset: 0; overflow: auto; background: var(--surface-2); outline: none; }
+#viewerContainer[hidden] { display: none; }
+.pdfViewer { padding: 8px 0 24px; }
+.pdfViewer .page { box-shadow: 0 1px 3px rgba(0, 0, 0, .22); }
+.pdfViewer.removePageBorders .page { margin: 0 auto 8px; }
+
+/* a tradução em cima da página (leitor.js): uma caixa por bloco de texto, no lugar do bloco.
+   cqw = centésimos da largura da página, para a letra acompanhar o zoom */
+.pdfViewer .page .lp-trad { position: absolute; left: 0; top: 0; width: 400%; height: 400%; transform: scale(.25); transform-origin: 0 0;
+  overflow: hidden; pointer-events: none; container-type: inline-size; text-align: left; }
+.pdfViewer.lp-original .lp-trad { display: none; }
+.lp-b { position: absolute; margin: 0; padding: 0; opacity: 0; overflow-wrap: break-word; hyphens: auto; box-shadow: 0 0 0 .14em var(--lp-fundo, transparent); }
+.lp-b.ok { opacity: 1; }
+.lp-b.lp-1 { white-space: nowrap; width: max-content; }
+.lp-b.lp-meio { translate: -50% 0; text-align: center; }
+.lp-mai { text-transform: uppercase; }
+.lp-sum { display: flex; align-items: baseline; gap: .4em; }
+.lp-sum-t { flex: none; }
+.lp-marca { white-space: pre; }
+.lp-sum-p { flex: 1 1 1em; min-width: 1em; border-bottom: .08em dotted currentColor; opacity: .6; translate: 0 -.25em; }
+.lp-sum-n { flex: none; font-variant-numeric: tabular-nums; }
+
+/* modo Texto: o texto das páginas em coluna de leitura */
+#texto { position: absolute; inset: 0; overflow: auto; background: var(--surface); outline: none; overflow-wrap: break-word; }
+#texto-in { max-width: 720px; margin: 0 auto; padding: 8px 20px 60px; font-size: calc(1.06rem * var(--lp-fonte, 1)); line-height: 1.65; color: var(--text); }
+.lp-pag-sec { padding: 6px 0 14px; }
+.lp-pag-num { display: flex; align-items: center; gap: 10px; width: 100%; margin: 10px 0 12px; padding: 0; border: 0; background: none;
+  color: var(--muted); font: inherit; font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+.lp-pag-num::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.lp-pag-num:hover { color: var(--accent); }
+#texto-in p { margin: 0 0 .85em; }
+#texto-in h3 { margin: 1.1em 0 .5em; font-size: 1.14em; line-height: 1.35; letter-spacing: -.01em; }
+#texto-in .lp-sum { margin: 0; padding: .22em 0; font-size: .96em; line-height: 1.4; }
+#texto-in .lp-sum-n { color: var(--muted); }
+#texto-in .lp-sum-t { flex: 0 1 auto; }
+#texto-in .lp-linha { display: flex; flex-wrap: wrap; gap: .2em 1.4em; }
+#texto-in .lp-linha .lp-cel { flex: 1 1 8em; }
+.lp-vazia { color: var(--muted); font-size: .9em; }
+.lp-mais { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 0 6px; color: var(--muted); font-size: .9rem; text-align: center; }
+
+#aviso { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; background: var(--bg); color: var(--text-2);
+  text-align: center; font-size: .95rem; }
+#aviso[hidden] { display: none; }
+#aviso p { max-width: 420px; }
+
+@media (max-width: 560px) {
+  .lp-barra { gap: 4px; padding: 5px 8px; }
+  .lp-titulo { font-size: .86rem; }
+  .lp-modos button { padding: 0 9px; }
+  .lp-zoom .ibtn { width: 36px; }
+  .lp-pag input { width: 3em; }
+  #texto-in { padding: 4px 16px 60px; }
+}
+/* tela bem estreita: o nome do arquivo cede o lugar aos controles */
+@media (max-width: 400px) {
+  .lp-titulo { display: none; }
+  .lp-modos { margin-right: auto; }
+}

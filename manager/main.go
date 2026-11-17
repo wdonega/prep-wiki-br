@@ -301,6 +301,9 @@ func (a *App) rotas() http.Handler {
 	mux.HandleFunc("GET /apoie", pagina(web, "apoie.html")) // PIX e Liberapay; funciona offline
 	mux.Handle("GET /prep/", estaticos(web))
 	mux.HandleFunc("GET /api/biblioteca", a.apiBiblioteca)
+	// tradução no cliente (traducao.go): o que o leitor consulta e os arquivos do motor e dos modelos
+	mux.HandleFunc("GET /api/traducao", a.apiTraducao)
+	mux.HandleFunc("GET /prep/"+pastaTraducoes+"/{id}/{versao}/{nome}", a.arquivoTraducao)
 
 	// /admin e /api são nossos em qualquer modo: o que não estiver registrado abaixo dá 404 aqui,
 	// em vez de seguir para o kiwix-serve.
@@ -326,13 +329,16 @@ func (a *App) rotas() http.Handler {
 		mux.HandleFunc("POST /api/baixar/{id}", a.acao(a.enfileirar))
 		mux.HandleFunc("POST /api/cancelar/{id}", a.acao(a.cancelar))
 		mux.HandleFunc("POST /api/apagar/{id}", a.acao(a.apagar))
+		mux.HandleFunc("POST /api/traducao/baixar/{id}", a.acao(a.enfileirarTraducao))
+		mux.HandleFunc("POST /api/traducao/cancelar/{id}", a.acao(a.cancelarTraducao))
+		mux.HandleFunc("POST /api/traducao/apagar/{id}", a.acao(a.apagarTraducao))
 		mux.HandleFunc("POST /api/meus/inspecionar", a.apiInspecionarLink)
 		mux.HandleFunc("POST /api/meus/link", a.apiAdicionarLink)
 		mux.HandleFunc("PUT /api/meus/arquivo", a.apiEnviarArquivo)
 	}
 
 	// todo o resto é do kiwix-serve
-	mux.Handle("/", a.proxyKiwix())
+	mux.Handle("/", a.proxyKiwix(web))
 	return protegerAcoes(a.porteiro.proteger(mux, pagina(web, "entrar.html")))
 }
 
@@ -418,6 +424,7 @@ func (a *App) apiEstado(w http.ResponseWriter, r *http.Request) {
 		"verificado_em":   a.est.VerificadoEm,
 		"verificando":     a.verificando,
 		"itens":           itens,
+		"traducao":        a.visaoTraducoes(),
 	}
 	a.mu.Unlock()
 	if livre, total, err := espacoEmDisco(a.cfg.Dados); err == nil {

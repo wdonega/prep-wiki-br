@@ -8,10 +8,12 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -37,6 +39,27 @@ class MainActivity : Activity() {
             override fun shouldOverrideUrlLoading(v: WebView, r: WebResourceRequest): Boolean {
                 if (r.url.host == HOST) return false
                 startActivity(Intent(Intent.ACTION_VIEW, r.url))
+                return true
+            }
+        }
+        // Link com target="_blank" (os PDFs dos acervos). Sem janelas, a WebView tenta trocar a página
+        // inteira, o Kiwix proíbe o acervo de fazer isso (sandbox) e o toque não faz nada. A WebView de
+        // passagem só serve para descobrir o endereço: quem abre é a tela de sempre.
+        web.settings.setSupportMultipleWindows(true)
+        web.webChromeClient = object : WebChromeClient() {
+            override fun onCreateWindow(v: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message): Boolean {
+                if (!isUserGesture) return false
+                val passagem = WebView(this@MainActivity)
+                passagem.webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(p: WebView, r: WebResourceRequest): Boolean {
+                        if (r.url.host == HOST) web.loadUrl(r.url.toString())
+                        else if (r.url.scheme == "http" || r.url.scheme == "https") startActivity(Intent(Intent.ACTION_VIEW, r.url))
+                        web.post { p.destroy() }
+                        return true
+                    }
+                }
+                (resultMsg.obj as WebView.WebViewTransport).webView = passagem
+                resultMsg.sendToTarget()
                 return true
             }
         }

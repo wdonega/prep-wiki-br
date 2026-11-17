@@ -71,7 +71,11 @@ const folhaKiwix = `<link rel="stylesheet" href="/prep/kiwix.css">`
 // (textos da busca, dicas dos botões e a página de resultados, que o servidor só traduz para "pt").
 const idiomaKiwix = `<script>try{localStorage.setItem("userlang","pt")}catch(e){}</script>`
 
-func (a *App) proxyKiwix() *httputil.ReverseProxy {
+// Com um pacote de tradução instalado, o leitor ganha o script que traduz a página aberta (traducao.go).
+// Sem pacote a página do leitor segue exatamente como era.
+const scriptTraducao = `<script src="/prep/traducao.js" defer></script>`
+
+func (a *App) proxyKiwix(web fs.FS) *httputil.ReverseProxy {
 	proxy := httputil.NewSingleHostReverseProxy(a.urlKiwix)
 	diretor := proxy.Director
 	proxy.Director = func(r *http.Request) {
@@ -81,8 +85,22 @@ func (a *App) proxyKiwix() *httputil.ReverseProxy {
 			r.Header.Del("If-None-Match")   // senão viria um 304 da versão sem a folha de estilo
 			r.Header.Del("If-Modified-Since")
 		}
+		if podeSerPDF(r) { // a resposta tem de vir inteira e com o tipo, para dar lugar ao leitor (leitorpdf.go)
+			r.Header.Del("If-None-Match")
+			r.Header.Del("If-Modified-Since")
+			r.Header.Del("Range")
+		}
 	}
 	proxy.ModifyResponse = func(resp *http.Response) error {
+		if ehPDF(resp) {
+			// o mesmo endereço dá a página do leitor (navegação) ou o arquivo (fetch): o cache do navegador
+			// não pode entregar um no lugar do outro
+			resp.Header.Add("Vary", "Sec-Fetch-Mode, Accept")
+			if resp.StatusCode == http.StatusOK && pedeUmaPagina(resp.Request) {
+				return servirLeitorPDF(web, resp)
+			}
+			return nil
+		}
 		// além das duas páginas, os erros (400, 404…) também são páginas geradas pelo próprio Kiwix
 		daPagina := paginasDoKiwix[resp.Request.URL.Path] && resp.StatusCode == http.StatusOK
 		if !(daPagina || resp.StatusCode >= 400) || !strings.HasPrefix(resp.Header.Get("Content-Type"), "text/html") {
@@ -117,7 +135,11 @@ func (a *App) proxyKiwix() *httputil.ReverseProxy {
 		// a página 404 do Kiwix tem desenho próprio (error.css); só as de erro "cruas" recebem a nossa folha
 		comDesenho := !daPagina && bytes.Contains(corpo, []byte(`rel="Stylesheet"`))
 		if i := bytes.Index(corpo, []byte("</head>")); i >= 0 && !comDesenho {
-			corpo = append(corpo[:i:i], append([]byte(folhaKiwix), corpo[i:]...)...)
+			extra := folhaKiwix
+			if daPagina && resp.Request.URL.Path == "/viewer" && len(a.traducoesInstaladas()) > 0 {
+				extra += scriptTraducao
+			}
+			corpo = append(corpo[:i:i], append([]byte(extra), corpo[i:]...)...)
 		}
 		if resp.Request.URL.Path == "/viewer" {
 			if i := bytes.Index(corpo, []byte("<head>")); i >= 0 {

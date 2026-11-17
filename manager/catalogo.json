@@ -1,5 +1,5 @@
 {
-  "versao": 7,
+  "versao": 8,
   "grupos": [
     {"id": "projeto", "titulo": "Deste projeto"},
     {"id": "wikipedia", "titulo": "Wikipédia", "dica": "escolha uma"},
@@ -15,6 +15,22 @@
   "tags": [
     {"id": "lancamento", "titulo": "Lançamento", "cor": "amarelo"},
     {"id": "recomendado", "titulo": "Recomendado", "cor": "verde"}
+  ],
+  "traducao": [
+    {"id": "en-pt", "de": "en", "para": "pt", "versao": "1", "titulo": "Inglês → português",
+     "descricao": "Mostra em português as páginas dos acervos em inglês. A tradução é feita no próprio aparelho, sem internet, e o original continua a um toque.",
+     "arquivos": [
+       {"papel": "motor", "nome": "bergamot-translator-worker.js", "tamanho": 80474, "sha256": "748b2418418a2ffc6e70721aeb10098d8e6fb589ea156b91f4ae8bc3490d8f7a",
+        "urls": ["https://cdn.jsdelivr.net/npm/@browsermt/bergamot-translator@0.4.9/worker/bergamot-translator-worker.js", "https://unpkg.com/@browsermt/bergamot-translator@0.4.9/worker/bergamot-translator-worker.js"]},
+       {"papel": "wasm", "nome": "bergamot-translator-worker.wasm", "tamanho": 5174294, "sha256": "95a2b58dd6773bf1b3f345d71f9149928b9f75f4ec9c9064c0b3e42c298671b2",
+        "urls": ["https://cdn.jsdelivr.net/npm/@browsermt/bergamot-translator@0.4.9/worker/bergamot-translator-worker.wasm", "https://unpkg.com/@browsermt/bergamot-translator@0.4.9/worker/bergamot-translator-worker.wasm"]},
+       {"papel": "modelo", "nome": "model.enpt.intgemm.alphas.bin", "tamanho": 31561787, "sha256": "07892fd2544ee79dcb643615d8f2debb9793fae16842e87c328e27a3dd26a770",
+        "urls": ["https://firefox-settings-attachments.cdn.mozilla.net/main-workspace/translations-models/357d1004-e004-4f93-bbb5-b6b90641e9b4.bin"]},
+       {"papel": "lex", "nome": "lex.50.50.enpt.s2t.bin", "tamanho": 3970340, "sha256": "ccb4c31c9e1899d77a200e71a86958e6ef6c8649627d0bbf3f873b57d9f236bd",
+        "urls": ["https://firefox-settings-attachments.cdn.mozilla.net/main-workspace/translations-models/c4192576-e76a-4edc-9346-1f90af10f6ae.bin"]},
+       {"papel": "vocab", "nome": "vocab.enpt.spm", "tamanho": 816726, "sha256": "d9f46182823d5bbc84201252b2dfcac28f63e561f0ec827ed858f241864c9def",
+        "urls": ["https://firefox-settings-attachments.cdn.mozilla.net/main-workspace/translations-models/e5688e52-a5c1-458b-9dbb-459fdcec0b7d.spm"]}
+     ]}
   ],
   "zims": [
     {"id": "sisteminha-embrapa_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "sisteminha-embrapa-latest", "arquivo": "sisteminha-embrapa_pt.zim", "grupo": "projeto", "tags": ["recomendado"], "titulo": "Sisteminha Embrapa", "descricao": "Produção integrada de alimentos no quintal: tanque de peixes com biofiltro, aves, horta e compostagem."},

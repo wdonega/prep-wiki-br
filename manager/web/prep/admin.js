@@ -7,7 +7,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 let est = null;                                   // último /api/estado
 let aba = sessionStorage.getItem("prep.aba") || "todos";
 const travados = new Set();                       // ids com clique em andamento (evita clique duplo)
-let htmlLista = "", htmlAbas = "";                // só troca o DOM quando o desenho muda de verdade
+let htmlLista = "", htmlAbas = "", htmlTraducao = ""; // só troca o DOM quando o desenho muda de verdade
 
 // ---------------------------------------------------------------- texto e números
 
@@ -185,6 +185,52 @@ function linha(it) {
   </div>`;
 }
 
+// Pacote de tradução (manager/traducao.go): o motor e o modelo de um par de idiomas, baixados uma vez.
+// A linha tem o mesmo desenho das dos acervos; o progresso usa a chave "traducao:<id>".
+function linhaTraducao(p) {
+  const s = p.situacao, inst = p.instalado, id = esc(p.id), trava = travados.has(p.id) ? "disabled" : "";
+  const tam = inst && s !== "desatualizado" ? inst.tamanho : p.tamanho;
+  const meta = [`<span class="so-cel">${tamanho(tam)}</span>`];
+  if (inst) {
+    meta.unshift("Instalado");
+    if (dataValida(inst.instalado_em)) meta.push(`baixado em ${dia(inst.instalado_em)}`);
+    if (s === "desatualizado") meta.push(`<span class="novo">versão nova · ${tamanho(p.tamanho)}</span>`);
+  } else {
+    meta.push("tradutor e modelo de idioma");
+  }
+  const txtTam = `<span class="lin-tam">${tamanho(tam)}</span>`;
+  const apagar = `<button class="ibtn perigo" type="button" data-a="trad-apagar" data-id="${id}" data-dica="Apagar" aria-label="Apagar a tradução ${esc(p.titulo)}" ${trava}>${ico("trash")}</button>`;
+  let acoes = "";
+  if (s === "nao_instalado") {
+    acoes = `${txtTam}<button class="btn btn-suave" type="button" data-a="trad-baixar" data-id="${id}" aria-label="Baixar a tradução ${esc(p.titulo)}" ${trava}>${ico("download")}<span class="rot">Baixar</span></button>`;
+  } else if (s === "instalado") {
+    acoes = txtTam + apagar;
+  } else if (s === "desatualizado") {
+    acoes = `${txtTam}<button class="btn btn-aviso" type="button" data-a="trad-baixar" data-id="${id}" aria-label="Atualizar a tradução ${esc(p.titulo)}" ${trava}>${ico("refresh")}<span class="rot">Atualizar</span></button>${apagar}`;
+  } else if (s === "na_fila" || s === "baixando") {
+    acoes = `<button class="btn" type="button" data-a="trad-cancelar" data-id="${id}" aria-label="Cancelar o download da tradução ${esc(p.titulo)}" ${trava}>${ico("x")}<span class="rot">Cancelar</span></button>`;
+  }
+  let extra = "";
+  if (s === "baixando") {
+    extra += `<div class="prog" data-prog="traducao:${id}"><div class="prog-barra"><i></i></div>
+      <div class="prog-info"><span data-p="esq"></span><span data-p="dir"></span></div></div>`;
+  } else if (s === "na_fila") {
+    extra += `<div class="prog"><div class="prog-info"><span>Aguardando o download anterior terminar…</span></div></div>`;
+  }
+  if (p.erro) extra += `<div class="lin-erro">${ico("alert")}<span>${esc(p.erro)}</span></div>`;
+  const etq = ETIQUETA[s] ? `<span class="lin-etqs"><span class="etq ${ETIQUETA[s][1]}">${ETIQUETA[s][0]}</span></span>` : "";
+  return `<div class="lin s-${s}">
+    <span class="lin-st">${ico(s === "instalado" || s === "nao_instalado" ? "languages" : ICONE[s] || "languages")}</span>
+    <div class="lin-corpo">
+      <div class="lin-tit"><span class="lin-nome">${esc(p.titulo)}</span>${etq}</div>
+      <div class="lin-desc">${esc(p.descricao)}</div>
+      <div class="lin-meta">${meta.map((m) => (m.startsWith("<span") ? m : `<span>${m}</span>`)).join("")}</div>
+    </div>
+    <div class="lin-acoes">${acoes}</div>
+    ${extra ? `<div class="lin-extra">${extra}</div>` : ""}
+  </div>`;
+}
+
 // linhas de um grupo, com um subtítulo cada vez que o tema muda (grupos grandes, como o Prepper)
 function comTemas(itens) {
   let html = "", tema = "";
@@ -284,6 +330,13 @@ function render() {
   }
   if (html !== htmlLista) $("lista").innerHTML = htmlLista = html;
   itens.forEach(atualizarProgresso);
+
+  // tradução
+  const pacotes = est.traducao || [];
+  const trad = pacotes.map(linhaTraducao).join("");
+  $("traducao").hidden = !pacotes.length;
+  if (trad !== htmlTraducao) $("traducao-lista").innerHTML = htmlTraducao = trad;
+  pacotes.forEach((p) => atualizarProgresso({ ...p, id: "traducao:" + p.id }));
 }
 
 // ---------------------------------------------------------------- ciclo
@@ -298,7 +351,7 @@ async function atualizar() {
   } catch (e) {
     if (++falhasSeguidas === 3) avisar("Sem resposta do gerenciador. Tentando de novo…");
   }
-  const ativo = est && (est.verificando || est.itens.some((i) => EM_ANDAMENTO.includes(i.situacao)));
+  const ativo = est && (est.verificando || est.itens.concat(est.traducao || []).some((i) => EM_ANDAMENTO.includes(i.situacao)));
   timer = setTimeout(atualizar, ativo ? 1000 : 5000);
 }
 
@@ -313,6 +366,20 @@ document.addEventListener("click", async (ev) => {
   const b = ev.target.closest("[data-a]");
   if (!b || !est) return;
   const id = b.dataset.id, a = b.dataset.a;
+  if (a.startsWith("trad-")) { // pacote de tradução
+    const p = (est.traducao || []).find((x) => x.id === id);
+    if (!p) return;
+    let ok = true;
+    if (a === "trad-apagar") {
+      ok = await confirmar({ titulo: `Apagar a tradução “${p.titulo}”?`, botao: "Apagar",
+        texto: `Libera ${tamanho(p.instalado ? p.instalado.tamanho : p.tamanho)} em disco. As páginas voltam a abrir só no idioma original. Para ter de volta é só baixar de novo.` });
+    } else if (a === "trad-cancelar") {
+      ok = await confirmar({ titulo: "Cancelar o download?", botao: "Cancelar download", icone: "x",
+        texto: `O que já foi baixado da tradução “${p.titulo}” é descartado.` });
+    }
+    if (ok) acao("traducao/" + a.slice(5), id);
+    return;
+  }
   const it = est.itens.find((i) => i.id === id);
   if (!it) return;
   if (a === "apagar") {

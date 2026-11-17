@@ -52,7 +52,9 @@ type Catalogo struct {
 	Grupos []*Grupo        `json:"grupos"`
 	Tags   []*Tag          `json:"tags,omitempty"`
 	Itens  []*ItemCatalogo `json:"zims"`
-	porID  map[string]*ItemCatalogo
+	// pacotes de tradução no cliente (traducao.go). Versões antigas do gerenciador ignoram a chave.
+	Traducao []*PacoteTraducao `json:"traducao,omitempty"`
+	porID    map[string]*ItemCatalogo
 }
 
 // carregarCatalogo lê o catálogo embutido no binário.
@@ -91,6 +93,7 @@ func lerCatalogo(b []byte) (*Catalogo, error) {
 		}
 		c.porID[it.ID] = it
 	}
+	c.Traducao = pacotesValidos(c.Traducao)
 	return &c, nil
 }
 
@@ -141,7 +144,7 @@ func itemPersonalizado(p *Personalizado) *ItemCatalogo {
 // ("Fora do catálogo") e os acervos da pessoa ("Meus acervos").
 // O catálogo em uso nunca é alterado: é trocado inteiro, e quem estava lendo o antigo não é afetado.
 func comPersonalizados(base *Catalogo, legados map[string]*ItemCatalogo, meus map[string]*Personalizado) *Catalogo {
-	c := &Catalogo{Versao: base.Versao, Tags: base.Tags, porID: map[string]*ItemCatalogo{}}
+	c := &Catalogo{Versao: base.Versao, Tags: base.Tags, Traducao: base.Traducao, porID: map[string]*ItemCatalogo{}}
 	c.Grupos = append([]*Grupo{}, base.Grupos...)
 	c.Itens = append([]*ItemCatalogo{}, base.Itens...)
 	if len(legados) > 0 {

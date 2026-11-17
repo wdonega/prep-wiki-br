@@ -131,8 +131,9 @@ func (p *Porteiro) apiSair(w http.ResponseWriter, r *http.Request) {
 	responderOK(w)
 }
 
-// rotasAbertas: o que funciona sem senha (a biblioteca da página inicial e o próprio login).
-var rotasAbertas = map[string]bool{"/api/biblioteca": true, "/api/entrar": true, "/api/sair": true}
+// rotasAbertas: o que funciona sem senha (a biblioteca da página inicial, os pacotes de tradução
+// que o leitor usa e o próprio login).
+var rotasAbertas = map[string]bool{"/api/biblioteca": true, "/api/traducao": true, "/api/entrar": true, "/api/sair": true}
 
 // proteger: /admin/ sem sessão mostra a tela de senha; a API do admin responde 401.
 func (p *Porteiro) proteger(h http.Handler, telaDeSenha http.HandlerFunc) http.Handler {

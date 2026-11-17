@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync/atomic"
 	"time"
 )
@@ -43,6 +44,12 @@ func (a *App) enfileirar(id string) error {
 	if a.cat().porID[id] == nil {
 		return fmt.Errorf("item desconhecido")
 	}
+	return a.porNaFila(id)
+}
+
+// porNaFila cria a tarefa e a põe na fila do trabalhador. id é o do acervo ou a chave de um pacote
+// de tradução (prefixoTarefaTraducao). Chame com a.mu travado.
+func (a *App) porNaFila(id string) error {
 	if a.tarefas[id] != nil {
 		return fmt.Errorf("já tem uma operação em andamento")
 	}
@@ -86,7 +93,12 @@ func (a *App) trabalhador() {
 			if t == nil || t.ctx.Err() != nil {
 				continue
 			}
-			err := a.baixar(t)
+			var err error
+			if strings.HasPrefix(id, prefixoTarefaTraducao) {
+				err = a.baixarTraducao(t)
+			} else {
+				err = a.baixar(t)
+			}
 			a.mu.Lock()
 			delete(a.tarefas, id)
 			switch {

@@ -75,19 +75,22 @@ class Servico : Service() {
                     return
                 }
                 val estado = lerEstado() ?: continue
-                val itens = estado.getJSONArray("itens")
                 var tarefas = 0
                 var baixado = 0L
                 var total = 0L
                 var nome = ""
-                for (i in 0 until itens.length()) {
-                    val item = itens.getJSONObject(i)
-                    if (item.optString("situacao") !in EM_ANDAMENTO) continue
-                    tarefas++
-                    if (nome.isEmpty()) nome = item.optString("titulo")
-                    item.optJSONObject("progresso")?.let { pr ->
-                        baixado += pr.optLong("baixado")
-                        total += pr.optLong("total")
+                // os acervos e os pacotes de tradução (manager/traducao.go) têm os mesmos campos
+                for ((lista, prefixo) in listOf("itens" to "", "traducao" to "tradução ")) {
+                    val itens = estado.optJSONArray(lista) ?: continue
+                    for (i in 0 until itens.length()) {
+                        val item = itens.getJSONObject(i)
+                        if (item.optString("situacao") !in EM_ANDAMENTO) continue
+                        tarefas++
+                        if (nome.isEmpty()) nome = prefixo + item.optString("titulo")
+                        item.optJSONObject("progresso")?.let { pr ->
+                            baixado += pr.optLong("baixado")
+                            total += pr.optLong("total")
+                        }
                     }
                 }
                 if (tarefas > 0 && !baixava) aoComecarDownload?.invoke()
