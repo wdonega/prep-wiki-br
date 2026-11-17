@@ -17,6 +17,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.window.OnBackInvokedCallback
+import android.window.OnBackInvokedDispatcher
 import android.widget.FrameLayout
 import java.net.Socket
 import kotlin.concurrent.thread
@@ -28,6 +30,8 @@ class MainActivity : Activity() {
 
     private lateinit var web: WebView
     private var pediuNotificacao = false
+    private var limparHistorico = false
+    private var voltar: OnBackInvokedCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,19 @@ class MainActivity : Activity() {
                 if (r.url.host == HOST) return false
                 startActivity(Intent(Intent.ACTION_VIEW, r.url))
                 return true
+            }
+
+            override fun doUpdateVisitedHistory(v: WebView, url: String?, isReload: Boolean) {
+                atualizarVoltar()
+            }
+
+            override fun onPageFinished(v: WebView, url: String?) {
+                // a tela "Abrindo a biblioteca…" não fica no histórico: voltar na página inicial fecha o app
+                if (limparHistorico && url?.startsWith("http://$HOST:$PORTA") == true) {
+                    limparHistorico = false
+                    v.clearHistory()
+                }
+                atualizarVoltar()
             }
         }
         // Link com target="_blank" (os PDFs dos acervos). Sem janelas, a WebView tenta trocar a página
@@ -122,7 +139,10 @@ class MainActivity : Activity() {
             repeat(1200) { // até 120 s: a tela pode ter aberto atrás da tela de bloqueio
                 try {
                     Socket(HOST, PORTA).close()
-                    runOnUiThread { web.loadUrl("http://$HOST:$PORTA/") }
+                    runOnUiThread {
+                        limparHistorico = true
+                        web.loadUrl("http://$HOST:$PORTA/")
+                    }
                     return@thread
                 } catch (_: Exception) {
                     Thread.sleep(100)
@@ -132,8 +152,26 @@ class MainActivity : Activity() {
         }
     }
 
+    // Voltar volta uma página na WebView (biblioteca, gerenciador e dentro dos acervos); só fecha o app
+    // quando não há para onde voltar. No Android 13+ com targetSdk 36 o sistema não chama mais
+    // onBackPressed (voltar preditivo): o callback fica registrado só enquanto a WebView pode voltar,
+    // e assim o gesto de sair do app continua com a animação do sistema.
+    private fun atualizarVoltar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        val pode = web.canGoBack()
+        val atual = voltar
+        if (pode && atual == null) {
+            val cb = OnBackInvokedCallback { if (web.canGoBack()) web.goBack() }
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT, cb)
+            voltar = cb
+        } else if (!pode && atual != null) {
+            onBackInvokedDispatcher.unregisterOnBackInvokedCallback(atual)
+            voltar = null
+        }
+    }
+
     @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
+    override fun onBackPressed() { // Android 10 a 12
         if (web.canGoBack()) web.goBack() else super.onBackPressed()
     }
 

@@ -55,7 +55,13 @@ class Servico : Service() {
         }
         val p = pb.start()
         gerenciador = p
-        thread(name = "prep-log") { p.inputStream.bufferedReader().forEachLine { Log.i(TAG, it) } }
+        thread(name = "prep-log") {
+            // ao fechar, onDestroy encerra o processo e a leitura é interrompida: isso não é erro
+            try {
+                p.inputStream.bufferedReader().forEachLine { Log.i(TAG, it) }
+            } catch (_: java.io.IOException) {
+            }
+        }
         vigia = thread(name = "prep-downloads") { vigiarDownloads() }
     }
 
