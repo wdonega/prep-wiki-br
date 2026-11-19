@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -29,6 +30,10 @@ import kotlin.concurrent.thread
 class MainActivity : Activity() {
 
     private lateinit var web: WebView
+    private lateinit var raiz: FrameLayout
+    // tela cheia do player de vídeo: a vista que a WebView entrega e o aviso de que ela saiu
+    private var telaCheia: View? = null
+    private var aoSairDaTelaCheia: WebChromeClient.CustomViewCallback? = null
     private var pediuNotificacao = false
     private var limparHistorico = false
     private var voltar: OnBackInvokedCallback? = null
@@ -79,10 +84,27 @@ class MainActivity : Activity() {
                 resultMsg.sendToTarget()
                 return true
             }
+
+            // Tela cheia do player de vídeo. A página pede, a WebView entrega a vista do vídeo e quem a põe
+            // por cima de tudo é o app; sem isto o botão de tela cheia do player não faz nada.
+            override fun onShowCustomView(view: View, callback: CustomViewCallback) {
+                if (telaCheia != null) { // já tem uma: recusa a segunda
+                    callback.onCustomViewHidden()
+                    return
+                }
+                telaCheia = view
+                aoSairDaTelaCheia = callback
+                raiz.addView(view, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
+                web.visibility = View.GONE
+                mostrarBarrasDoSistema(false)
+                atualizarVoltar()
+            }
+
+            override fun onHideCustomView() = sairDaTelaCheia()
         }
         // targetSdk 35+ desenha atrás das barras do sistema. A margem vai num contêiner em volta da
         // WebView: padding na própria WebView não afasta o conteúdo e ainda causa defeitos de desenho.
-        val raiz = FrameLayout(this)
+        raiz = FrameLayout(this)
         // atrás das barras, a mesma cor de fundo da página (--bg em manager/web/prep/base.css)
         val escuro = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         raiz.setBackgroundColor(Color.parseColor(if (escuro) "#0b0f0c" else "#f4f7f4"))
@@ -158,10 +180,10 @@ class MainActivity : Activity() {
     // e assim o gesto de sair do app continua com a animação do sistema.
     private fun atualizarVoltar() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
-        val pode = web.canGoBack()
+        val pode = web.canGoBack() || telaCheia != null
         val atual = voltar
         if (pode && atual == null) {
-            val cb = OnBackInvokedCallback { if (web.canGoBack()) web.goBack() }
+            val cb = OnBackInvokedCallback { if (telaCheia != null) sairDaTelaCheia() else if (web.canGoBack()) web.goBack() }
             onBackInvokedDispatcher.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT, cb)
             voltar = cb
         } else if (!pode && atual != null) {
@@ -172,7 +194,37 @@ class MainActivity : Activity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() { // Android 10 a 12
-        if (web.canGoBack()) web.goBack() else super.onBackPressed()
+        if (telaCheia != null) sairDaTelaCheia() else if (web.canGoBack()) web.goBack() else super.onBackPressed()
+    }
+
+    // Sai da tela cheia do vídeo: pelo botão do player, pelo gesto de voltar ou porque a página mudou.
+    private fun sairDaTelaCheia() {
+        val vista = telaCheia ?: return
+        telaCheia = null
+        raiz.removeView(vista)
+        web.visibility = View.VISIBLE
+        aoSairDaTelaCheia?.onCustomViewHidden()
+        aoSairDaTelaCheia = null
+        mostrarBarrasDoSistema(true)
+        atualizarVoltar()
+    }
+
+    // Em tela cheia as barras do sistema somem (voltam num deslizar da borda); a margem em volta da WebView
+    // acompanha sozinha, porque é calculada das barras visíveis (onCreate).
+    @Suppress("DEPRECATION") // systemUiVisibility: é o que existe no Android 10
+    private fun mostrarBarrasDoSistema(sim: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val c = window.insetsController ?: return
+            if (sim) {
+                c.show(WindowInsets.Type.systemBars())
+            } else {
+                c.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                c.hide(WindowInsets.Type.systemBars())
+            }
+        } else {
+            window.decorView.systemUiVisibility = if (sim) 0 else
+                View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        }
     }
 
     override fun onDestroy() {

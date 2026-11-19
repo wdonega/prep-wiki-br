@@ -52,6 +52,9 @@ class Servico : Service() {
             put("PREP_ENDERECO", "$HOST:$PORTA")
             put("PREP_KIWIX_EXTERNO", "1")
             put("PREP_KIWIX_PORTA", portaKiwix.toString())
+            // o modelo da busca por significado (manager/busca.go) roda num llama-server que vem no APK;
+            // sem ele (APK feito com SEM_LLAMA=1) a busca fica sendo só a do Kiwix
+            File(libs, "libllama-server.so").takeIf { it.exists() }?.let { put("PREP_LLAMA_SERVER", it.path) }
         }
         val p = pb.start()
         gerenciador = p
@@ -94,6 +97,17 @@ class Servico : Service() {
                         tarefas++
                         if (nome.isEmpty()) nome = prefixo + item.optString("titulo")
                         item.optJSONObject("progresso")?.let { pr ->
+                            baixado += pr.optLong("baixado")
+                            total += pr.optLong("total")
+                        }
+                    }
+                }
+                // o modelo da busca (manager/busca.go) baixa junto com o primeiro acervo que tem índice
+                estado.optJSONObject("busca")?.optJSONObject("modelo")?.let { modelo ->
+                    if (modelo.optString("situacao") in EM_ANDAMENTO) {
+                        tarefas++
+                        if (nome.isEmpty()) nome = "modelo de busca"
+                        modelo.optJSONObject("progresso")?.let { pr ->
                             baixado += pr.optLong("baixado")
                             total += pr.optLong("total")
                         }
