@@ -7,7 +7,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 let est = null;                                   // último /api/estado
 let aba = sessionStorage.getItem("prep.aba") || "todos";
 const travados = new Set();                       // ids com clique em andamento (evita clique duplo)
-let htmlLista = "", htmlAbas = "", htmlTraducao = ""; // só troca o DOM quando o desenho muda de verdade
+let htmlLista = "", htmlAbas = "", htmlExtras = ""; // só troca o DOM quando o desenho muda de verdade
 
 // ---------------------------------------------------------------- texto e números
 
@@ -137,7 +137,9 @@ function linha(it) {
     if (!meu || inst.edicao) meta.push(inst.edicao ? `edição ${esc(inst.edicao)}` : "edição desconhecida");
     if (meu) meta.push(deOnde);
     if (dataValida(inst.baixado_em)) meta.push(`${it.origem === "arquivo" ? "recebido" : "baixado"} em ${dia(inst.baixado_em)}`);
-    if (s === "desatualizado" && disp) meta.push(`<span class="novo">nova: edição ${esc(disp.edicao)} · ${tamanho(disp.tamanho)}</span>`);
+    if (s === "desatualizado" && disp) meta.push(it.so_indice
+      ? `<span class="novo">falta o índice de busca · ${tamanho(disp.tamanho)}</span>`
+      : `<span class="novo">nova: edição ${esc(disp.edicao)} · ${tamanho(disp.tamanho)}</span>`);
   } else if (meu) {
     meta.push(deOnde);
   } else if (disp) {
@@ -146,8 +148,13 @@ function linha(it) {
     meta.push(it.erro_verificacao ? "Não foi possível verificar a versão" : "Versão ainda não verificada");
   }
 
+  // o tamanho é o do acervo inteiro: o ZIM mais o índice de busca que vem junto com ele
   const tam = inst ? inst.tamanho : disp ? disp.tamanho : null;
   if (tam != null) meta.splice(inst ? 1 : 0, 0, `<span class="so-cel">${tamanho(tam)}</span>`);
+  const ix = inst ? inst.indice : disp && !it.so_indice ? disp.indice : null;
+  if (ix) {
+    meta.push(`<span title="Busca por significado dentro deste acervo${ix.legendas ? " e legendas dos vídeos" : ""}">${inst ? "com" : "inclui"} índice de busca${ix.legendas ? " e legendas" : ""} (${tamanho(ix.tamanho)})</span>`);
+  }
   const txtTam = tam != null ? `<span class="lin-tam">${tamanho(tam)}</span>` : "";
   const apagar = `<button class="ibtn perigo" type="button" data-a="apagar" data-id="${id}" data-dica="Apagar" aria-label="Apagar ${esc(it.titulo)}" ${trava}>${ico("trash")}</button>`;
   let acoes = "";
@@ -171,7 +178,8 @@ function linha(it) {
   }
   if (it.erro) extra += `<div class="lin-erro">${ico("alert")}<span>${esc(it.erro)}</span></div>`;
 
-  const etq = ETIQUETA[s] ? `<span class="etq ${ETIQUETA[s][1]}">${ETIQUETA[s][0]}</span>` : "";
+  const defEtq = s === "desatualizado" && it.so_indice ? ["índice de busca", "etq-aviso"] : ETIQUETA[s];
+  const etq = defEtq ? `<span class="etq ${defEtq[1]}">${defEtq[0]}</span>` : "";
   const etqs = (it.tags || []).map((id) => tagHtml(id, est.tags)).join("") + etq;
   return `<div class="lin s-${s}">
     <span class="lin-st">${ico(ICONE[s] || "package", s === "verificando" ? "" : "")}</span>
@@ -185,46 +193,30 @@ function linha(it) {
   </div>`;
 }
 
-// Pacote de tradução (manager/traducao.go): o motor e o modelo de um par de idiomas, baixados uma vez.
-// A linha tem o mesmo desenho das dos acervos; o progresso usa a chave "traducao:<id>".
-function linhaTraducao(p) {
-  const s = p.situacao, inst = p.instalado, id = esc(p.id), trava = travados.has(p.id) ? "disabled" : "";
-  const tam = inst && s !== "desatualizado" ? inst.tamanho : p.tamanho;
-  const meta = [`<span class="so-cel">${tamanho(tam)}</span>`];
-  if (inst) {
-    meta.unshift("Instalado");
-    if (dataValida(inst.instalado_em)) meta.push(`baixado em ${dia(inst.instalado_em)}`);
-    if (s === "desatualizado") meta.push(`<span class="novo">versão nova · ${tamanho(p.tamanho)}</span>`);
-  } else {
-    meta.push("tradutor e modelo de idioma");
-  }
-  const txtTam = `<span class="lin-tam">${tamanho(tam)}</span>`;
-  const apagar = `<button class="ibtn perigo" type="button" data-a="trad-apagar" data-id="${id}" data-dica="Apagar" aria-label="Apagar a tradução ${esc(p.titulo)}" ${trava}>${ico("trash")}</button>`;
+// O que toda instalação tem além dos acervos: o modelo da busca por significado (manager/busca.go) e os
+// pacotes de tradução (manager/traducao.go). Baixam sozinhos depois da verificação de versões e não dá para
+// apagar; por isso a linha é compacta: nome, situação, tamanho e, só enquanto baixa, o progresso e o Cancelar.
+// tipo é "busca" ou "trad" (o prefixo das ações); chave é a do progresso ("busca:modelo", "traducao:<id>").
+function linhaExtra({ tipo, id, chave, icone, titulo, tamanho: tam, situacao: s, erro }) {
+  const estado = { instalado: "instalado", desatualizado: "versão nova", na_fila: "na fila", baixando: "baixando",
+    verificando: "conferindo" }[s] || "ainda não baixado";
   let acoes = "";
-  if (s === "nao_instalado") {
-    acoes = `${txtTam}<button class="btn btn-suave" type="button" data-a="trad-baixar" data-id="${id}" aria-label="Baixar a tradução ${esc(p.titulo)}" ${trava}>${ico("download")}<span class="rot">Baixar</span></button>`;
-  } else if (s === "instalado") {
-    acoes = txtTam + apagar;
-  } else if (s === "desatualizado") {
-    acoes = `${txtTam}<button class="btn btn-aviso" type="button" data-a="trad-baixar" data-id="${id}" aria-label="Atualizar a tradução ${esc(p.titulo)}" ${trava}>${ico("refresh")}<span class="rot">Atualizar</span></button>${apagar}`;
+  if (s === "nao_instalado" || s === "desatualizado") {
+    acoes = `<button class="btn btn-suave" type="button" data-a="${tipo}-baixar" data-id="${esc(id)}" aria-label="Baixar ${esc(titulo)}">${ico("download")}<span class="rot">Baixar</span></button>`;
   } else if (s === "na_fila" || s === "baixando") {
-    acoes = `<button class="btn" type="button" data-a="trad-cancelar" data-id="${id}" aria-label="Cancelar o download da tradução ${esc(p.titulo)}" ${trava}>${ico("x")}<span class="rot">Cancelar</span></button>`;
+    acoes = `<button class="btn" type="button" data-a="${tipo}-cancelar" data-id="${esc(id)}" aria-label="Cancelar o download de ${esc(titulo)}">${ico("x")}<span class="rot">Cancelar</span></button>`;
   }
   let extra = "";
   if (s === "baixando") {
-    extra += `<div class="prog" data-prog="traducao:${id}"><div class="prog-barra"><i></i></div>
+    extra += `<div class="prog" data-prog="${esc(chave)}"><div class="prog-barra"><i></i></div>
       <div class="prog-info"><span data-p="esq"></span><span data-p="dir"></span></div></div>`;
-  } else if (s === "na_fila") {
-    extra += `<div class="prog"><div class="prog-info"><span>Aguardando o download anterior terminar…</span></div></div>`;
   }
-  if (p.erro) extra += `<div class="lin-erro">${ico("alert")}<span>${esc(p.erro)}</span></div>`;
-  const etq = ETIQUETA[s] ? `<span class="lin-etqs"><span class="etq ${ETIQUETA[s][1]}">${ETIQUETA[s][0]}</span></span>` : "";
-  return `<div class="lin s-${s}">
-    <span class="lin-st">${ico(s === "instalado" || s === "nao_instalado" ? "languages" : ICONE[s] || "languages")}</span>
+  if (erro) extra += `<div class="lin-erro">${ico("alert")}<span>${esc(erro)}</span></div>`;
+  return `<div class="lin mini s-${s}">
+    <span class="lin-st">${ico(s === "instalado" ? "check-circle" : ICONE[s] && s !== "nao_instalado" ? ICONE[s] : icone)}</span>
     <div class="lin-corpo">
-      <div class="lin-tit"><span class="lin-nome">${esc(p.titulo)}</span>${etq}</div>
-      <div class="lin-desc">${esc(p.descricao)}</div>
-      <div class="lin-meta">${meta.map((m) => (m.startsWith("<span") ? m : `<span>${m}</span>`)).join("")}</div>
+      <div class="lin-tit"><span class="lin-nome">${esc(titulo)}</span></div>
+      <div class="lin-meta"><span>${estado}</span><span>${tamanho(tam)}</span></div>
     </div>
     <div class="lin-acoes">${acoes}</div>
     ${extra ? `<div class="lin-extra">${extra}</div>` : ""}
@@ -265,6 +257,7 @@ function atualizarProgresso(it) {
     }
     if (p.mirror) partes.push(esc(p.mirror));
     dir = partes.join(" · ");
+    if (p.etapa === "indice") esq += " · baixando o índice de busca"; // o ZIM já veio; o total é dos dois
   }
   el.querySelector('[data-p="esq"]').innerHTML = esq;
   el.querySelector('[data-p="dir"]').innerHTML = dir;
@@ -331,12 +324,18 @@ function render() {
   if (html !== htmlLista) $("lista").innerHTML = htmlLista = html;
   itens.forEach(atualizarProgresso);
 
-  // tradução
-  const pacotes = est.traducao || [];
-  const trad = pacotes.map(linhaTraducao).join("");
-  $("traducao").hidden = !pacotes.length;
-  if (trad !== htmlTraducao) $("traducao-lista").innerHTML = htmlTraducao = trad;
-  pacotes.forEach((p) => atualizarProgresso({ ...p, id: "traducao:" + p.id }));
+  // busca e tradução: uma seção compacta, com o modelo de busca (onde dá para rodá-lo) e os pacotes de tradução
+  const modelo = est.busca && est.busca.modelo;
+  const extras = [];
+  if (modelo) extras.push({ ...modelo, tipo: "busca", id: "modelo", chave: "busca:modelo", icone: "search", titulo: "Busca por significado" });
+  for (const p of est.traducao || []) {
+    extras.push({ ...p, tipo: "trad", chave: "traducao:" + p.id, icone: "languages", titulo: "Tradução: " + p.titulo.toLowerCase(),
+      tamanho: p.instalado && p.situacao !== "desatualizado" ? p.instalado.tamanho : p.tamanho });
+  }
+  const htmlNovo = extras.map(linhaExtra).join("");
+  $("extras").hidden = !extras.length;
+  if (htmlNovo !== htmlExtras) $("extras-lista").innerHTML = htmlExtras = htmlNovo;
+  extras.forEach((e) => atualizarProgresso({ ...e, id: e.chave }));
 }
 
 // ---------------------------------------------------------------- ciclo
@@ -351,7 +350,8 @@ async function atualizar() {
   } catch (e) {
     if (++falhasSeguidas === 3) avisar("Sem resposta do gerenciador. Tentando de novo…");
   }
-  const ativo = est && (est.verificando || est.itens.concat(est.traducao || []).some((i) => EM_ANDAMENTO.includes(i.situacao)));
+  const ativo = est && (est.verificando || est.itens.concat(est.traducao || [], (est.busca && est.busca.modelo) || [])
+    .some((i) => EM_ANDAMENTO.includes(i.situacao)));
   timer = setTimeout(atualizar, ativo ? 1000 : 5000);
 }
 
@@ -366,18 +366,12 @@ document.addEventListener("click", async (ev) => {
   const b = ev.target.closest("[data-a]");
   if (!b || !est) return;
   const id = b.dataset.id, a = b.dataset.a;
-  if (a.startsWith("trad-")) { // pacote de tradução
-    const p = (est.traducao || []).find((x) => x.id === id);
-    if (!p) return;
-    let ok = true;
-    if (a === "trad-apagar") {
-      ok = await confirmar({ titulo: `Apagar a tradução “${p.titulo}”?`, botao: "Apagar",
-        texto: `Libera ${tamanho(p.instalado ? p.instalado.tamanho : p.tamanho)} em disco. As páginas voltam a abrir só no idioma original. Para ter de volta é só baixar de novo.` });
-    } else if (a === "trad-cancelar") {
-      ok = await confirmar({ titulo: "Cancelar o download?", botao: "Cancelar download", icone: "x",
-        texto: `O que já foi baixado da tradução “${p.titulo}” é descartado.` });
-    }
-    if (ok) acao("traducao/" + a.slice(5), id);
+  if (a.startsWith("busca-") || a.startsWith("trad-")) { // modelo de busca ou pacote de tradução
+    const busca = a.startsWith("busca-"), verbo = a.slice(a.indexOf("-") + 1);
+    const nome = busca ? "o modelo de busca" : "a tradução";
+    const ok = verbo !== "cancelar" || await confirmar({ titulo: "Cancelar o download?", botao: "Cancelar download", icone: "x",
+      texto: `O que já foi baixado d${nome} é descartado. Ele volta para a fila na próxima verificação de versões.` });
+    if (ok) acao(busca ? "busca/modelo" : "traducao/" + verbo, busca ? verbo : id);
     return;
   }
   const it = est.itens.find((i) => i.id === id);

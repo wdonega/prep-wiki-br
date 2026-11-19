@@ -118,7 +118,9 @@ async function abrir() {
   links.setViewer(visor);
   eventos.on("pagesinit", () => {
     visor.currentScaleValue = "auto"; // a largura da tela no celular; no computador, sem passar de 125%
-    const n = paginaGuardada();
+    // um resultado da busca abre o PDF na página do trecho (…arquivo.pdf#page=12); sem isso, onde a pessoa parou
+    const pedida = Number((/[#&]page=(\d+)/.exec(location.hash) || [])[1]) || 0;
+    const n = pedida || paginaGuardada();
     if (n > 1 && n <= total) visor.currentPageNumber = n;
     aviso("");
   });

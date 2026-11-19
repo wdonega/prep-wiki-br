@@ -5,8 +5,15 @@ const ico = (nome, cls = "") => `<svg class="i ${cls}" aria-hidden="true"><use h
 
 let livros = null;   // null = ainda carregando
 let grupos = [];
+let traduz = [];     // idiomas (duas letras) com pacote de tradução para o português instalado
 let grupoSel = sessionStorage.getItem("prep.grupo") || "";   // "" = todos
 let consulta = "";
+
+// busca por significado (manager/busca.go): procura pelo sentido da pergunta nos acervos que têm índice
+let buscaAtiva = false;   // o servidor tem o modelo e pelo menos um acervo com índice
+let sig = null;           // a última busca: {q, n, estado: "carregando" | "ok" | "erro", resultados, mais}
+let pedidoBusca = null, relogioBusca = 0;
+const N_RESULTADOS = 5, N_MAIS = 10, MIN_LETRAS = 3;
 
 // ---------------------------------------------------------------- texto e números
 
@@ -70,7 +77,10 @@ function card(l, q) {
     </div>
     <div class="card-desc">${destacar(l.descricao, q)}</div>
     <div class="card-rodape">
-      ${outros.map((c) => `<span class="etq" title="Em ${esc(nomeIdioma(c))}">${esc(SIGLAS_IDIOMA[c] || c.toUpperCase())}</span>`).join("")}
+      ${l.video ? `<span class="etq etq-ok" title="Canal de vídeos">Vídeo</span>` : ""}
+      ${outros.map((c) => traduz.includes(DUAS_LETRAS[c])
+        ? `<span class="etq etq-info" title="Em ${esc(nomeIdioma(c))}; abre traduzido para o português no próprio aparelho, e o original fica a um toque">Traduzido</span>`
+        : `<span class="etq etq-info" title="Em ${esc(nomeIdioma(c))}">${esc(SIGLAS_IDIOMA[c] || c.toUpperCase())}</span>`).join("")}
       ${info.map((t) => `<span class="card-info">${esc(t)}</span>`).join("")}
       ${ico("arrow-right", "card-seta")}
     </div>
@@ -79,6 +89,8 @@ function card(l, q) {
 
 const NOMES_IDIOMA = { por: "português", eng: "inglês", spa: "espanhol", fra: "francês", deu: "alemão", ita: "italiano" };
 const SIGLAS_IDIOMA = { por: "PT", eng: "EN", spa: "ES", fra: "FR", deu: "DE", ita: "IT" };
+// o Kiwix dá o idioma em ISO 639-3; os pacotes de tradução usam duas letras (igual ao traducao.js)
+const DUAS_LETRAS = { eng: "en", fra: "fr", spa: "es", deu: "de", ita: "it", por: "pt" };
 function nomeIdioma(cod) {
   if (NOMES_IDIOMA[cod]) return NOMES_IDIOMA[cod];
   try { return new Intl.DisplayNames(["pt-BR"], { type: "language" }).of(cod) || cod; } catch (e) { return cod; }
@@ -102,6 +114,118 @@ function buscasPorIdioma() {
 function urlBuscaDentro(alvos) {
   return "/viewer#search?pattern=" + encodeURIComponent(consulta.trim()) +
     alvos.map((l) => "&books.name=" + encodeURIComponent(l.nome)).join("");
+}
+
+// ---------------------------------------------------------------- busca por significado
+
+const ICONE_TIPO = { pagina: "file-text", pdf: "file", video: "play" };
+
+function resultado(r) {
+  // etiqueta de idioma só no que não é em português, como nos cards
+  const etqs = (r.idiomas.includes("por") ? [] : r.idiomas).map((c) => traduz.includes(DUAS_LETRAS[c]) && r.tipo === "pagina"
+    ? `<span class="etq etq-info" title="Em ${esc(nomeIdioma(c))}; abre traduzido para o português">Traduzido</span>`
+    : `<span class="etq etq-info" title="Em ${esc(nomeIdioma(c))}">${esc(SIGLAS_IDIOMA[c] || c.toUpperCase())}</span>`).join("");
+  const onde = [r.acervo, r.secao].filter(Boolean).map(esc).join(" · ");
+  return `<a class="res" href="${esc(r.url)}">
+    <span class="res-ico">${ico(ICONE_TIPO[r.tipo] || "file-text")}</span>
+    <span class="res-corpo">
+      <span class="res-tit">${esc(r.titulo)}</span>
+      <span class="res-onde"><span>${onde}</span>${etqs}</span>
+      ${r.trecho ? `<span class="res-trecho">${esc(r.trecho)}</span>` : ""}
+    </span>${ico("arrow-right", "res-seta")}</a>`;
+}
+
+function resultadosDaBusca(q) {
+  if (!sig || sig.q !== q || (sig.estado === "carregando" && !sig.resultados)) {
+    return `<div class="res-lista" aria-busy="true">${'<div class="res esqueleto-res"></div>'.repeat(3)}</div>`;
+  }
+  if (sig.estado === "erro") return `<p class="res-aviso">${ico("alert")}<span>A busca nos textos não respondeu. Tente de novo em alguns segundos.</span></p>`;
+  if (!sig.resultados.length) return `<p class="res-aviso"><span>Nada parecido nos textos dos acervos.</span></p>`;
+  return `<div class="res-lista">${sig.resultados.map(resultado).join("")}</div>` + (sig.mais
+    ? `<button class="btn res-mais" type="button" id="b-mais" ${sig.estado === "carregando" ? "disabled" : ""}>${sig.estado === "carregando" ? "Buscando…" : "Mostrar mais resultados"}</button>`
+    : "");
+}
+
+// ---------------------------------------------------------------- trecho dos resultados em PDF
+
+// O gerenciador não lê PDF: ele só diz o arquivo, a página e a posição do trecho. Quem tira o texto é esta
+// página, com o mesmo PDF.js do leitor, depois que os resultados já estão na tela. O PDF vem aos pedaços
+// (só o que a página pedida precisa), então um manual de 100 MB não é baixado inteiro por causa de 3 linhas.
+const BASE_PDFJS = "/prep/pdf/pdfjs/";
+let pdfjs = null;
+const trechosPDF = new Map(); // "arquivo#página#ordem" → trecho ("" = não deu para ler)
+
+// o mesmo recorte que o gerenciador faz nas páginas: umas 240 letras, de início de frase a fim de palavra
+function recortar(texto, de) {
+  const TAM = 240;
+  const t = texto.replace(/\s+/g, " ").trim();
+  if (!t) return "";
+  de = Math.max(0, Math.min(de, t.length - TAM));
+  if (de > 0) {
+    const ponto = t.indexOf(". ", de);
+    if (ponto >= 0 && ponto < de + 160) de = ponto + 2;
+  }
+  let fim = Math.min(de + TAM, t.length);
+  if (fim === t.length) return t.slice(de);
+  const espaco = t.lastIndexOf(" ", fim);
+  if (espaco > de + TAM / 2) fim = espaco;
+  return t.slice(de, fim) + "…";
+}
+
+async function trechoDoPDF({ url, pagina, ordem }) {
+  if (!pdfjs) {
+    pdfjs = await import(BASE_PDFJS + "pdf.min.mjs");
+    pdfjs.GlobalWorkerOptions.workerSrc = BASE_PDFJS + "pdf.worker.min.mjs";
+  }
+  const tarefa = pdfjs.getDocument({ url, disableAutoFetch: true, rangeChunkSize: 1 << 18, enableXfa: false,
+    wasmUrl: BASE_PDFJS + "wasm/", standardFontDataUrl: BASE_PDFJS + "standard_fonts/", iccUrl: BASE_PDFJS + "iccs/" });
+  try {
+    const pdf = await tarefa.promise;
+    const conteudo = await (await pdf.getPage(pagina)).getTextContent();
+    const texto = conteudo.items.map((i) => (i.str || "") + (i.hasEOL ? " " : "")).join("");
+    return recortar(texto, ordem * 950); // cada trecho do índice avança umas 950 letras na página
+  } finally {
+    tarefa.destroy();
+  }
+}
+
+// preenche, um por vez, o trecho dos resultados em PDF da busca que está na tela
+async function completarPDFs() {
+  const minha = sig;
+  if (!minha || minha.estado !== "ok") return;
+  for (const r of minha.resultados) {
+    if (!r.pdf || r.trecho) continue;
+    const chave = `${r.pdf.url}#${r.pdf.pagina}#${r.pdf.ordem}`;
+    if (!trechosPDF.has(chave)) {
+      try { trechosPDF.set(chave, await trechoDoPDF(r.pdf)); } catch (e) { trechosPDF.set(chave, ""); }
+    }
+    if (sig !== minha) return; // a pessoa já fez outra busca
+    if (trechosPDF.get(chave)) { r.trecho = trechosPDF.get(chave); render(); }
+  }
+}
+
+async function buscarPorSignificado(n = N_RESULTADOS) {
+  const q = consulta.trim();
+  clearTimeout(relogioBusca);
+  if (pedidoBusca) pedidoBusca.abort();
+  if (!buscaAtiva || q.length < MIN_LETRAS) { sig = null; return; }
+  // em "mostrar mais" a lista que já está na tela fica até a maior chegar
+  sig = { q, n, estado: "carregando", resultados: sig && sig.q === q ? sig.resultados : null, mais: true };
+  render();
+  const ctrl = pedidoBusca = new AbortController();
+  try {
+    const r = await fetch(`/api/busca?q=${encodeURIComponent(q)}&n=${n}`, { cache: "no-store", signal: ctrl.signal });
+    const j = await r.json();
+    if (!r.ok || !j.disponivel) throw new Error(j.erro || "indisponível");
+    sig = { q, n, estado: "ok", resultados: j.resultados, mais: j.mais };
+  } catch (e) {
+    if (ctrl.signal.aborted) return; // a pessoa continuou digitando: vale o pedido seguinte
+    sig = { q, n, estado: "erro", resultados: [], mais: false };
+  }
+  // o endereço guarda a pergunta: voltar de um resultado cai de novo na lista
+  history.replaceState(null, "", "/?q=" + encodeURIComponent(q));
+  render();
+  completarPDFs();
 }
 
 function render() {
@@ -129,16 +253,22 @@ function render() {
   $("filtros").innerHTML = filtros;
 
   let html = "";
+  // com a busca por significado no ar, ela vem primeiro; a do Kiwix (palavras exatas) fica logo abaixo, mais
+  // discreta, e é a única para os acervos sem índice
+  const porSentido = buscaAtiva && consulta.trim().length >= MIN_LETRAS;
+  if (porSentido) html += `<h2 class="sec-tit">Nos textos dos acervos</h2>` + resultadosDaBusca(consulta.trim());
   const buscas = q ? buscasPorIdioma() : [];
   const alvos = buscas.length ? buscas[0].alvos : [];
   buscas.forEach((b, i) => {
     const onde = buscas.length > 1 ? `nos acervos em ${nomeIdioma(b.idioma)}` : "dentro dos acervos";
-    html += `<a class="buscar-dentro" href="${esc(urlBuscaDentro(b.alvos))}">
-      ${ico("search")}<span>Buscar <b>“${esc(consulta.trim())}”</b> ${esc(onde)}</span>
-      <span class="fim"><span>no texto de ${contagem(b.alvos.length, "acervo", "acervos")}</span>${i === 0 ? "<kbd>Enter</kbd>" : ""}</span></a>`;
+    html += `<a class="buscar-dentro ${porSentido ? "discreta" : ""}" href="${esc(urlBuscaDentro(b.alvos))}">
+      ${ico("search")}<span>Buscar ${porSentido ? "as palavras exatas" : ""} <b>“${esc(consulta.trim())}”</b> ${esc(onde)}</span>
+      <span class="fim"><span>no texto de ${contagem(b.alvos.length, "acervo", "acervos")}</span>${i === 0 && !porSentido ? "<kbd>Enter</kbd>" : ""}</span></a>`;
   });
 
-  if (!livros.length) {
+  if (porSentido && livros.length) {
+    if (visiveis.length) html += `<h2 class="sec-tit">Acervos com esse nome</h2><div class="grade">${visiveis.map((l) => card(l, q)).join("")}</div>`;
+  } else if (!livros.length) {
     html += `<div class="vazio"><div class="vazio-ico">${ico("library")}</div>
       <h2>Nenhum acervo instalado ainda</h2>
       ${comAdmin ? `<p>Escolha o que baixar no gerenciador. Depois de baixado, tudo funciona sem internet.</p>
@@ -154,6 +284,7 @@ function render() {
 }
 
 document.addEventListener("click", (ev) => {
+  if (ev.target.closest("#b-mais") && sig) { buscarPorSignificado(sig.n + N_MAIS); return; }
   const chip = ev.target.closest("[data-grupo]");
   if (chip) {
     grupoSel = chip.dataset.grupo;
@@ -164,15 +295,34 @@ document.addEventListener("click", (ev) => {
 
 // ---------------------------------------------------------------- busca
 
-$("q").addEventListener("input", () => { consulta = $("q").value; render(); });
+// sem a pergunta, o endereço e a busca voltam ao começo
+function limparBusca() {
+  clearTimeout(relogioBusca);
+  if (pedidoBusca) pedidoBusca.abort();
+  sig = null;
+  if (location.search) history.replaceState(null, "", "/");
+}
+
+$("q").addEventListener("input", () => {
+  consulta = $("q").value;
+  clearTimeout(relogioBusca);
+  if (consulta.trim().length < MIN_LETRAS) limparBusca();
+  else if (buscaAtiva) relogioBusca = setTimeout(buscarPorSignificado, 500); // meio segundo sem digitar: busca
+  render();
+});
 $("busca").addEventListener("submit", (ev) => {
   ev.preventDefault();
+  if (buscaAtiva && consulta.trim().length >= MIN_LETRAS) {
+    buscarPorSignificado();
+    if (matchMedia("(pointer: coarse)").matches) $("q").blur(); // no celular, o teclado sai da frente dos resultados
+    return;
+  }
   const buscas = consulta.trim() ? buscasPorIdioma() : [];
   if (buscas.length) location.href = urlBuscaDentro(buscas[0].alvos);
 });
 document.addEventListener("keydown", (ev) => {
   if (ev.key === "Escape") {
-    if (document.activeElement === $("q") && consulta) { $("q").value = consulta = ""; render(); }
+    if (document.activeElement === $("q") && consulta) { $("q").value = consulta = ""; limparBusca(); render(); }
     return;
   }
   const digitando = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
@@ -191,10 +341,14 @@ async function carregar() {
     if (texto === ultima) return; // nada mudou: não redesenha (preserva foco e rolagem)
     ultima = texto;
     const j = JSON.parse(texto);
-    livros = j.livros; grupos = j.grupos; comAdmin = j.admin !== false;
+    livros = j.livros; grupos = j.grupos; comAdmin = j.admin !== false; traduz = j.traduz || [];
+    buscaAtiva = !!j.busca;
+    $("q").placeholder = buscaAtiva ? "Pergunte ou busque nos acervos…" : "Buscar nos acervos…";
     mostrarVersao(j.versao);
     $("b-admin").hidden = !comAdmin;
     render();
+    // página aberta já com pergunta (/?q=, ou voltando de um resultado): busca assim que souber que pode
+    if (buscaAtiva && !sig && consulta.trim().length >= MIN_LETRAS) buscarPorSignificado();
   } catch (e) {
     if (livros === null) {
       $("resumo").textContent = "Sem resposta do servidor";

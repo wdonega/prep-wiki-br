@@ -1,5 +1,5 @@
 {
-  "versao": 8,
+  "versao": 9,
   "grupos": [
     {"id": "projeto", "titulo": "Deste projeto"},
     {"id": "wikipedia", "titulo": "Wikipédia", "dica": "escolha uma"},
@@ -78,7 +78,6 @@
     {"id": "zimgit-post-disaster_en", "origem": "kiwix", "pasta": "other", "grupo": "prepper", "tema": "Preparação e sobrevivência", "titulo": "Post Disaster Resource Library", "descricao": "Coleção de materiais para depois de um desastre."},
     {"id": "ready.gov_en_all", "origem": "kiwix", "pasta": "zimit", "grupo": "prepper", "tema": "Preparação e sobrevivência", "titulo": "Ready.gov", "descricao": "Planos e kits de emergência do governo dos EUA, para cada tipo de desastre."},
     {"id": "trueprepper.com_en_all", "origem": "kiwix", "pasta": "other", "grupo": "prepper", "tema": "Preparação e sobrevivência", "titulo": "True Prepper", "descricao": "Guias práticos de preparação: kits, listas e armazenamento."},
-    {"id": "survivorlibrary.com_en_all", "origem": "kiwix", "pasta": "zimit", "grupo": "prepper", "tema": "Preparação e sobrevivência", "titulo": "Survivor Library", "descricao": "Biblioteca de livros sobre como viver quando a tecnologia falha. É enorme."},
     {"id": "armypubs_en_all", "origem": "kiwix", "pasta": "zimit", "grupo": "prepper", "tema": "Preparação e sobrevivência", "titulo": "Manuais do Exército dos EUA", "descricao": "Publicações oficiais do Army Publishing Directorate, incluindo os manuais de campo."},
     {"id": "zimgit-knots_en", "origem": "kiwix", "pasta": "other", "grupo": "prepper", "tema": "Preparação e sobrevivência", "titulo": "A Library of Knots", "descricao": "Material ilustrado sobre nós, amarrações, escadas e suturas."},
     {"id": "wikipedia_en_knots_maxi", "origem": "kiwix", "pasta": "wikipedia", "grupo": "prepper", "tema": "Preparação e sobrevivência", "titulo": "Nós (Wikipédia em inglês)", "descricao": "Os artigos da Wikipédia em inglês sobre nós."},

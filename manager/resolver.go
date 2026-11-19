@@ -237,8 +237,15 @@ func (a *App) verificar(ctx context.Context) {
 	}
 	wg.Wait()
 
+	// os índices de busca: qual edição de qual acervo já tem um (indice.go)
+	repo, err := a.lerRepoZimdex(ctx)
+	if err != nil {
+		logf("índices de busca: %v (fica valendo o que já se sabia)", err)
+	}
+
 	a.mu.Lock()
 	defer a.mu.Unlock()
+	a.anotarIndices(novos, repo)
 	for id, d := range novos {
 		a.est.Disponiveis[id] = d
 	}
@@ -247,6 +254,9 @@ func (a *App) verificar(ctx context.Context) {
 		a.est.VerificadoEm = time.Now().UTC()
 	}
 	a.verificando = false
+	if len(novos) > 0 && a.cfg.Admin == adminCompleto { // com internet: o que toda instalação tem vem sozinho
+		a.pedirExtras()
+	}
 	if err := a.est.salvar(a.caminhoEstado()); err != nil {
 		logf("salvar estado: %v", err)
 	}

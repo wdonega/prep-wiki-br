@@ -54,6 +54,9 @@ type Config struct {
 	KiwixExterno bool
 	CatalogoURL  string // de onde vem o catálogo oficial atualizado ("" = só o embutido); veja catalogo_remoto.go
 	Admin        string // "completo", "leitura" ou "desligado" (PREP_ADMIN)
+	ZimdexURL    string // repositório dos índices de busca, com "/" no fim ("" = não baixa índices); veja indice.go
+	EmbedURL     string // llama-server de fora para a busca por significado (PREP_EMBED_URL); veja busca.go
+	LlamaServer  string // caminho do llama-server local ("" = não tem)
 }
 
 // Modos do gerenciador. A trava é no servidor: as rotas que o modo não permite nem são
@@ -83,8 +86,15 @@ type App struct {
 	verificando      bool
 
 	muBiblioteca sync.Mutex
-	fila         chan string
+	fila         chan string // downloads grandes (ou de tamanho desconhecido): um por vez
+	filaPequena  chan string // downloads pequenos: podem andar ao lado de um grande (baixador.go)
 	kiwixParou   chan struct{}
+
+	indices indicesAbertos // os .zimdex em uso pela busca e pelas legendas (zimdex.go)
+	motor   motorBusca     // o modelo que transforma a pergunta em vetor (busca.go)
+	// playlists dos canais de vídeo: nome do acervo → vídeo → playlist, para montar o link do player (busca.go)
+	muPlaylists sync.Mutex
+	playlists   map[string]map[string]string
 }
 
 // cat devolve o catálogo em uso agora.
@@ -151,6 +161,15 @@ func lerConfig() Config {
 	if c.CatalogoURL == "desligado" {
 		c.CatalogoURL = ""
 	}
+	if c.ZimdexURL = env("PREP_ZIMDEX_URL", urlZimdexPadrao); c.ZimdexURL == "desligado" {
+		c.ZimdexURL = ""
+	} else if !strings.HasSuffix(c.ZimdexURL, "/") {
+		c.ZimdexURL += "/"
+	}
+	c.EmbedURL = strings.TrimRight(os.Getenv("PREP_EMBED_URL"), "/")
+	if p, err := exec.LookPath(acharBinario("llama-server", os.Getenv("PREP_LLAMA_SERVER"))); err == nil {
+		c.LlamaServer = p
+	}
 	switch c.Admin = strings.ToLower(strings.TrimSpace(env("PREP_ADMIN", adminCompleto))); c.Admin {
 	case adminCompleto, adminLeitura, adminDesligado:
 	default:
@@ -193,7 +212,7 @@ func main() {
 		http:     &http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment, ResponseHeaderTimeout: 60 * time.Second, IdleConnTimeout: 90 * time.Second}},
 		urlKiwix: &url.URL{Scheme: "http", Host: "127.0.0.1:" + strconv.Itoa(cfg.KiwixPorta)},
 		tarefas:  map[string]*Tarefa{}, erros: map[string]string{}, errosVerificacao: map[string]string{},
-		fila: make(chan string, 100), kiwixParou: make(chan struct{}),
+		fila: make(chan string, 100), filaPequena: make(chan string, 100), kiwixParou: make(chan struct{}),
 	}
 	if a.est, err = carregarEstado(a.caminhoEstado()); err != nil {
 		log.Fatalf("estado.json: %v", err)
@@ -230,8 +249,10 @@ func main() {
 	}
 
 	go a.supervisionarKiwix()
+	go a.motor.vigiarOcioso(ctx)
 	if cfg.Admin == adminCompleto {
-		go a.trabalhador()
+		go a.trabalhador(false)
+		go a.trabalhador(true)
 	}
 	if cfg.Admin != adminDesligado { // desligado: a máquina não sai para a internet sozinha
 		go a.verificar(ctx)
@@ -265,6 +286,14 @@ func main() {
 		}
 	default:
 		logf("gerenciador %s, sem senha: defina PREP_SENHA para proteger", modoNoLog(cfg.Admin))
+	}
+	switch {
+	case cfg.EmbedURL != "":
+		logf("busca por significado: modelo em %s (PREP_EMBED_URL)", cfg.EmbedURL)
+	case cfg.LlamaServer != "":
+		logf("busca por significado: llama-server em %s", cfg.LlamaServer)
+	default:
+		logf("busca por significado desligada: não achei o llama-server (PREP_LLAMA_SERVER ou PREP_EMBED_URL); fica a busca do Kiwix")
 	}
 	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Fatal(err)
@@ -301,6 +330,7 @@ func (a *App) rotas() http.Handler {
 	mux.HandleFunc("GET /apoie", pagina(web, "apoie.html")) // PIX e Liberapay; funciona offline
 	mux.Handle("GET /prep/", estaticos(web))
 	mux.HandleFunc("GET /api/biblioteca", a.apiBiblioteca)
+	mux.HandleFunc("GET /api/busca", a.apiBusca) // busca por significado nos acervos com índice (busca.go)
 	// tradução no cliente (traducao.go): o que o leitor consulta e os arquivos do motor e dos modelos
 	mux.HandleFunc("GET /api/traducao", a.apiTraducao)
 	mux.HandleFunc("GET /prep/"+pastaTraducoes+"/{id}/{versao}/{nome}", a.arquivoTraducao)
@@ -331,14 +361,17 @@ func (a *App) rotas() http.Handler {
 		mux.HandleFunc("POST /api/apagar/{id}", a.acao(a.apagar))
 		mux.HandleFunc("POST /api/traducao/baixar/{id}", a.acao(a.enfileirarTraducao))
 		mux.HandleFunc("POST /api/traducao/cancelar/{id}", a.acao(a.cancelarTraducao))
-		mux.HandleFunc("POST /api/traducao/apagar/{id}", a.acao(a.apagarTraducao))
+		// o tradutor e o modelo de busca fazem parte de toda instalação: baixam sozinhos (pedirExtras) e
+		// não há rota para apagar
+		mux.HandleFunc("POST /api/busca/modelo/baixar", a.acao(a.enfileirarModeloBusca))
+		mux.HandleFunc("POST /api/busca/modelo/cancelar", a.acao(a.cancelarModeloBusca))
 		mux.HandleFunc("POST /api/meus/inspecionar", a.apiInspecionarLink)
 		mux.HandleFunc("POST /api/meus/link", a.apiAdicionarLink)
 		mux.HandleFunc("PUT /api/meus/arquivo", a.apiEnviarArquivo)
 	}
 
-	// todo o resto é do kiwix-serve
-	mux.Handle("/", a.proxyKiwix(web))
+	// todo o resto é do kiwix-serve (menos as legendas que vêm do índice do acervo, legendas.go)
+	mux.Handle("/", a.comLegendas(a.proxyKiwix(web)))
 	return protegerAcoes(a.porteiro.proteger(mux, pagina(web, "entrar.html")))
 }
 
@@ -373,17 +406,22 @@ func responderOK(w http.ResponseWriter) {
 	w.Write([]byte(`{"ok":true}`))
 }
 
+type progressoItem struct {
+	Baixado    int64  `json:"baixado"`
+	Total      int64  `json:"total"`
+	Velocidade int64  `json:"velocidade"`
+	Mirror     string `json:"mirror"`
+	Etapa      string `json:"etapa,omitempty"` // "indice": o ZIM já veio, está baixando o índice de busca
+}
+
 type visaoItem struct {
 	*ItemCatalogo
-	Situacao   string      `json:"situacao"`
-	Instalado  *Instalado  `json:"instalado"`
-	Disponivel *Disponivel `json:"disponivel"`
-	Progresso  *struct {
-		Baixado    int64  `json:"baixado"`
-		Total      int64  `json:"total"`
-		Velocidade int64  `json:"velocidade"`
-		Mirror     string `json:"mirror"`
-	} `json:"progresso,omitempty"`
+	Situacao   string         `json:"situacao"`
+	Instalado  *Instalado     `json:"instalado"`
+	Disponivel *Disponivel    `json:"disponivel"`
+	Progresso  *progressoItem `json:"progresso,omitempty"`
+	// desatualizado só porque falta o índice de busca da edição instalada: "Atualizar" baixa só ele
+	SoIndice        bool   `json:"so_indice,omitempty"`
 	Erro            string `json:"erro,omitempty"`
 	ErroVerificacao string `json:"erro_verificacao,omitempty"`
 }
@@ -392,22 +430,31 @@ func (a *App) apiEstado(w http.ResponseWriter, r *http.Request) {
 	a.mu.Lock()
 	itens := make([]visaoItem, 0, len(a.cat().Itens))
 	for _, it := range a.cat().Itens {
-		v := visaoItem{ItemCatalogo: it, Instalado: a.est.Instalados[it.ID], Disponivel: a.est.Disponiveis[it.ID],
-			Erro: a.erros[it.ID], ErroVerificacao: a.errosVerificacao[it.ID]}
+		inst, disp := a.est.Instalados[it.ID], a.est.Disponiveis[it.ID]
+		v := visaoItem{ItemCatalogo: it, Erro: a.erros[it.ID], ErroVerificacao: a.errosVerificacao[it.ID]}
+		// para a pessoa o acervo é uma coisa só: os tamanhos saem com o índice de busca somado
+		if inst != nil {
+			c := *inst
+			c.Tamanho = inst.tamanhoComIndice()
+			v.Instalado = &c
+		}
+		if disp != nil {
+			c := *disp
+			c.Tamanho = disp.tamanhoComIndice()
+			v.Disponivel = &c
+		}
 		if t := a.tarefas[it.ID]; t != nil {
 			v.Situacao = t.Situacao
 			if t.Situacao == "baixando" || t.Situacao == "verificando" {
-				v.Progresso = &struct {
-					Baixado    int64  `json:"baixado"`
-					Total      int64  `json:"total"`
-					Velocidade int64  `json:"velocidade"`
-					Mirror     string `json:"mirror"`
-				}{t.Baixado.Load(), t.Total, t.Velocidade, t.Mirror}
+				v.Progresso = &progressoItem{t.Baixado.Load(), t.Total, t.Velocidade, t.Mirror, t.Etapa}
 			}
-		} else if v.Instalado != nil {
+		} else if inst != nil {
 			v.Situacao = "instalado"
-			if desatualizado(it, v.Instalado, v.Disponivel) {
+			if desatualizado(it, inst, disp) {
 				v.Situacao = "desatualizado"
+				if v.SoIndice = soFaltaIndice(it, inst, disp); v.SoIndice {
+					v.Disponivel.Tamanho = disp.Indice.Tamanho // é só isso que "Atualizar" vai baixar
+				}
 			}
 		} else {
 			v.Situacao = "nao_instalado"
@@ -425,6 +472,7 @@ func (a *App) apiEstado(w http.ResponseWriter, r *http.Request) {
 		"verificando":     a.verificando,
 		"itens":           itens,
 		"traducao":        a.visaoTraducoes(),
+		"busca":           a.visaoBusca(),
 	}
 	a.mu.Unlock()
 	if livre, total, err := espacoEmDisco(a.cfg.Dados); err == nil {
@@ -435,10 +483,24 @@ func (a *App) apiEstado(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+// soFaltaIndice: o ZIM instalado já é o da edição disponível e só o índice de busca dela não veio.
+func soFaltaIndice(it *ItemCatalogo, inst *Instalado, disp *Disponivel) bool {
+	if disp == nil || inst.Arquivo != it.nomeArquivo(disp.Edicao) {
+		return false
+	}
+	if inst.SHA256 != "" && disp.SHA256 != "" && inst.SHA256 != disp.SHA256 {
+		return false
+	}
+	return faltaIndice(inst, disp)
+}
+
 // desatualizado compara o instalado com a edição mais recente conhecida.
 func desatualizado(it *ItemCatalogo, inst *Instalado, disp *Disponivel) bool {
 	if disp == nil || it.personalizado() || it.legado() { // sem edição a acompanhar
 		return false
+	}
+	if soFaltaIndice(it, inst, disp) {
+		return true
 	}
 	if inst.SHA256 != "" && disp.SHA256 != "" {
 		return inst.SHA256 != disp.SHA256

@@ -14,7 +14,7 @@
 .stat-val-p { font-size: 1.02rem; font-weight: 650; }
 .stat-rot { font-size: .78rem; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .disco { height: 6px; margin: 7px 0 5px; border-radius: 999px; background: var(--surface-2); overflow: hidden; display: flex; }
-.disco i { display: block; height: 100%; width: 0; background: var(--muted); transition: width .5s; } /* outros usos: cinza neutro, distinto do espaço livre (a trilha) e do verde do acervo */
+.disco i { display: block; height: 100%; width: 0; background: var(--ardosia); transition: width .5s; } /* outros usos: azul acinzentado, distinto do espaço livre (a trilha) e do verde do acervo */
 .disco i.acervo { background: var(--accent); }
 
 .alerta { margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; padding: 11px 14px; border-radius: var(--raio-p);
@@ -44,6 +44,12 @@
 .lin { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 14px; align-items: center;
   padding: 14px 16px; position: relative; transition: background .15s; }
 .lin + .lin, .lin-tema + .lin, .lin + .lin-tema { border-top: 1px solid var(--border); }
+/* linha compacta: o modelo de busca e os pacotes de tradução, que baixam sozinhos e não se apagam */
+.lin.mini { padding-top: 9px; padding-bottom: 9px; }
+.lin.mini .lin-st .i { width: 17px; height: 17px; }
+.lin.mini .lin-nome { font-size: .9rem; font-weight: 600; }
+.lin.mini .lin-meta { margin-top: 1px; }
+.lin.mini .btn { height: 32px; }
 .lin-tema { padding: 8px 16px; background: var(--surface-2); color: var(--text-2); font-size: .7rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .09em; }
 .lin:hover { background: var(--hover); }

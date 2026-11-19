@@ -326,7 +326,7 @@ func TestTraducaoComSenha(t *testing.T) {
 		{http.MethodGet, "/prep/traducao/en-pt/1/motor.wasm", true},
 		{http.MethodGet, "/api/estado", false},
 		{http.MethodPost, "/api/traducao/baixar/en-pt", false},
-		{http.MethodPost, "/api/traducao/apagar/en-pt", false},
+		{http.MethodPost, "/api/traducao/cancelar/en-pt", false},
 	}
 	for _, c := range casos {
 		passou = ""

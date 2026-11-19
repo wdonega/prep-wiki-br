@@ -23,7 +23,7 @@
   // o que nunca vai para o tradutor: código, fórmulas, pronúncia, mídia e o que o próprio acervo marcou
   // (as três últimas classes são da Wikipédia: fórmula química, fórmula em texto e alfabeto fonético)
   const FIXO = "script,style,noscript,template,textarea,pre,code,kbd,samp,var,math,svg,canvas,audio,video,iframe,object,embed,select," +
-    "[translate=no],.notranslate,[contenteditable=true],.mwe-math-element,.chemf,.texhtml,.IPA";
+    "[translate=no],.notranslate,[contenteditable=true],.mwe-math-element,.chemf,.texhtml,.IPA,.video-js";
   // mais os trechos que o acervo marca como sendo de outro idioma (um nome em latim num texto em inglês)
   // (compara só o começo do código: "en", "en-US", "en_US" e "eng" são todos inglês)
   const fixoPara = (de) => `${FIXO},[lang]:not([lang=""]):not([lang^="${de}" i])`;
@@ -321,21 +321,44 @@
         (depois && depois.nodeType === Node.TEXT_NODE && /^[\p{L}\p{N}]/u.test(depois.data) ? "d" : "");
       if (lados) s.setAttribute("data-prep-cola", lados);
     }
-    bloco.fonte = TEM_TEXTO.test(copia.textContent) && !nomeDePagina(bloco, copia, titulo) ? copia.innerHTML : "";
+    bloco.nome = nomeDePagina(bloco, copia, titulo);
+    if (bloco.nome === "links") bloco.linksOrig = [...bloco.el.querySelectorAll("a")].map((a) => a.textContent.trim());
+    bloco.fonte = TEM_TEXTO.test(copia.textContent) ? copia.innerHTML : "";
   }
 
   // Sem uma frase em volta, o modelo erra muito em nomes: "Clove hitch" vira uma palavra inventada.
-  // Por isso ficam como o acervo escreveu: o título curto da página (onde quer que se repita, como no
-  // quadro ao lado do texto) e os blocos feitos só de links para outras páginas (um link curto sozinho,
-  // como os itens de "veja também", ou uma lista deles), onde cada link é o nome de uma página.
+  // Por isso o nome de uma página traduzido vem sempre com o original à mão: o título curto da página
+  // ("titulo": o original fica embaixo, pequeno) e os blocos feitos só de links para outras páginas
+  // ("links": um link curto sozinho, como os itens de "veja também", ou uma lista deles; o original de cada
+  // link fica na dica do mouse). Devolve "" para um bloco comum.
   function nomeDePagina(bloco, copia, titulo) {
     const palavras = (t) => t.trim().split(/\s+/).length;
-    if (palavras(bloco.texto) <= 3 && (bloco.el.tagName === "H1" || bloco.texto === titulo)) return true;
+    if (palavras(bloco.texto) <= 3 && (bloco.el.tagName === "H1" || bloco.texto === titulo)) return "titulo";
     const links = [...copia.querySelectorAll("a")];
-    if (!links.length || (links.length === 1 && palavras(links[0].textContent) > 3)) return false; // um link comprido é uma frase
+    if (!links.length || (links.length === 1 && palavras(links[0].textContent) > 3)) return ""; // um link comprido é uma frase
     const letras = (t) => (t.match(/\p{L}/gu) || []).length;
     const total = letras(bloco.texto), nosLinks = links.reduce((n, l) => n + letras(l.textContent), 0);
-    return total - nosLinks <= 0.15 * total; // fora dos links só sobra vírgula, "e", "ou"
+    return total - nosLinks <= 0.15 * total ? "links" : ""; // fora dos links só sobra vírgula, "e", "ou"
+  }
+
+  // O original ao lado do nome traduzido (veja nomeDePagina)
+  function mostrarOriginal(bloco, nos) {
+    const doc = bloco.el.ownerDocument;
+    if (bloco.nome === "titulo") {
+      const traduzido = nos.map((n) => n.textContent).join("").trim();
+      if (traduzido.toLowerCase() === bloco.texto.toLowerCase()) return; // ficou igual: não repete
+      const orig = doc.createElement("span");
+      orig.textContent = bloco.texto;
+      orig.setAttribute("lang", pagina && pagina.langOriginal ? pagina.langOriginal : "en");
+      orig.setAttribute("translate", "no");
+      orig.style.cssText = "display:block;font-size:.5em;font-weight:normal;opacity:.65;margin-top:.15em;letter-spacing:0";
+      nos.push(orig);
+    } else if (bloco.nome === "links" && bloco.linksOrig) {
+      const links = [];
+      for (const n of nos) if (n.nodeType === Node.ELEMENT_NODE) links.push(...(n.tagName === "A" ? [n] : n.querySelectorAll("a")));
+      if (links.length !== bloco.linksOrig.length) return; // o tradutor juntou ou separou links: sem como saber qual é qual
+      links.forEach((a, i) => { if (a.textContent.trim() !== bloco.linksOrig[i]) a.title = bloco.linksOrig[i]; });
+    }
   }
 
   // Monta os nós traduzidos de um bloco. Devolve null quando a tradução não é confiável, e aí o bloco fica
@@ -386,7 +409,7 @@
 
   function estadoDe(p) {
     if (!p) return "";
-    return !p.blocos ? "original" : p.erro ? "erro"
+    return !p.blocos ? (p.adiada ? "traduzindo" : "original") : p.erro ? "erro"
       : !(p.ocupado || p.pendentes.size) ? "traduzido" : tradutor && tradutor.carregado ? "traduzindo" : "preparando";
   }
 
@@ -465,6 +488,7 @@
     p.pendentes.delete(bloco);
     const nos = html == null ? null : montarTraducao(bloco, html);
     if (!nos) return;
+    if (bloco.nome) mostrarOriginal(bloco, nos);
     bloco.trad = nos;
     bloco.el.replaceChildren(...nos);
   }
@@ -551,8 +575,100 @@
   const barraKiwix = document.getElementById("kiwixtoolbar");
   if (!quadro || !barraKiwix) return;
 
+  // ---------------------------------------------------------------- páginas que mudam depois de abrir
+
+  // Um canal de vídeo é um aplicativo dentro do acervo: a página abre vazia, o conteúdo entra depois e, ao
+  // trocar de vídeo, o endereço muda sem a página recarregar. Três cuidados, que valem para qualquer acervo:
+  //  1. o que entra na página depois de aberta também é traduzido;
+  //  2. um bloco já traduzido cujo conteúdo o acervo trocou volta para a fila com o texto novo;
+  //  3. quando o endereço muda, a página volta ao original na hora (o aplicativo atualiza os nós dele, e
+  //     não as cópias traduzidas) e é traduzida de novo assim que para de mudar.
+  const QUIETO = 500, ESPERA_MAX = 4000; // ms sem mudança para considerar a página montada, e o teto da espera
+  let vigiaDoc = null;
+
+  function acompanhar(p) {
+    const novos = new Set();
+    let relogio = 0, ultima = 0;
+    // o bloco de tradução em que um nó está, se estiver em algum
+    const blocoDe = (no) => {
+      for (let el = no.nodeType === Node.ELEMENT_NODE ? no : no.parentElement; el && el !== p.raiz; el = el.parentElement) {
+        const b = p.porEl.get(el);
+        if (b) return b;
+      }
+      return null;
+    };
+    const despejar = () => {
+      relogio = 0;
+      const lista = [...novos];
+      novos.clear();
+      if (p !== pagina || !p.blocos) return;
+      const validos = lista.filter((el) => el.isConnected && !blocoDe(el) && !el.closest(p.fixo));
+      // um elemento dentro de outro da lista entra junto com o de fora
+      for (const el of validos) if (!validos.some((o) => o !== el && o.contains(el))) acrescentarBlocos(p, el);
+    };
+    vigiaDoc = new p.janela.MutationObserver((mutacoes) => {
+      ultima = Date.now();
+      if (p !== pagina || !p.blocos) return;
+      for (const m of mutacoes) {
+        if (!m.addedNodes.length || !m.target.isConnected) continue;
+        const b = blocoDe(m.target);
+        if (b) {
+          // a troca foi nossa (a tradução entrando, ou o original voltando)? então não há o que fazer
+          const nossos = new Set([...(b.trad || []), ...b.orig]);
+          if (b.embrulho || [...m.addedNodes].every((n) => nossos.has(n))) continue;
+          // foi o acervo: o bloco recomeça, com o conteúdo que está na página agora
+          b.orig = [...b.el.childNodes];
+          b.trad = null;
+          b.feito = false;
+          b.fonte = undefined;
+          p.pendentes.delete(b);
+          p.vigia.observe(b.el);
+          continue;
+        }
+        for (const n of m.addedNodes) {
+          if (n.nodeType === Node.ELEMENT_NODE) novos.add(n);
+          else if (n.nodeType === Node.TEXT_NODE && m.target !== p.raiz) novos.add(m.target);
+        }
+      }
+      if (novos.size && !relogio) relogio = setTimeout(despejar, 250);
+    });
+    vigiaDoc.observe(p.raiz, { childList: true, subtree: true });
+
+    const aoMudarEndereco = () => {
+      if (p !== pagina || !p.blocos) return;
+      restaurar(p);
+      p.adiada = true;
+      mostrarEstado();
+      const inicio = ultima = Date.now();
+      const esperar = () => {
+        if (p !== pagina || !p.adiada) return;
+        const agora = Date.now();
+        if (agora - ultima < QUIETO && agora - inicio < ESPERA_MAX) { setTimeout(esperar, 150); return; }
+        p.adiada = false;
+        if (preferencia() === "original") mostrarEstado(); else comecarTraducao();
+      };
+      setTimeout(esperar, 150);
+    };
+    // pushState e replaceState não avisam ninguém: o jeito de saber é passar por eles
+    try {
+      for (const nome of ["pushState", "replaceState"]) {
+        const original = p.janela.history[nome];
+        p.janela.history[nome] = function (...args) {
+          const antes = p.janela.location.href;
+          const r = original.apply(this, args);
+          if (p.janela.location.href !== antes) aoMudarEndereco();
+          return r;
+        };
+      }
+      p.janela.addEventListener("popstate", aoMudarEndereco);
+      p.janela.addEventListener("hashchange", aoMudarEndereco);
+    } catch (e) { /* sem acesso ao histórico da página: fica só o que entra depois */ }
+  }
+
   async function aoAbrirPagina() {
     if (pagina && pagina.vigia) pagina.vigia.disconnect();
+    if (vigiaDoc) vigiaDoc.disconnect();
+    vigiaDoc = null;
     pagina = null;
     let doc = null, caminho = "";
     try {
@@ -567,6 +683,7 @@
     if (quadro.contentDocument !== doc) return; // a pessoa já foi para outra página
     if (!pacote) return mostrarEstado();
     pagina = { doc, pacote, raiz: doc.body, janela: quadro.contentWindow, blocos: null };
+    acompanhar(pagina);
     if (preferencia() === "original") mostrarEstado(); else comecarTraducao();
   }
 
@@ -615,7 +732,11 @@
   botao.addEventListener("click", () => {
     const p = pagina;
     if (!p) return;
-    if (!p.blocos) { // estava no original
+    if (p.adiada) { // esperando a página parar de mudar para traduzir: a pessoa pediu o original
+      p.adiada = false;
+      guardarPreferencia("original");
+      mostrarEstado();
+    } else if (!p.blocos) { // estava no original
       guardarPreferencia(null);
       comecarTraducao();
     } else if (p.erro) {

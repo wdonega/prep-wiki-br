@@ -19,6 +19,10 @@ type Instalado struct {
 	Mirror    string    `json:"mirror,omitempty"`
 	// "gerenciador" = baixado por aqui; "encontrado" = já estava na pasta (metadados parciais)
 	Origem string `json:"origem"`
+	// o índice de busca que está ao lado do ZIM (indice.go); nil = este acervo só tem a busca do Kiwix
+	Indice *IndiceInstalado `json:"indice,omitempty"`
+	// sha-256 de um índice que veio e não servia para este ZIM (outra edição): não é pedido de novo
+	IndiceRecusado string `json:"indice_recusado,omitempty"`
 }
 
 // Disponivel: a edição mais recente encontrada na última verificação (guardada para funcionar offline).
@@ -29,6 +33,8 @@ type Disponivel struct {
 	SHA256       string    `json:"sha256,omitempty"`
 	URLs         []string  `json:"urls"` // mirrors, em ordem de preferência
 	VerificadoEm time.Time `json:"verificado_em"`
+	// o índice de busca desta edição, se já existe um (indice.go); baixa junto com o ZIM
+	Indice *IndiceDisponivel `json:"indice,omitempty"`
 }
 
 // Personalizado: um acervo que não é do catálogo, acrescentado pela pessoa por link ou por arquivo.
@@ -51,6 +57,8 @@ type Estado struct {
 	// tinham no catálogo (para seguir reconhecendo o arquivo e mostrando título e descrição).
 	Legados      map[string]*ItemCatalogo `json:"legados,omitempty"`
 	VerificadoEm time.Time                `json:"verificado_em,omitempty"`
+	// o modelo da busca por significado, como veio na última verificação (busca.go)
+	ModeloBusca *ModeloBusca `json:"modelo_busca,omitempty"`
 }
 
 func novoEstado() *Estado {
@@ -151,5 +159,6 @@ func (e *Estado) sincronizarComDisco(dir string, cat *Catalogo) error {
 			}
 		}
 	}
+	e.reconhecerIndices(dir)
 	return nil
 }

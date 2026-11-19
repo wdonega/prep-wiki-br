@@ -17,6 +17,9 @@ import (
 )
 
 const (
+	// Abaixo disso um download é "pequeno" e pode andar ao lado de outro: com um acervo gigante baixando,
+	// um índice, o pacote de tradução ou uma wiki pequena não ficam esperando horas na fila.
+	limitePequeno  = 100_000_000
 	rodadasMirrors = 3                // quantas vezes percorre a lista inteira de mirrors
 	tempoOcioso    = 45 * time.Second // sem receber nada por esse tempo: troca de mirror
 	folgaDisco     = 200 << 20        // espaço que sempre sobra em disco
@@ -26,6 +29,7 @@ const (
 type Tarefa struct {
 	ID         string
 	Situacao   string // na_fila, baixando, verificando, apagando
+	Etapa      string // "" = o acervo (ZIM); "indice" = o índice de busca dele (indice.go)
 	Total      int64
 	Baixado    atomic.Int64
 	Velocidade int64 // bytes/s, atualizado a cada segundo
@@ -56,8 +60,12 @@ func (a *App) porNaFila(id string) error {
 	ctx, cancel := context.WithCancel(a.ctx)
 	a.tarefas[id] = &Tarefa{ID: id, Situacao: "na_fila", ctx: ctx, cancelar: cancel}
 	delete(a.erros, id)
+	fila := a.fila
+	if t := a.tamanhoDaTarefa(id); t > 0 && t < limitePequeno && a.filaPequena != nil {
+		fila = a.filaPequena
+	}
 	select {
-	case a.fila <- id:
+	case fila <- id:
 		return nil
 	default:
 		delete(a.tarefas, id)
@@ -80,43 +88,82 @@ func (a *App) cancelar(id string) error {
 	return nil
 }
 
-// trabalhador processa a fila, um download por vez (não divide a banda entre vários).
-func (a *App) trabalhador() {
+// tamanhoDaTarefa diz quanto uma tarefa ainda vai baixar (0 = não se sabe). Chame com a.mu travado.
+func (a *App) tamanhoDaTarefa(id string) int64 {
+	switch {
+	case id == tarefaModeloBusca:
+		if m := a.est.ModeloBusca; m != nil {
+			return m.Tamanho
+		}
+	case strings.HasPrefix(id, prefixoTarefaTraducao):
+		if p := a.cat().pacoteTraducao(strings.TrimPrefix(id, prefixoTarefaTraducao)); p != nil {
+			return p.tamanho()
+		}
+	default:
+		it, inst, disp := a.cat().porID[id], a.est.Instalados[id], a.est.Disponiveis[id]
+		if it == nil || disp == nil {
+			return 0
+		}
+		if inst != nil && soFaltaIndice(it, inst, disp) {
+			return disp.Indice.Tamanho
+		}
+		return disp.tamanhoComIndice()
+	}
+	return 0
+}
+
+// trabalhador processa as filas. São dois: o principal pega qualquer download; o segundo (soPequenos) só os
+// pequenos. Assim andam no máximo dois ao mesmo tempo, e o segundo nunca divide a banda com outro grande.
+func (a *App) trabalhador(soPequenos bool) {
+	grandes := a.fila
+	if soPequenos {
+		grandes = nil // um canal nil nunca é escolhido no select
+	}
 	for {
 		select {
 		case <-a.ctx.Done():
 			return
-		case id := <-a.fila:
-			a.mu.Lock()
-			t := a.tarefas[id]
-			a.mu.Unlock()
-			if t == nil || t.ctx.Err() != nil {
-				continue
-			}
-			var err error
-			if strings.HasPrefix(id, prefixoTarefaTraducao) {
-				err = a.baixarTraducao(t)
-			} else {
-				err = a.baixar(t)
-			}
-			a.mu.Lock()
-			delete(a.tarefas, id)
-			switch {
-			case err == nil:
-				delete(a.erros, id)
-			case errors.Is(err, errCancelado) || t.ctx.Err() != nil:
-				if a.ctx.Err() != nil {
-					logf("%s: download interrompido (o parcial fica guardado e continua no próximo pedido)", id)
-				} else {
-					logf("%s: download cancelado", id)
-				}
-			default:
-				a.erros[id] = err.Error()
-				logf("%s: falhou: %v", id, err)
-			}
-			a.mu.Unlock()
+		case id := <-grandes:
+			a.executar(id)
+		case id := <-a.filaPequena:
+			a.executar(id)
 		}
 	}
+}
+
+// executar roda uma tarefa tirada da fila e guarda o resultado.
+func (a *App) executar(id string) {
+	a.mu.Lock()
+	t := a.tarefas[id]
+	a.mu.Unlock()
+	if t == nil || t.ctx.Err() != nil {
+		return
+	}
+	var err error
+	switch {
+	case strings.HasPrefix(id, prefixoTarefaTraducao):
+		err = a.baixarTraducao(t)
+	case id == tarefaModeloBusca:
+		err = a.baixarModeloBusca(t)
+	default:
+		err = a.baixar(t)
+	}
+	a.mu.Lock()
+	delete(a.tarefas, id)
+	switch {
+	case err == nil:
+		delete(a.erros, id)
+	case errors.Is(err, errCancelado) || t.ctx.Err() != nil:
+		if a.ctx.Err() != nil {
+			logf("%s: download interrompido (o parcial fica guardado e continua no próximo pedido)", id)
+		} else {
+			logf("%s: download cancelado", id)
+		}
+	default:
+		a.erros[id] = err.Error()
+		logf("%s: falhou: %v", id, err)
+	}
+	a.mu.Unlock()
 }
 
 func (a *App) baixar(t *Tarefa) (err error) {
@@ -156,7 +203,64 @@ func (a *App) baixar(t *Tarefa) (err error) {
 		a.mu.Unlock()
 	}
 
+	// Instalar um acervo é baixar o ZIM e, se a edição já tem um, o índice de busca dele. "Atualizar" num
+	// acervo cuja edição já é a disponível só busca o que falta (o índice).
 	final := it.nomeArquivo(disp.Edicao)
+	a.mu.Lock()
+	inst := a.est.Instalados[t.ID]
+	temZim := inst != nil && inst.Arquivo == final && !(inst.SHA256 != "" && disp.SHA256 != "" && inst.SHA256 != disp.SHA256)
+	ix := disp.Indice
+	if temZim && !faltaIndice(inst, disp) {
+		ix = nil
+	}
+	a.mu.Unlock()
+	var tamIndice, feito int64
+	if ix != nil {
+		tamIndice = ix.Tamanho
+	}
+	if !temZim {
+		if err := a.baixarZim(t, it, disp, final, tamIndice); err != nil {
+			return err
+		}
+		feito = disp.Tamanho
+	}
+	if ix == nil {
+		return nil
+	}
+	if livre, _, err := espacoEmDisco(a.cfg.Dados); err == nil && livre < ix.Tamanho+folgaDisco {
+		return fmt.Errorf("o acervo está instalado, mas falta espaço para o índice de busca (%s)", humano(ix.Tamanho))
+	}
+	a.mu.Lock()
+	t.Total = feito + ix.Tamanho
+	a.mu.Unlock()
+	switch err := a.baixarIndice(t, final, ix, feito); {
+	case err == nil:
+		a.mu.Lock()
+		a.pedirModeloBusca() // o primeiro índice traz junto o modelo que a busca usa
+		a.mu.Unlock()
+	case errors.Is(err, errIndiceDeOutroZim):
+		// o ZIM mudou depois de indexado: fica sem índice (busca do Kiwix) até sair um índice novo
+		a.mu.Lock()
+		if inst := a.est.Instalados[t.ID]; inst != nil {
+			inst.IndiceRecusado = ix.SHA256
+		}
+		errSalvar := a.est.salvar(a.caminhoEstado())
+		a.mu.Unlock()
+		if errSalvar != nil {
+			logf("salvar estado: %v", errSalvar)
+		}
+		logf("%s: %v; segue sem índice de busca", t.ID, err)
+	case errors.Is(err, errCancelado) || t.ctx.Err() != nil:
+		return err
+	default:
+		return fmt.Errorf("o acervo está instalado, mas o índice de busca não veio (%v); use Atualizar para tentar de novo", err)
+	}
+	return nil
+}
+
+// baixarZim baixa, confere e instala o ZIM de uma edição. extra é o que ainda vem depois dele
+// (o índice de busca), para o progresso e a conta de espaço em disco valerem para o acervo inteiro.
+func (a *App) baixarZim(t *Tarefa, it *ItemCatalogo, disp *Disponivel, final string, extra int64) (err error) {
 	parcial := filepath.Join(a.cfg.Dados, final+".part")
 	// cancelado pelo usuário: descarta o parcial. Se só caiu (erro de rede, container reiniciado),
 	// o .part fica e o próximo download continua de onde parou.
@@ -172,13 +276,13 @@ func (a *App) baixar(t *Tarefa) (err error) {
 		jaTem = info.Size()
 	}
 	if livre, _, err := espacoEmDisco(a.cfg.Dados); err == nil && disp.Tamanho > 0 {
-		if precisa := disp.Tamanho - jaTem + folgaDisco; livre < precisa {
+		if precisa := disp.Tamanho - jaTem + extra + folgaDisco; livre < precisa {
 			return fmt.Errorf("espaço insuficiente: precisa de %s, tem %s livres", humano(precisa), humano(livre))
 		}
 	}
 
 	a.mu.Lock()
-	t.Situacao, t.Total = "baixando", disp.Tamanho
+	t.Situacao, t.Etapa, t.Total = "baixando", "", disp.Tamanho+extra
 	a.mu.Unlock()
 	t.Baixado.Store(jaTem)
 
@@ -212,6 +316,7 @@ func (a *App) baixar(t *Tarefa) (err error) {
 	}
 
 	// pronto: renomeia, registra e atualiza a biblioteca do kiwix-serve
+	a.apagarIndice(final) // um índice com este nome era do arquivo que está sendo trocado
 	if err := os.Rename(parcial, filepath.Join(a.cfg.Dados, final)); err != nil {
 		return err
 	}
@@ -491,6 +596,7 @@ func (a *App) apagarArquivo(nome string) error {
 	for i := 0; i < 20; i++ {
 		err = os.Remove(caminho)
 		if err == nil || errors.Is(err, os.ErrNotExist) {
+			a.apagarIndice(nome) // o índice de busca vai junto com o ZIM
 			return nil
 		}
 		time.Sleep(time.Second)

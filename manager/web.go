@@ -75,6 +75,10 @@ const idiomaKiwix = `<script>try{localStorage.setItem("userlang","pt")}catch(e){
 // Sem pacote a página do leitor segue exatamente como era.
 const scriptTraducao = `<script src="/prep/traducao.js" defer></script>`
 
+// O leitor também ganha o script dos vídeos: liga a legenda em português e abre o vídeo no ponto que a
+// busca achou (web/prep/video.js).
+const scriptVideo = `<script src="/prep/video.js" defer></script>`
+
 func (a *App) proxyKiwix(web fs.FS) *httputil.ReverseProxy {
 	proxy := httputil.NewSingleHostReverseProxy(a.urlKiwix)
 	diretor := proxy.Director
@@ -85,6 +89,12 @@ func (a *App) proxyKiwix(web fs.FS) *httputil.ReverseProxy {
 			r.Header.Del("If-None-Match")   // senão viria um 304 da versão sem a folha de estilo
 			r.Header.Del("If-Modified-Since")
 		}
+		if a.ehJSONDeVideoComLegenda(r) { // vai ganhar as legendas do índice (legendas.go): corpo inteiro, sem compressão
+			r.Header.Del("Accept-Encoding")
+			r.Header.Del("If-None-Match")
+			r.Header.Del("If-Modified-Since")
+			r.Header.Del("Range")
+		}
 		if podeSerPDF(r) { // a resposta tem de vir inteira e com o tipo, para dar lugar ao leitor (leitorpdf.go)
 			r.Header.Del("If-None-Match")
 			r.Header.Del("If-Modified-Since")
@@ -92,6 +102,9 @@ func (a *App) proxyKiwix(web fs.FS) *httputil.ReverseProxy {
 		}
 	}
 	proxy.ModifyResponse = func(resp *http.Response) error {
+		if a.ehJSONDeVideoComLegenda(resp.Request) {
+			return a.porLegendasNoVideo(resp)
+		}
 		if ehPDF(resp) {
 			// o mesmo endereço dá a página do leitor (navegação) ou o arquivo (fetch): o cache do navegador
 			// não pode entregar um no lugar do outro
@@ -136,12 +149,18 @@ func (a *App) proxyKiwix(web fs.FS) *httputil.ReverseProxy {
 		comDesenho := !daPagina && bytes.Contains(corpo, []byte(`rel="Stylesheet"`))
 		if i := bytes.Index(corpo, []byte("</head>")); i >= 0 && !comDesenho {
 			extra := folhaKiwix
-			if daPagina && resp.Request.URL.Path == "/viewer" && len(a.traducoesInstaladas()) > 0 {
-				extra += scriptTraducao
+			if daPagina && resp.Request.URL.Path == "/viewer" {
+				extra += scriptVideo
+				if len(a.traducoesInstaladas()) > 0 {
+					extra += scriptTraducao
+				}
 			}
 			corpo = append(corpo[:i:i], append([]byte(extra), corpo[i:]...)...)
 		}
 		if resp.Request.URL.Path == "/viewer" {
+			// o acervo abre num <iframe>; sem esta permissão o botão de tela cheia do player de vídeo não faz nada
+			corpo = bytes.Replace(corpo, []byte(`<iframe id="content_iframe"`),
+				[]byte(`<iframe id="content_iframe" allowfullscreen allow="fullscreen"`), 1)
 			if i := bytes.Index(corpo, []byte("<head>")); i >= 0 {
 				i += len("<head>")
 				corpo = append(corpo[:i:i], append([]byte(idiomaKiwix), corpo[i:]...)...)
@@ -170,6 +189,23 @@ type livroXML struct {
 	Idioma    string `xml:"language,attr"`
 	Artigos   int64  `xml:"articleCount,attr"`
 	Midias    int64  `xml:"mediaCount,attr"`
+	Criador   string `xml:"creator,attr"`
+	Tags      string `xml:"tags,attr"`
+}
+
+// ehVideo: acervo que é um canal de vídeos (youtube2zim). O "_videos:yes" do Kiwix não serve para isso: ele só
+// diz que os vídeos não foram tirados do ZIM e aparece também na Wikipédia, no iFixit etc. O youtube2zim põe como
+// autor "Youtube Channel “<nome>”" e, às vezes, a tag "youtube".
+func (l livroXML) ehVideo() bool {
+	if strings.HasPrefix(strings.ToLower(strings.TrimSpace(l.Criador)), "youtube channel") {
+		return true
+	}
+	for _, t := range strings.Split(l.Tags, ";") {
+		if strings.EqualFold(strings.TrimSpace(t), "youtube") {
+			return true
+		}
+	}
+	return false
 }
 
 // lerBiblioteca lê o library.xml, o que o kiwix-serve está servindo, indexado pelo nome do arquivo.
@@ -207,6 +243,8 @@ type livro struct {
 	Midias    int64    `json:"midias"`
 	Tamanho   int64    `json:"tamanho"`
 	Edicao    string   `json:"edicao"`
+	Video     bool     `json:"video,omitempty"`  // canal de vídeos (a home mostra a etiqueta "Vídeo")
+	Indice    bool     `json:"indice,omitempty"` // tem índice: entra na busca por significado (busca.go)
 }
 
 // apiBiblioteca lista o que o kiwix-serve está servindo agora: os itens instalados que entraram
@@ -217,6 +255,7 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 	a.muBiblioteca.Unlock()
 
 	livros := []livro{}
+	comIndice := false
 	cat := a.cat()
 	a.mu.Lock()
 	for _, it := range cat.Itens {
@@ -238,9 +277,10 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 			ID: it.ID, Titulo: it.Titulo, Descricao: it.Descricao, Grupo: it.Grupo, Tema: it.Tema, Tags: it.Tags,
 			Nome:    nome,
 			Icone:   "/catalog/v2/illustration/" + x.ID + "/?size=48",
-			Artigos: x.Artigos, Midias: x.Midias, Tamanho: inst.Tamanho, Edicao: inst.Edicao,
-			Idiomas: []string{},
+			Artigos: x.Artigos, Midias: x.Midias, Tamanho: inst.tamanhoComIndice(), Edicao: inst.Edicao,
+			Idiomas: []string{}, Video: x.ehVideo(), Indice: inst.Indice != nil,
 		}
+		comIndice = comIndice || l.Indice
 		for _, i := range strings.Split(x.Idioma, ",") {
 			if i = strings.TrimSpace(i); i != "" {
 				l.Idiomas = append(l.Idiomas, i)
@@ -250,8 +290,17 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 	}
 	a.mu.Unlock()
 
+	// idiomas (código de duas letras) que abrem traduzidos para o português: a home marca esses acervos
+	traduz := []string{}
+	for _, inst := range a.traducoesInstaladas() {
+		if inst.Pacote.Para == "pt" {
+			traduz = append(traduz, inst.Pacote.De)
+		}
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "no-store")
 	json.NewEncoder(w).Encode(map[string]any{"grupos": cat.Grupos, "tags": cat.Tags, "livros": livros,
-		"admin": a.cfg.Admin != adminDesligado, "versao": versao})
+		"traduz": traduz, "admin": a.cfg.Admin != adminDesligado, "versao": versao,
+		"busca": comIndice && a.buscaPronta()}) // busca por significado no ar (senão a home oferece só a do Kiwix)
 }
