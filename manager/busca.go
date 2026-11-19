@@ -603,7 +603,12 @@ func urlNoLeitor(nome, caminho, ancora string) string {
 	return "/viewer#" + url.PathEscape(nome) + "/" + strings.Join(partes, "/") + ancora
 }
 
-var reSoPagina = regexp.MustCompile(`^p\. (\d+)$`)
+var (
+	reSoPagina = regexp.MustCompile(`^p\. (\d+)$`)
+	// marcas invisíveis de direção do texto, que alguns acervos põem em volta do título
+	reDirecao     = regexp.MustCompile(`[\x{202a}-\x{202e}\x{2066}-\x{2069}]`)
+	reVersaoNoFim = regexp.MustCompile(`\s+\d+\.\d+\.\d+\S*$`)
+)
 
 func (a *App) detalhar(ctx context.Context, alvo *alvoBusca, caminho, secao string, ordem int) resultadoBusca {
 	res := resultadoBusca{Tipo: "pagina", Titulo: tituloDoCaminho(caminho), Secao: secao, URL: urlNoLeitor(alvo.nome, caminho, "")}
@@ -625,6 +630,10 @@ func (a *App) detalhar(ctx context.Context, alvo *alvoBusca, caminho, secao stri
 			break
 		}
 		titulo, secoes := secoesDoHTML(string(b))
+		if titulo = reDirecao.ReplaceAllString(titulo, ""); secao == "simulação" {
+			// PhET: o <title> da página traz a versão da simulação ("Sob Pressão 1.1.36")
+			titulo = strings.TrimSpace(reVersaoNoFim.ReplaceAllString(titulo, ""))
+		}
 		if titulo != "" {
 			res.Titulo = titulo
 		}

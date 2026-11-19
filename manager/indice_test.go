@@ -392,6 +392,9 @@ func appComBusca(t *testing.T) *App {
 			w.Header().Set("Content-Type", "application/json")
 			w.Header().Set("ETag", `"original"`)
 			io.WriteString(w, `{"id":"abc","title":"Como ferver água","description":"Um vídeo curto.","videoPath":"videos/abc/video.webm","subtitlePath":null,"subtitleList":[]}`)
+		case "/content/wiki/sob-pressao_pt.html":
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			io.WriteString(w, "<html><head><title>\u202aSob Pressão\u202c 1.1.36</title></head><body><script src=\"a.js\"></script></body></html>")
 		case "/content/wiki/playlists.json":
 			io.WriteString(w, `{"playlists":[{"slug":"lista_a"},{"slug":"lista_b"}]}`)
 		case "/content/wiki/playlists/lista_a.json":
@@ -430,6 +433,7 @@ func appComBusca(t *testing.T) *App {
 		"Agua\tPurificação\t90",
 		"docs/Manual_de_campo.pdf\tp. 12\t1100",
 		"videos/como_ferver.json\ttranscrição 1:05\t800",
+		"sob-pressao_pt.html\tsimulação\t300",
 	}
 	legendas := map[string]string{
 		"abc.en.vtt": "WEBVTT\n\n00:00:01.000 --> 00:00:04.000\nHello there.\n\n00:01:05.000 --> 00:01:09.000\nBoil the water for one minute.\n",
@@ -441,7 +445,7 @@ func appComBusca(t *testing.T) *App {
 <book id="`+uuidDeTeste+`" path="wiki.zim" title="Wiki" language="eng" creator="Youtube Channel “Teste”" tags="youtube"/></library>`))
 	a.est.Instalados["wiki"] = &Instalado{Arquivo: "wiki.zim", Tamanho: 96}
 	a.est.reconhecerIndices(a.cfg.Dados)
-	if ix := a.est.Instalados["wiki"].Indice; ix == nil || ix.Trechos != 4 || ix.Legendas != 1 {
+	if ix := a.est.Instalados["wiki"].Indice; ix == nil || ix.Trechos != 5 || ix.Legendas != 1 {
 		t.Fatalf("o índice ao lado do ZIM devia ser reconhecido: %+v", ix)
 	}
 	return a
@@ -483,8 +487,8 @@ func TestBuscaPorSignificado(t *testing.T) {
 	for _, r := range res {
 		paginas[r.URL]++
 	}
-	if len(res) != 3 || paginas["/viewer#wiki/Agua"] != 1 {
-		t.Errorf("devia haver 3 páginas distintas: %v", paginas)
+	if len(res) != 4 || paginas["/viewer#wiki/Agua"] != 1 {
+		t.Errorf("devia haver 4 páginas distintas: %v", paginas)
 	}
 	if res[0].Secao != "" { // a seção com o nome da própria página não é repetida
 		t.Errorf("seção igual ao título devia sair vazia: %+v", res[0])
@@ -502,6 +506,12 @@ func TestBuscaPorSignificado(t *testing.T) {
 	if r := res[0]; r.Tipo != "video" || r.Titulo != "Como ferver água" || r.Secao != "aos 1:05" ||
 		r.URL != "/viewer#wiki/index.html#/watch/como_ferver?list=lista_b&t=65" || r.Trecho != "Ferva a água por um minuto." {
 		t.Errorf("resultado em vídeo: %+v", r)
+	}
+
+	// simulação do PhET: o título sai sem as marcas invisíveis de direção e sem o número da versão
+	_, _, res = buscar(t, a, "q=trecho+4&n=1")
+	if r := res[0]; r.Titulo != "Sob Pressão" || r.Secao != "simulação" || r.URL != "/viewer#wiki/sob-pressao_pt.html" {
+		t.Errorf("resultado em simulação: %+v", r)
 	}
 
 	if status, _, _ := buscar(t, a, "q=+"); status != http.StatusBadRequest {
