@@ -1,0 +1,54 @@
+# Baixa o catálogo do prep-wiki-br e gera os índices de busca (embeddings) de cada acervo.
+#   ./iniciar.sh     sobe tudo e abre o tmux "indice" para acompanhar
+#   ./estado.sh      resumo: o que já baixou, o que já indexou, disco livre
+# Tudo retoma de onde parou: download com -C -, índice em blocos salvos um a um.
+# restart: unless-stopped faz os serviços voltarem sozinhos se caírem ou se a máquina reiniciar.
+name: prep-indice
+
+x-gpu: &gpu
+  image: ghcr.io/ggml-org/llama.cpp:server-cuda
+  volumes: ["./modelos:/modelos:ro"]
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD", "curl", "-sf", "http://127.0.0.1:8080/health"]
+    interval: 15s
+    retries: 20
+
+services:
+  baixar:
+    build: .
+    user: "${UID}:${GID}"
+    command: python -u baixar.py
+    volumes: ["./:/trabalho"]
+    restart: unless-stopped
+
+  embed0:
+    <<: *gpu
+    command: -m /modelos/embeddinggemma-2-Q8_0.gguf --embedding --host 0.0.0.0 --port 8080 -ngl 99 -c 32768 -np 16 -b 8192 -ub 8192 --no-webui
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ["0"], capabilities: [gpu]}]
+
+  embed1:  # RTX 5060 Ti: caiu do barramento 2 vezes sob carga (Xid 79); só sobe com --profile gpu1
+    <<: *gpu
+    profiles: ["gpu1"]
+    command: -m /modelos/embeddinggemma-2-Q8_0.gguf --embedding --host 0.0.0.0 --port 8080 -ngl 99 -c 32768 -np 16 -b 8192 -ub 8192 --no-webui
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ["1"], capabilities: [gpu]}]
+
+  indexar:
+    build: .
+    user: "${UID}:${GID}"
+    command: python -u indexar.py
+    environment:
+      ETAPA: "${ETAPA:-texto}"   # texto = só acervos de páginas; todos = inclui PDFs, vídeos e mapas
+      SERVIDORES: "http://embed0:8080"
+      # RTX 3060 do llm5 (llm5/embed.sh) e AMD BC-250 do llm3/llm4 (bc250/embed.sh, Vulkan; cosseno 0,9998 com a
+      # CUDA); se algum cair, o pedido volta para a fila e o índice segue com os outros
+      SERVIDORES_EXTRAS: "http://llm5.lab:8097 http://llm3.lab:8097 http://llm4.lab:8097"
+    volumes: ["./:/trabalho"]
+    depends_on: [embed0]
+    restart: unless-stopped
