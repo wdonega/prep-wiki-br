@@ -67,6 +67,8 @@ ETAPA=todos ./iniciar.sh     # depois da etapa texto: PDFs, canais de vídeo e m
   (`legendas/<zim>/COMPLETO`), porque a fala dos vídeos entra no índice.
 - Cada PDF é lido num processo separado: um PDF que derruba o leitor (aconteceu no ready.gov) é pulado e avisado no
   log, em vez de travar tudo.
+- O PhET (simulações interativas) não tem texto nas páginas: cada simulação vira um trecho só, montado com o
+  título e as categorias do catálogo do acervo e com os rótulos que a própria simulação mostra na tela.
 - Máquinas extras: `llm5/embed.sh` (NVIDIA) e `bc250/embed.sh` (AMD BC-250, Vulkan) sobem servidores de
   embeddings que o `indexar` usa pela variável `SERVIDORES_EXTRAS` do `docker-compose.yml`. Se uma cair, o
   trabalho dela volta para a fila.
@@ -149,5 +151,5 @@ O formato do `.zimdex` e do `indice.json` está descrito no começo do [`zimdex.
 
 ## Tamanhos
 
-Os 77 índices somam 3,7 GB. O maior é o da Wikipédia completa (1,2 GB: 845 MB de vetores e 340 MB da lista de
+Os 78 índices somam 3,7 GB. O maior é o da Wikipédia completa (1,2 GB: 845 MB de vetores e 340 MB da lista de
 trechos). Um canal de vídeo fica entre 1,5 e 12 MB, já com as legendas nas duas línguas.

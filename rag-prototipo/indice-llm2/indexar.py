@@ -163,6 +163,8 @@ def _trechos(id_):
         if e.is_redirect or e.path.startswith(("_", "-/")):
             return []
         it = e.get_item()
+        if _modo == "phet":
+            return _phet(e, it)
         if _modo == "video":
             # youtube2zim 3.x: o HTML é a casca do app; cada vídeo tem um JSON com título, descrição e capítulos.
             # Entram os metadados e, se houver, a transcrição do áudio (legendas/<zim>/<id>.vtt, feita pelo whisper).
@@ -188,6 +190,140 @@ def _trechos(id_):
     except Exception as erro:  # uma entrada estragada não para o acervo
         print(f"  entrada {id_}: {erro!r}"[:300], flush=True)
     return []
+
+
+# ------------------------------------------------------------ PhET (simulações interativas)
+
+# O que não é da simulação: os textos comuns a todas (menus, botões, créditos) vêm nestes pacotes.
+PHET_COMUNS = {"JOIST", "SCENERY_PHET", "SUN", "TAMBO", "VEGAS", "BRAND", "JOIST_BRAND", "TWIXT", "GRIDDLE", "BAMBOO",
+               "PHET_IO", "CHIPPER", "SCENERY", "QUERY_STRING_MACHINE", "TANDEM"}
+RE_PAGINA_PHET = re.compile(r"^(.+)_([a-z]{2,3}(?:_[A-Z]{2})?)\.html$")
+RE_MARCAS = re.compile("[\u202a-\u202e\u2066-\u2069]")  # marcas de direção do texto, que o PhET põe em volta de cada rótulo
+
+
+@functools.lru_cache(maxsize=None)
+def _catalogo_phet():
+    """{página: (título, [categorias])}, do catalog.js que a página inicial do acervo usa. As categorias vêm com o
+    nome na língua do acervo (<língua>.json)."""
+    t = bytes(_arquivo.get_entry_by_path("catalog.js").get_item().content).decode("utf-8", "replace")
+    dados, _ = json.JSONDecoder().raw_decode(t[t.index("{"):])
+    saida = {}
+    for lingua, sims in dados.get("simsByLanguage", {}).items():
+        try:
+            nomes = json.loads(bytes(_arquivo.get_entry_by_path(f"{lingua}.json").get_item().content))
+        except Exception:
+            nomes = {}
+        for sim in sims:
+            cats = [nomes.get("category-" + c.get("slug", ""), c.get("title", "")) for c in sim.get("categories", [])]
+            saida[f"{sim['id']}_{lingua}.html"] = (sim["title"], [c for c in cats if c])
+    return saida
+
+
+def _scripts_phet(pagina):
+    for src in re.findall(r'src="([^"]+\.js)"', pagina):
+        try:
+            yield bytes(_arquivo.get_entry_by_path(src).get_item().content).decode("utf-8", "replace")
+        except Exception:
+            continue
+
+
+def _serve_de_rotulo(valor):
+    """Ficam as palavras e frases; saem unidades ("kPa"), moldes ("{0} m") e marcação ("m/s<sup>2</sup>")."""
+    return len(valor) >= 4 and "{" not in valor and "<" not in valor and re.search(r"[^\W\d_]{3}", valor)
+
+
+def _textos_comprimidos(pagina, lingua):
+    r"""Os textos de uma simulação das mais novas, que os guarda comprimidos num molde próprio do PhET em vez de
+    JSON. Sem refazer o descompressor: dentro do molde cada texto aparece inteiro, depois da língua. Há duas
+    gerações do molde: uma separa com sinais, como em ...(pt\Reagentes(pt`_BR\Reagentes(en\Reactants*... (o acento
+    grave escapa o caractere seguinte); a outra, com caracteres de controle: ptVidroenGlass."""
+    padrao = re.compile(r"\(" + re.escape(lingua) + r"(?:`_[A-Za-z]{2})?\\\\((?:`.|\\\\'|[^`()*\\\\])+)"
+                        r"|\x08" + re.escape(lingua) + r"(?:_[A-Za-z]{2})?\x0c([^\x00-\x1f\\\\]+)")
+    textos = []
+    for t in _scripts_phet(pagina):
+        m = re.search(r"window\.phet\.chipper\.strings\s*=\s*\(", t)
+        if not m:
+            continue
+        fim = t.find("window.phet.chipper.stringMetadata", m.end())
+        for com_sinais, com_controle in padrao.findall(t[m.end():fim if fim > 0 else None]):
+            v = re.sub(r"`(.)", r"\1", com_sinais.replace("\\'", "'")) if com_sinais else com_controle
+            textos.append(RE_MARCAS.sub("", v).strip())
+    return textos
+
+
+@functools.lru_cache(maxsize=None)
+def _comuns_phet():
+    """Textos que se repetem em muitas simulações (menus, botões, créditos). No molde comprimido não dá para saber
+    de que pacote cada texto vem, então o que aparece em mais de 30% das simulações é tratado como comum."""
+    contagem_, n = {}, 0
+    for caminho in _catalogo_phet():
+        m = RE_PAGINA_PHET.match(caminho)
+        try:
+            pagina = bytes(_arquivo.get_entry_by_path(caminho).get_item().content).decode("utf-8", "replace")
+        except Exception:
+            continue
+        textos = {t.lower() for t in _textos_comprimidos(pagina, m.group(2))}
+        if textos:
+            n += 1
+            for t in textos:
+                contagem_[t] = contagem_.get(t, 0) + 1
+    return {t for t, c in contagem_.items() if c > max(3, 0.3 * n)}
+
+
+def _rotulos_phet(pagina, lingua):
+    """Os textos da própria simulação (rótulos, nomes de telas, opções), na língua da página. As simulações mais
+    antigas os carregam em window.phet.chipper.strings = {língua: {"PACOTE/chave": texto}}; as mais novas, comprimidos."""
+    rotulos, vistos = [], set()
+
+    def juntar(valor):
+        valor = RE_MARCAS.sub("", str(valor)).strip()
+        if _serve_de_rotulo(valor) and valor.lower() not in vistos:
+            vistos.add(valor.lower())
+            rotulos.append(valor)
+
+    for t in _scripts_phet(pagina):
+        m = re.search(r"window\.phet\.chipper\.strings\s*=\s*", t)
+        if not m:
+            continue
+        try:
+            por_lingua, _ = json.JSONDecoder().raw_decode(t[m.end():])
+        except Exception:
+            continue  # não é JSON: é o molde comprimido, tratado abaixo
+        textos = por_lingua.get(lingua) or next((v for k, v in por_lingua.items() if k.startswith(lingua)), {})
+        for chave, valor in textos.items():
+            if chave.split("/")[0] not in PHET_COMUNS:
+                juntar(valor.get("value", "") if isinstance(valor, dict) else valor)
+    if not rotulos:
+        comuns = _comuns_phet()
+        for valor in _textos_comprimidos(pagina, lingua):
+            if valor.lower() not in comuns:
+                juntar(valor)
+    return rotulos
+
+
+def _phet(e, it):
+    """Um trecho por simulação. A página de uma simulação é só a moldura (o conteúdo é desenhado por JavaScript), então
+    o texto vem do catálogo do acervo (título e categorias) e dos rótulos que a simulação mostra na tela."""
+    sim = _catalogo_phet().get(e.path)
+    m = RE_PAGINA_PHET.match(e.path)
+    if not sim or not m:
+        return []
+    titulo, cats = sim
+    # começa pelo nome do acervo ("Simulações interativas PhET"): quem busca "simulação de ..." acha, em qualquer língua
+    try:
+        acervo = bytes(_arquivo.get_metadata("Title")).decode("utf-8", "replace").strip()
+    except Exception:
+        acervo = ""
+    partes = [f"{acervo}: {titulo}" if acervo else titulo, ", ".join(cats)]
+    rotulos, letras = [], 0
+    for r in _rotulos_phet(bytes(it.content).decode("utf-8", "replace"), m.group(2)):
+        if letras + len(r) > TAM_TRECHO - 200:
+            break
+        rotulos.append(r)
+        letras += len(r) + 2
+    partes.append("; ".join(rotulos))
+    texto = ". ".join(p for p in partes if p) + "."
+    return [(e.path, titulo, "simulação", texto)]  # curto ou não, é um trecho só
 
 
 def _pdf(conteudo, caminho, titulo):
@@ -251,6 +387,8 @@ def categoria(a):
     c = contagem(a)
     paginas, pdfs = c.get("text/html", 0), c.get("application/pdf", 0)
     videos = sum(n for k, n in c.items() if k.startswith("video/"))
+    if "phet" in scraper:
+        return "phet", c
     if scraper.startswith("youtube") or videos > paginas / 2 > 0:
         return "video", c
     if scraper.startswith("maps2zim"):
@@ -465,9 +603,12 @@ def indexar(id_, arquivo, base=None):
     zim = ZIMS / arquivo
     a = Archive(str(zim))
     cat, cont = categoria(a)
-    if ETAPA != "todos" and cat != "texto":
+    if ETAPA != "todos" and cat not in ("texto", "phet"):
         return cat
-    modo = "html" if ETAPA != "todos" else ("pdf" if base else ("video" if cat == "video" else "tudo"))
+    if cat == "phet":  # um trecho por simulação, tirado do catálogo do acervo; vale nas duas etapas
+        modo = "phet"
+    else:
+        modo = "html" if ETAPA != "todos" else ("pdf" if base else ("video" if cat == "video" else "tudo"))
     pasta = TRABALHO / id_
     marca = pasta / "arquivo.txt"
     esperado = arquivo if modo == "html" else f"{arquivo} {modo}"
