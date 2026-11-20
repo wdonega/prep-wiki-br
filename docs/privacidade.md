@@ -27,10 +27,15 @@ O app só usa a internet para baixar o que você pede: a lista de acervos e os a
 
 Como em qualquer download, esses servidores recebem o seu endereço IP e o nome do arquivo pedido, e tratam esses dados conforme as políticas deles. O Prep Wiki BR não recebe nem guarda essas informações.
 
+## Apoio pelo Google Play
+
+No app instalado pela Google Play, quem decide apoiar o projeto paga pelo Google Play. O pagamento é processado pelo Google, conforme a política de privacidade do Google. O app recebe só a confirmação da compra e não vê nem guarda dados de pagamento.
+
 ## Permissões do Android
 
 - Internet: baixar os acervos.
 - Notificações e serviço em primeiro plano: mostrar o andamento e manter o download com a tela apagada.
+- Faturamento do Google Play e estado da rede (só no app da Google Play): o apoio voluntário ao projeto.
 
 O app não pede acesso a localização, contatos, câmera, microfone, fotos ou arquivos de outros apps.
 
@@ -40,7 +45,7 @@ O app não coleta dados de ninguém, incluindo crianças.
 
 ## Mudanças e contato
 
-Mudanças nesta política aparecem neste arquivo, com a data no topo. Dúvidas: abra um pedido em <https://github.com/wdonega/prep-wiki-br/issues>.
+Mudanças nesta política aparecem neste arquivo, com a data no topo. Dúvidas: <support@bigode.org> ou um pedido em <https://github.com/wdonega/prep-wiki-br/issues>. Veja também os [termos de uso](termos.md).
 
 ---
 
@@ -73,10 +78,15 @@ The app only uses the internet to download what you ask for: the list of collect
 
 As with any download, those servers receive your IP address and the name of the requested file, and handle that data under their own policies. Prep Wiki BR does not receive or store that information.
 
+## Support through Google Play
+
+In the app installed from Google Play, those who choose to support the project pay through Google Play. The payment is processed by Google under Google's privacy policy. The app only receives the purchase confirmation and never sees or stores payment data.
+
 ## Android permissions
 
 - Internet: to download collections.
 - Notifications and foreground service: to show progress and keep a download running with the screen off.
+- Google Play billing and network state (only in the Google Play app): voluntary support for the project.
 
 The app does not request access to location, contacts, camera, microphone, photos or other apps' files.
 
@@ -86,4 +96,4 @@ The app does not collect data from anyone, including children.
 
 ## Changes and contact
 
-Changes to this policy appear in this file, with the date at the top. Questions: open an issue at <https://github.com/wdonega/prep-wiki-br/issues>.
+Changes to this policy appear in this file, with the date at the top. Questions: <support@bigode.org> or an issue at <https://github.com/wdonega/prep-wiki-br/issues>. See also the [terms of use](termos.md).
