@@ -1,13 +1,13 @@
 # App de desktop
 
-O Prep Wiki BR para Windows e Linux, em [Electron](https://www.electronjs.org/). O processo principal ([`main.js`](main.js)) faz o papel que o `MainActivity` e o `Servico` fazem no Android: sobe o mesmo gerenciador do Docker como processo filho, com os dados na pasta do usuário, e mostra a biblioteca numa janela.
+O Prep Wiki BR para Windows, Linux e Mac, em [Electron](https://www.electronjs.org/). O processo principal ([`main.js`](main.js)) faz o papel que o `MainActivity` e o `Servico` fazem no Android: sobe o mesmo gerenciador do Docker como processo filho, com os dados na pasta do usuário, e mostra a biblioteca numa janela.
 
 | | |
 |---|---|
 | **Windows** | instalador (NSIS) e zip portátil, x64 |
 | **Linux** | AppImage (roda sem instalar), `.deb` e `.rpm`, em x64 e ARM |
-| **Mac** | só para testar; não é distribuído |
-| **Dados** | Windows: `%LOCALAPPDATA%\Prep Wiki BR` · Linux: `~/.local/share/prep-wiki-br` |
+| **Mac** | zip para Apple Silicon e Intel, instalado pelo Homebrew: `brew install --cask wdonega/prep/prep-wiki-br` |
+| **Dados** | Windows: `%LOCALAPPDATA%\Prep Wiki BR` · Linux: `~/.local/share/prep-wiki-br` · Mac: `~/Library/Application Support/Prep Wiki BR` |
 
 ## Como funciona
 
@@ -37,7 +37,7 @@ Precisa do Node 22 ou mais novo, do Go e, para o Linux, do Docker.
 
 ```bash
 npm ci
-./binarios.sh mac-arm64        # ou linux-x64, linux-arm64, win-x64: monta binarios/<alvo>/
+./binarios.sh mac-arm64        # ou mac-x64, linux-x64, linux-arm64, win-x64: monta binarios/<alvo>/
 npm start                      # abre o app a partir do código
 
 PREP_DADOS=/tmp/prep-teste npm start   # sem mexer na pasta de dados de verdade
@@ -67,9 +67,18 @@ A configuração do empacotamento fica no `package.json`, na chave `build`. O `e
 - **Hashes:** cada arquivo baixado é conferido com o sha-256 em [`binarios.sha256`](binarios.sha256), que foi conferido com o digest da release do llama.cpp e com o `.md5` publicado pelo Kiwix. Ao trocar de versão, atualize os dois juntos.
 - **Por que o `llama-server` de Linux é nosso:** o oficial exige OpenSSL 3, e distros novas (o Fedora atual, por exemplo) já trazem o 4. O nosso é compilado sem OpenSSL e sem OpenMP, na imagem `manylinux_2_28`, e só depende da glibc 2.28: roda de Debian 10, Ubuntu 20.04 e RHEL 8 em diante. Tem um motor para cada geração de processador e escolhe o melhor na partida.
 
+## Mac e Homebrew
+
+O app do Mac sai com assinatura caseira (ad-hoc), sem a conta paga da Apple (US$ 99/ano). Um app assim é bloqueado pelo macOS na primeira abertura, porque o download o marca com quarentena. A receita do Homebrew, no repositório [wdonega/homebrew-prep](https://github.com/wdonega/homebrew-prep), tira essa marca depois de instalar (`postflight_steps` com `xattr`), e o app abre direto. Foi testado: o zip baixado pelo Homebrew chega em quarentena e o app instalado sai sem ela.
+
+- **A receita se atualiza sozinha:** o workflow `atualizar.yml` do repositório da receita procura a última release `desktop-vX.Y.Z` a cada 6 horas e copia a versão e os sha-256 dos zips do Mac do `SHA256SUMS.txt`.
+- **Quem baixar o zip direto, sem o Homebrew,** precisa liberar o app em Ajustes do Sistema → Privacidade e Segurança → "Abrir mesmo assim".
+- **`hardenedRuntime` desligado:** com assinatura ad-hoc, o modo endurecido pode impedir o app de abrir; ele só faz sentido com a assinatura paga.
+- **Por que a receita não fica neste repositório:** o Homebrew clona o repositório inteiro, e este passa de 400 MB por causa dos PDFs das wikis.
+
 ## Publicar
 
-O workflow [`desktop.yml`](../.github/workflows/desktop.yml) gera tudo: o Linux numa máquina Ubuntu (x64 e ARM de uma vez) e o Windows numa máquina Windows.
+O workflow [`desktop.yml`](../.github/workflows/desktop.yml) gera tudo: o Linux numa máquina Ubuntu (x64 e ARM de uma vez), o Windows numa máquina Windows e o Mac numa máquina Mac (Apple Silicon e Intel de uma vez).
 
 - **Tag `desktop-vX.Y.Z`:** gera os pacotes e publica a release `desktop-vX.Y.Z`, com um `SHA256SUMS.txt`.
 - **Rodar à mão** (Actions → desktop → Run workflow): só gera os arquivos, para baixar e testar. A versão fica `0.0.<número da execução>`.
@@ -84,6 +93,7 @@ Ele não roda em push comum: o app de desktop tem versão própria, separada da 
 
 | Onde | Resultado |
 |---|---|
+| Mac, pelo Homebrew (receita de teste) | instala, tira a quarentena, e o app abre direto, sem aviso do macOS |
 | Mac, a partir do código | a janela abre na biblioteca; fechar, e até matar o app à força, fecha o gerenciador e o Kiwix |
 | Ubuntu desktop x64 (máquina de verdade) | o `.deb` instala pelo instalador visual, com ícone e descrição certos, e a biblioteca abre |
 | Windows 11 x64 (máquina de verdade) | o instalador instala e a biblioteca abre |

@@ -10,7 +10,7 @@ O Prep Wiki BR baixa acervos no formato [ZIM](https://openzim.org/) (Wikipédia,
 | **Demonstração ao vivo** | <https://prep-demo.bigode.org>, uma instalação real com 7 acervos |
 | **Imagem Docker** | `ghcr.io/wdonega/prep-wiki-br` ([como instalar](#como-instalar)) |
 | **App Android** | `org.bigode.prep`, em teste na Google Play |
-| **App de desktop** | Windows e Linux, em preparação ([`desktop/`](desktop)) |
+| **App de desktop** | Windows, Linux e Mac ([`desktop/`](desktop)); no Mac, `brew install --cask wdonega/prep/prep-wiki-br` |
 | **Índices de busca** | <https://huggingface.co/datasets/wdonega/zimdex> |
 
 Este README é para quem quer entender como o projeto foi feito ou contribuir. Para usar, comece pela página do projeto.
@@ -71,7 +71,7 @@ No Docker, o `kiwix-serve` e o `llama-server` são processos dentro da mesma ima
 |---|---|---|
 | [`manager/`](manager) | O gerenciador em Go, as páginas e o catálogo. É o produto. | [`manager/README.md`](manager/README.md) |
 | [`android/`](android) | O app Android, que embute o gerenciador. | [`android/README.md`](android/README.md) |
-| [`desktop/`](desktop) | O app de desktop (Windows e Linux), em Electron: sobe o gerenciador e mostra a biblioteca numa janela. | [`desktop/README.md`](desktop/README.md) |
+| [`desktop/`](desktop) | O app de desktop (Windows, Linux e Mac), em Electron: sobe o gerenciador e mostra a biblioteca numa janela. | [`desktop/README.md`](desktop/README.md) |
 | [`zimdex/`](zimdex) | A fábrica dos índices de busca e das legendas: extrai texto, calcula vetores, transcreve e traduz vídeos. | [`zimdex/README.md`](zimdex/README.md) |
 | [`sisteminha-embrapa/`](sisteminha-embrapa), [`plantas-medicinais/`](plantas-medicinais), [`chuvas-tempestades/`](chuvas-tempestades) | As fontes das três wikis do projeto. | README de cada pasta |
 | [`site/`](site) | A página do projeto (prep.bigode.org). | [`site/README.md`](site/README.md) |
@@ -141,7 +141,7 @@ Ideias para as próximas wikis, todas a partir de material de órgãos públicos
 | **Catálogo** | Basta o `manager/catalogo.json` chegar à `main`: as instalações o leem de lá. |
 | **Índices de busca** | À mão, pelo `zimdex/zimdex.py`, para o Hugging Face. |
 | **App Android** | À mão: o bundle assinado sobe pela Play Console. |
-| **App de desktop** | Uma tag `desktop-vX.Y.Z` roda o [`desktop.yml`](.github/workflows/desktop.yml), que gera o instalador e o zip do Windows, o AppImage, o `.deb` e o `.rpm` (x64 e ARM) e publica a release. |
+| **App de desktop** | Uma tag `desktop-vX.Y.Z` roda o [`desktop.yml`](.github/workflows/desktop.yml), que gera o instalador e o zip do Windows, o AppImage, o `.deb` e o `.rpm` (x64 e ARM) e o zip do Mac, e publica a release. A receita do Homebrew ([wdonega/homebrew-prep](https://github.com/wdonega/homebrew-prep)) se atualiza sozinha a partir dela. |
 | **Página do projeto** | À mão: a pasta `site/` é publicada como arquivos estáticos. |
 
 ## Apoie o projeto

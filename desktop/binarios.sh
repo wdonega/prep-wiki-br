@@ -4,7 +4,7 @@
 # a pasta para dentro do app (veja "extraResources" no package.json).
 #
 #   ./binarios.sh <alvo> [versão]
-#     alvo: win-x64 | linux-x64 | linux-arm64 | mac-arm64 (o Mac só serve para testar)
+#     alvo: win-x64 | linux-x64 | linux-arm64 | mac-arm64 | mac-x64
 #
 # Saída: binarios/<alvo>/. Os downloads ficam em .cache/ e são conferidos com binarios.sha256.
 # No Linux, o llama-server vem do llama-linux.sh (rode antes, numa máquina da mesma arquitetura).
@@ -27,6 +27,7 @@ case $ALVO in
   linux-x64)   GOOS=linux   GOARCH=amd64 KW=kiwix-tools_linux-x86_64-$KIWIX.tar.gz ;;
   linux-arm64) GOOS=linux   GOARCH=arm64 KW=kiwix-tools_linux-aarch64-$KIWIX.tar.gz ;;
   mac-arm64)   GOOS=darwin  GOARCH=arm64 KW=kiwix-tools_macos-arm64-$KIWIX.tar.gz LL=llama-$LLAMA-bin-macos-arm64.tar.gz ;;
+  mac-x64)     GOOS=darwin  GOARCH=amd64 KW=kiwix-tools_macos-x86_64-$KIWIX.tar.gz LL=llama-$LLAMA-bin-macos-x64.tar.gz ;;
   *) echo "alvo desconhecido: $ALVO" >&2; exit 2 ;;
 esac
 
@@ -59,15 +60,16 @@ else
 fi
 
 PASTA=binarios/$ALVO
-TMP=binarios/.tmp-$ALVO
-rm -rf "$PASTA" "$TMP"
-mkdir -p "$PASTA/llama" "$TMP"
+# (não "TMP": no Windows é a variável da pasta temporária do sistema, e o Go a usa)
+TEMPO=binarios/.tmp-$ALVO
+rm -rf "$PASTA" "$TEMPO"
+mkdir -p "$PASTA/llama" "$TEMPO"
 
 abrir() { case $1 in *.zip) unzip -q "$1" -d "$2" ;; *) mkdir -p "$2" && tar xzf "$1" -C "$2" ;; esac; }
 
 # kiwix-serve e kiwix-manage (no Windows, com as DLLs do ICU)
-abrir ".cache/$KW" "$TMP/kiwix"
-KDIR=$(dirname "$(find "$TMP/kiwix" -name "kiwix-serve$EXE" | head -1)")
+abrir ".cache/$KW" "$TEMPO/kiwix"
+KDIR=$(dirname "$(find "$TEMPO/kiwix" -name "kiwix-serve$EXE" | head -1)")
 cp "$KDIR/kiwix-serve$EXE" "$KDIR/kiwix-manage$EXE" "$PASTA/"
 if [ -n "$EXE" ]; then cp "$KDIR"/*.dll "$PASTA/"; fi
 
@@ -75,8 +77,8 @@ if [ -n "$EXE" ]; then cp "$KDIR"/*.dll "$PASTA/"; fi
 if [ "$GOOS" = linux ]; then
   LDIR=$LLAMA_LINUX
 else
-  abrir ".cache/$LL" "$TMP/llama"
-  LDIR=$(dirname "$(find "$TMP/llama" -name "llama-server$EXE" -type f | head -1)")
+  abrir ".cache/$LL" "$TEMPO/llama"
+  LDIR=$(dirname "$(find "$TEMPO/llama" -name "llama-server$EXE" -type f | head -1)")
 fi
 cp "$LDIR/llama-server$EXE" "$PASTA/llama/"
 case $GOOS in
@@ -90,5 +92,5 @@ for l in "$LDIR"/LICENSE*; do if [ -e "$l" ]; then cp "$l" "$PASTA/llama/"; fi; 
 (cd ../manager && CGO_ENABLED=0 GOOS=$GOOS GOARCH=$GOARCH go build -trimpath \
   -ldflags "-s -w -X main.versao=$VERSAO" -o "../desktop/$PASTA/prep-manager$EXE" .)
 
-rm -r "$TMP"
+rm -r "$TEMPO"
 echo "pronto: desktop/$PASTA ($(du -sh "$PASTA" | cut -f1))"

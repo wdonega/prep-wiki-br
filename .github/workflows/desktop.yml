@@ -1,7 +1,7 @@
 name: desktop
 
 # App de desktop (desktop/, Electron): instalador e zip do Windows; AppImage, .deb e .rpm do Linux, em x64 e
-# ARM. Uma tag desktop-vX.Y.Z publica a release; rodar à mão (workflow_dispatch) só gera os arquivos, para
+# ARM; zip do Mac (Apple Silicon e Intel), que a receita do Homebrew (repositório homebrew-prep) instala. Uma tag desktop-vX.Y.Z publica a release; rodar à mão (workflow_dispatch) só gera os arquivos, para
 # baixar e testar. Não roda em push comum: o app de desktop tem versão própria.
 on:
   push:
@@ -108,9 +108,40 @@ jobs:
             desktop/dist/*.exe
             desktop/dist/*.zip
 
+  mac:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: manager/go.mod
+          cache-dependency-path: manager/go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Versão
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/desktop-v* ]]; then V=${GITHUB_REF#refs/tags/desktop-v}; else V=0.0.$GITHUB_RUN_NUMBER; fi
+          echo "VERSAO=$V" >> "$GITHUB_ENV"
+      - run: |
+          ./binarios.sh mac-arm64 "$VERSAO"
+          ./binarios.sh mac-x64 "$VERSAO"
+      - run: npm ci --no-audit --no-fund
+      # assinatura caseira (ad-hoc), sem a conta paga da Apple: a receita do Homebrew tira a quarentena
+      - run: npx electron-builder --mac zip --arm64 --x64 --publish never -c.extraMetadata.version="$VERSAO"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-mac
+          path: desktop/dist/*.zip
+
   release:
     if: startsWith(github.ref, 'refs/tags/desktop-v')
-    needs: [linux, windows]
+    needs: [linux, windows, mac]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -126,4 +157,4 @@ jobs:
           (cd arquivos && sha256sum * > SHA256SUMS.txt)
           gh release create "$GITHUB_REF_NAME" arquivos/* --repo "$GITHUB_REPOSITORY" \
             --title "App de desktop – $V" \
-            --notes "Prep Wiki BR para computador. Windows: o instalador (…-instalador.exe) ou o zip portátil. Linux: o AppImage (roda sem instalar), o .deb (Ubuntu, Debian, Mint) ou o .rpm (Fedora, openSUSE). Os acervos ficam na pasta do usuário. Mais em https://github.com/wdonega/prep-wiki-br/blob/main/desktop/README.md"
+            --notes "Prep Wiki BR para computador. Mac: brew install --cask wdonega/prep/prep-wiki-br. Windows: o instalador (…-instalador.exe) ou o zip portátil. Linux: o AppImage (roda sem instalar), o .deb (Ubuntu, Debian, Mint) ou o .rpm (Fedora, openSUSE). Os acervos ficam na pasta do usuário. Mais em https://github.com/wdonega/prep-wiki-br/blob/main/desktop/README.md"
