@@ -87,7 +87,10 @@ docker run -d --name prep-wiki-br --restart unless-stopped \
   -p 8099:8080 -v ~/prep-wiki-br:/data ghcr.io/wdonega/prep-wiki-br:latest
 ```
 
-Abra `http://localhost:8099`. A imagem existe para PC (x86 de 64 bits) e para ARM de 64 bits, como o Raspberry Pi 4 e 5. Senha, modos, instalação sem internet e Docker Compose estão em [`docs/instalar.md`](docs/instalar.md).
+Abra `http://localhost:8099`. A imagem existe para PC (x86 de 64 bits) e para ARM de 64 bits, como o Raspberry Pi 4 e 5.
+
+- **Para quem nunca usou Docker:** o passo a passo está em <https://prep.bigode.org/docker>.
+- **Referência:** senha, modos, instalação sem internet e Docker Compose estão em [`docs/instalar.md`](docs/instalar.md).
 
 ## Desenvolver
 

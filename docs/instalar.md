@@ -1,6 +1,8 @@
 # Instalar com Docker
 
-Precisa só do [Docker](https://docs.docker.com/engine/install/) e de espaço em disco para o que você for baixar. A imagem existe para PC (x86 de 64 bits) e para ARM de 64 bits, como o Raspberry Pi 4 e 5. Foi testada em PC com Linux; no Raspberry Pi ainda não.
+Esta é a referência técnica. Para quem nunca usou Docker, o passo a passo ilustrado está em <https://prep.bigode.org/docker>.
+
+Precisa só do [Docker](https://docs.docker.com/engine/install/) e de espaço em disco para o que você for baixar. A imagem existe para PC (x86 de 64 bits) e para ARM de 64 bits, como o Raspberry Pi 4 e 5. Foi testada em PC com Linux, no Mac (com o Docker Desktop), no Raspberry Pi 5 e na Radxa Rock 5T; no Windows ainda não.
 
 ```bash
 docker run -d --name prep-wiki-br --restart unless-stopped \

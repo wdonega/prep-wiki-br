@@ -1,6 +1,6 @@
 # Página do projeto
 
-A landing page do Prep Wiki BR, que vai em <https://prep.bigode.org>. É um HTML só, sem framework e sem etapa de build: o que está nesta pasta é o que vai ao ar.
+A landing page do Prep Wiki BR, que vai em <https://prep.bigode.org>, e o passo a passo de instalação pelo Docker, em `/docker`. São duas páginas em HTML, sem framework e sem etapa de build: o que está nesta pasta é o que vai ao ar.
 
 A demonstração ao vivo, para onde a página manda quem quer testar, fica em <https://prep-demo.bigode.org>.
 
@@ -21,7 +21,8 @@ A pasta inteira vai como arquivos estáticos; qualquer hospedagem desse tipo ser
 
 | Arquivo | O que é |
 |---|---|
-| `index.html` | A página: marcação, estilo e scripts, tudo no mesmo arquivo. |
+| `index.html` | A página inicial: marcação, estilo e scripts, tudo no mesmo arquivo. |
+| `docker.html` | O passo a passo de instalação pelo Docker, para quem nunca usou. É para onde vai a aba Docker do cartão de baixar. |
 | `base.css` | Zera os estilos do navegador. |
 | `img/` | Gravuras, recortes, capturas do app e o QR do PIX. |
 | `modelos/lampiao.glb` | O lampião em 3D da primeira tela (6 MB). |
@@ -39,6 +40,14 @@ Nove seções, nesta ordem: primeira tela (`#palco`), `#guias`, `#busca`, `#acer
 - **O que entra na tela aparece.** Qualquer elemento com o atributo `data-ver` ganha a classe `visto` ao entrar na tela.
 - **Movimento reduzido.** Com `prefers-reduced-motion`, as animações são encurtadas e a busca mostra o resultado direto.
 
+## A página do Docker
+
+O `docker.html` é um tutorial em 4 passos: instalar o Docker, colar o comando, abrir no navegador e baixar os acervos, mais o que vale saber depois e os tropeços mais comuns. A referência técnica continua em [`docs/instalar.md`](../docs/instalar.md); se um comando mudar lá, mude aqui.
+
+- **Estilo repetido:** o topo, o rodapé e as regras de base são cópias dos do `index.html`. Ao mudar um, mude o outro.
+- **O comando do passo 2** tem duas versões, em abas: Linux e Mac, e Windows. Cada parte dele é um `<span data-p="…">`, que acende junto com a explicação de mesmo `data-p`.
+- **Onde foi testado:** em PC com Linux, no Mac, no Raspberry Pi 5 e na Radxa Rock 5T, e a página diz isso. Atualize a frase quando o Windows for testado.
+
 ## O que conferir quando o projeto muda
 
 A página repete alguns números e fatos do projeto. Ao mudar um, procure os outros.
@@ -48,7 +57,8 @@ A página repete alguns números e fatos do projeto. Ao mudar um, procure os out
 | 81 acervos, 10 assuntos, 3 guias | primeira tela, `<meta>` de descrição, `#acervos`, perguntas | [`manager/catalogo.json`](../manager/catalogo.json) |
 | A lista dos 10 grupos | `#acervos` | o mesmo catálogo |
 | Tamanho dos guias (16 MB, 29 MB, 46 MB no total) | `#guias`, perguntas | as releases das wikis |
-| Endereços de download | a tabela `SO` no script | Google Play, releases, README |
+| Endereços de download | a tabela `SO` no script | Google Play, releases, `docker.html` |
+| O comando `docker run` | `docker.html` | [`docs/instalar.md`](../docs/instalar.md) |
 | Valores do apoio no app | `#apoiar` | os produtos na Play Console |
 | Código PIX e QR | `#apoiar` (`data-copiar` e `img/pix.png`) | [`manager/web/apoie.html`](../manager/web/apoie.html) |
 

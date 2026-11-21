@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instalar com Docker, passo a passo · Prep Wiki BR</title>
+<meta name="description" content="Como instalar o Prep Wiki BR num computador ou num Raspberry Pi com o Docker, em 4 passos, para quem nunca usou. A biblioteca atende a casa toda pelo navegador.">
+<link rel="canonical" href="https://prep.bigode.org/docker">
+<meta name="theme-color" content="#050e09">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prep.bigode.org/docker">
+<meta property="og:title" content="Instalar o Prep Wiki BR com Docker, passo a passo">
+<meta property="og:description" content="Em 4 passos, para quem nunca usou Docker. A biblioteca atende a casa toda pelo navegador.">
+<meta property="og:image" content="https://prep.bigode.org/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* O topo, o rodapé e as regras de base são os mesmos do index.html. Ao mudar um, mude o outro. */
+  :root { --noite: #050e09; --tinta: #f3ead0; --ambar: #f6b74a; }
+  html { scroll-padding-top: 96px; }
+  body { background: var(--noite); color: var(--tinta); font-family: "Bricolage Grotesque", system-ui, sans-serif; }
+  .mono { font: 500 12px/1.3 "DM Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+
+  .topo { position: fixed; inset: 0 0 auto 0; z-index: 20; display: flex; align-items: center; gap: 40px; padding: 26px 5.5vw; transition: padding .35s, background .35s, box-shadow .35s; }
+  .topo.rolou { padding-top: 12px; padding-bottom: 12px; background: rgba(5,14,9,.74); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); box-shadow: 0 1px 0 rgba(243,234,208,.08); }
+  .marca { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+  .marca img { width: 30px; height: 30px; border-radius: 8px; }
+  .topo nav { display: flex; gap: 28px; font-size: 15px; color: #b9b79f; } .topo nav a:hover { color: var(--tinta); }
+  .topo .fim { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .topo .demo-l { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 15px 0 17px; border-radius: 999px; font-size: 15px; font-weight: 600; color: #e4dcc0; transition: background .25s, color .25s; }
+  .topo .demo-l:hover { background: rgba(243,234,208,.08); color: var(--tinta); } .topo .demo-l .pq { display: none; }
+  .topo .demo-l svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: .75; transition: transform .25s; } .topo .demo-l:hover svg { transform: translate(2px, -2px); }
+  .ponto { position: relative; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--ambar); }
+  .ponto::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--ambar); animation: ping 1.8s ease-out infinite; }
+  @keyframes ping { from { transform: scale(.5); opacity: .9; } to { transform: scale(1.9); opacity: 0; } }
+  .topo .apoio { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px 0 15px; border-radius: 999px; font-size: 15px; font-weight: 600; color: #f6e3b4; box-shadow: inset 0 0 0 1px rgba(246,183,74,.5); transition: background .25s, color .25s, box-shadow .25s; }
+  .topo .apoio svg { width: 17px; height: 17px; color: var(--ambar); fill: rgba(246,183,74,0); transition: fill .3s; }
+  .topo .apoio:hover { background: rgba(246,183,74,.1); color: #fff3d3; box-shadow: inset 0 0 0 1px var(--ambar), 0 0 26px rgba(246,160,60,.22); } .topo .apoio:hover svg { fill: var(--ambar); }
+
+  .noite { position: relative; overflow-x: clip; isolation: isolate; background: var(--noite); }
+  .grao { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: .09; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .sec { position: relative; z-index: 1; padding: 11vh 5.5vw; } .sec img { height: auto; }
+  .foco { position: absolute; z-index: -1; left: var(--x, 50%); top: var(--y, 50%); width: 88vmax; height: 88vmax; margin: -44vmax 0 0 -44vmax; pointer-events: none; background: radial-gradient(closest-side, rgba(255,160,70,.21), rgba(255,150,60,.07) 45%, transparent 70%), radial-gradient(closest-side, rgba(40,92,60,.4), transparent 80%); animation: respira 6.5s ease-in-out infinite; }
+  @keyframes respira { 50% { opacity: .8; transform: scale(1.035); } }
+  .aceso { font-size: clamp(38px, 5.4vw, 92px); line-height: .94; letter-spacing: -.03em; font-weight: 800; font-stretch: 84%; padding-bottom: .08em; background: radial-gradient(circle var(--raio, 92vmax) at var(--tx, 85%) var(--ty, -40%), #fff1cf 0, #f0cf8e 30%, #b9ad82 60%, #808d75 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .aceso em { font-style: normal; color: var(--ambar); }
+  .sobre { color: #b3c4b0; margin-bottom: 22px; display: flex; align-items: center; gap: 12px; font-size: 14.5px; letter-spacing: .1em; }
+  .sobre i { width: 7px; height: 7px; border-radius: 50%; background: var(--ambar); box-shadow: 0 0 14px 3px rgba(246,183,74,.7); }
+  .lead { margin-top: 24px; max-width: 34em; font-size: 19px; line-height: 1.5; color: #c9c5ac; } .lead b, .txt b { color: var(--tinta); font-weight: 600; }
+  .txt { margin-top: 16px; max-width: 38em; font-size: 17.5px; line-height: 1.55; color: #c9c5ac; }
+  .txt a, .lead a, .nota a, .faq__r a { color: #f4dfae; text-decoration: underline; text-decoration-color: rgba(246,183,74,.5); text-underline-offset: 4px; } .txt a:hover, .lead a:hover, .nota a:hover, .faq__r a:hover { color: #fff3d3; }
+  .nota { margin-top: 14px; max-width: 40em; font-size: 15px; line-height: 1.5; color: #9fb39f; }
+  code { font: 500 .88em "DM Mono", ui-monospace, monospace; color: #ffd98a; background: rgba(246,183,74,.1); padding: .12em .4em; border-radius: 6px; white-space: nowrap; }
+  .vidro { position: relative; padding: 24px; border-radius: 26px; background: linear-gradient(180deg, rgba(243,234,208,.075), rgba(243,234,208,.028)); box-shadow: inset 0 0 0 1px rgba(243,234,208,.15); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); transition: box-shadow .3s, transform .35s cubic-bezier(.2,.8,.2,1), opacity .8s; }
+  .vidro:hover { box-shadow: inset 0 0 0 1px rgba(246,183,74,.5), 0 0 60px rgba(246,160,60,.13); }
+  .vidro h3 { font-size: 24px; line-height: 1.05; letter-spacing: -.02em; font-weight: 700; font-stretch: 88%; } .vidro > p { margin-top: 9px; font-size: 16px; line-height: 1.45; color: #c9c5ac; }
+  .ico { width: 44px; height: 44px; padding: 11px; margin-bottom: 18px; border-radius: 50%; color: var(--ambar); box-shadow: inset 0 0 0 1px rgba(246,183,74,.45); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .bt { display: inline-flex; align-items: center; gap: 10px; height: 54px; padding: 0 24px; border-radius: 999px; font-weight: 700; font-size: 16.5px; transition: transform .2s, box-shadow .3s, background .2s, border-color .2s; }
+  .bt--cheio { background: var(--ambar); color: #1b1505; box-shadow: 0 8px 40px rgba(246,160,60,.35); } .bt--cheio:hover { transform: translateY(-2px); box-shadow: 0 0 0 7px rgba(246,183,74,.16), 0 12px 50px rgba(246,160,60,.5); }
+  .bt--fio { color: var(--tinta); border: 1px solid rgba(243,234,208,.28); } .bt--fio:hover { border-color: rgba(243,234,208,.7); }
+  .bt svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+  [data-ver] { opacity: 0; transform: translateY(30px); transition: opacity .8s, transform .95s cubic-bezier(.16,1,.3,1); transition-delay: var(--d, 0s); } [data-ver].visto { opacity: 1; transform: none; }
+
+  /* ---- capa ---- */
+  .capa { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: 4vw; align-items: center; padding-top: 14vh; }
+  .capa .aceso { font-size: clamp(44px, 7vw, 124px); line-height: .9; }
+  .roda-em { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; } .roda-em li { padding: 9px 13px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(243,234,208,.2); font-size: 14.5px; color: #d9d2b8; } .roda-em li.ok { color: #f4dfae; box-shadow: inset 0 0 0 1px rgba(246,183,74,.45); }
+  .cod--capa { margin-top: 30px; max-width: 760px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.55), 0 0 0 7px rgba(246,183,74,.06), 0 30px 70px -30px rgba(0,0,0,.8), 0 0 90px rgba(255,160,70,.16); } .cod--capa .cod__topo .mono { color: #f4dfae; }
+  .indice { margin-top: 18px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 760px; }
+  .indice a { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 16px; background: rgba(243,234,208,.045); box-shadow: inset 0 0 0 1px rgba(243,234,208,.13); font-size: 15px; font-weight: 600; line-height: 1.15; transition: box-shadow .25s, background .25s, transform .25s; }
+  .indice a:hover { background: rgba(246,183,74,.1); box-shadow: inset 0 0 0 1px rgba(246,183,74,.55); transform: translateY(-2px); }
+  .indice b { font-size: 26px; font-weight: 800; font-stretch: 78%; color: transparent; -webkit-text-stroke: 1.2px rgba(246,183,74,.85); }
+  .capa__lamp { position: relative; } .capa__lamp img { position: relative; width: 100%; animation: flutua 6s ease-in-out infinite; }
+  .capa__lamp::before { content: ""; position: absolute; left: 50%; top: 54%; width: 220%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(255,178,84,.5), rgba(255,150,60,.16) 45%, transparent 72%); animation: treme 3.1s ease-in-out infinite; }
+  @keyframes flutua { 50% { transform: translateY(-12px); } }
+  @keyframes treme { 0%, 100% { opacity: .92; } 22% { opacity: 1; } 41% { opacity: .84; } 63% { opacity: .98; } 80% { opacity: .88; } }
+
+  .tres { margin-top: 5vh; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+
+  /* ---- os passos ---- */
+  .passo { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr); column-gap: 3vw; align-items: start; padding-top: 7vh; padding-bottom: 7vh; }
+  .passo > b { position: sticky; top: 104px; font-size: clamp(90px, 13vw, 190px); line-height: .78; font-weight: 800; font-stretch: 76%; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 2px rgba(246,183,74,.8); filter: drop-shadow(0 0 26px rgba(246,160,60,.25)); }
+  .passo h2 { font-size: clamp(32px, 4vw, 62px); }
+  .cod { margin-top: 22px; max-width: 820px; border-radius: 20px; overflow: hidden; background: rgba(3,9,6,.72); box-shadow: inset 0 0 0 1px rgba(246,183,74,.3), 0 30px 70px -30px rgba(0,0,0,.8), 0 0 80px rgba(255,160,70,.08); }
+  .cod__topo { display: flex; align-items: center; gap: 8px; padding: 9px 9px 9px 18px; border-bottom: 1px solid rgba(243,234,208,.09); color: #9fb39f; }
+  .cod__topo .abas { display: flex; gap: 4px; } .cod__topo .abas button { padding: 8px 12px; border-radius: 999px; font: 500 11.5px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; color: #9fb39f; transition: background .2s, color .2s; }
+  .cod__topo .abas button[aria-selected="true"] { background: rgba(246,183,74,.15); color: #ffd98a; }
+  .copia { margin-left: auto; display: flex; align-items: center; gap: 7px; padding: 9px 13px; border-radius: 999px; background: var(--ambar); color: #1b1505; font: 500 11.5px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; transition: transform .15s, box-shadow .25s; }
+  .copia:hover { box-shadow: 0 0 0 5px rgba(246,183,74,.18); } .copia:active { transform: scale(.96); } .copia svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .cod pre { margin: 0; padding: 20px 20px 22px; overflow-x: auto; font: 500 15px/1.75 "DM Mono", ui-monospace, monospace; color: #e9dfc2; white-space: pre; }
+  .cod pre[hidden] { display: none; }
+  .cod pre span { border-radius: 6px; padding: 2px 3px; margin: -2px -3px; transition: background .2s, color .2s, box-shadow .2s; }
+  .cod pre span.luz { background: rgba(246,183,74,.22); color: #fff3d3; box-shadow: 0 0 0 1px rgba(246,183,74,.55); }
+  .pecas { margin-top: 18px; max-width: 820px; display: grid; gap: 2px; }
+  .pecas li { display: grid; grid-template-columns: minmax(0, 250px) minmax(0, 1fr); column-gap: 18px; align-items: baseline; padding: 11px 12px; border-radius: 12px; font-size: 15.5px; line-height: 1.45; color: #c9c5ac; cursor: default; transition: background .2s; }
+  .pecas li:hover, .pecas li.luz { background: rgba(246,183,74,.09); } .pecas li code { justify-self: start; }
+  .endereco { margin-top: 22px; display: inline-flex; align-items: center; gap: 14px; padding: 16px 22px; border-radius: 999px; font: 500 clamp(17px, 2vw, 24px)/1 "DM Mono", ui-monospace, monospace; color: #fff3d3; background: linear-gradient(180deg, rgba(243,234,208,.1), rgba(243,234,208,.04)); box-shadow: inset 0 0 0 1px rgba(246,183,74,.62), 0 0 0 7px rgba(246,183,74,.07), 0 0 80px rgba(246,160,60,.28); transition: box-shadow .25s; }
+  .endereco:hover { box-shadow: inset 0 0 0 1px var(--ambar), 0 0 0 9px rgba(246,183,74,.1), 0 0 90px rgba(246,160,60,.4); } .endereco svg { width: 20px; height: 20px; fill: none; stroke: var(--ambar); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .quatro { margin-top: 5vh; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .quatro .cod { margin-top: 16px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.22); } .quatro .cod pre { font-size: 13.5px; padding: 16px 18px 18px; }
+
+  .ajuda { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 6vw; align-items: start; }
+  .faq__item { border-bottom: 1px solid rgba(243,234,208,.14); } .faq__item:first-child { border-top: 1px solid rgba(243,234,208,.14); }
+  .faq__item button { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0; text-align: left; font-size: 21px; line-height: 1.2; font-weight: 700; font-stretch: 90%; letter-spacing: -.015em; color: var(--tinta); transition: color .2s; } .faq__item button:hover { color: #ffd98a; }
+  .faq__item button i { position: relative; flex: none; width: 36px; height: 36px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(246,183,74,.5); transition: transform .4s cubic-bezier(.2,.8,.2,1), background .25s; }
+  .faq__item button i::before, .faq__item button i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 13px; height: 1.6px; margin: -.8px 0 0 -6.5px; border-radius: 2px; background: var(--ambar); } .faq__item button i::after { transform: rotate(90deg); }
+  .faq__item.aberto button i { transform: rotate(45deg); background: rgba(246,183,74,.15); }
+  .faq__r { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.2,.8,.2,1); } .faq__item.aberto .faq__r { grid-template-rows: 1fr; }
+  .faq__r > div { overflow: hidden; } .faq__r p { padding: 0 50px 22px 0; font-size: 16.5px; line-height: 1.55; color: #c9c5ac; }
+
+  .fim-d { text-align: center; padding-bottom: 14vh; } .fim-d .aceso { margin: 0 auto; max-width: 17ch; } .fim-d .lead { margin-left: auto; margin-right: auto; }
+  .fim-d .acoes { margin-top: 32px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+  .rodape { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 4fr) repeat(4, minmax(0, 2fr)); gap: 30px; padding: 8vh 5.5vw 5vh; background: #040b07; border-top: 1px solid rgba(243,234,208,.1); color: #b9b79f; font-size: 15px; }
+  .rodape .marca { color: var(--tinta); } .rodape > div > p { margin-top: 14px; max-width: 26em; line-height: 1.5; }
+  .rodape h4 { margin: 6px 0 16px; color: #7f927f; font: 500 12px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+  .rodape li { margin-bottom: 10px; } .rodape a { transition: color .2s; } .rodape a:hover { color: var(--tinta); }
+  .rodape__fim { grid-column: 1 / -1; margin-top: 3vh; padding-top: 22px; border-top: 1px solid rgba(243,234,208,.08); display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 13px; line-height: 1.5; color: #7f927f; }
+
+  @media (max-width: 900px) {
+    .topo { gap: 12px; } .topo nav { display: none; }
+    .topo .demo-l { padding: 0 10px 0 13px; gap: 10px; } .topo .demo-l .lg { display: none; } .topo .demo-l .pq { display: inline; }
+    .topo .apoio { width: 44px; padding: 0; justify-content: center; } .topo .apoio span { display: none; }
+    .sec { padding: 8vh 5.5vw; } .lead { font-size: 17px; } .txt { font-size: 16.5px; }
+    .capa { grid-template-columns: minmax(0, 1fr); padding-top: 15vh; } .capa .aceso { font-size: clamp(42px, 13vw, 78px); }
+    .capa__lamp { order: -1; width: 46%; margin: 0 auto 2vh; }
+    .indice { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tres, .quatro, .ajuda { grid-template-columns: minmax(0, 1fr); } .ajuda { row-gap: 34px; }
+    .passo { grid-template-columns: minmax(0, 1fr); row-gap: 4px; padding-top: 5vh; padding-bottom: 5vh; } .passo > b { position: static; font-size: 96px; }
+    .cod pre { font-size: 13px; padding: 16px 16px 18px; } .cod__topo { padding-left: 12px; }
+    .pecas li { grid-template-columns: minmax(0, 1fr); row-gap: 5px; }
+    .endereco { padding: 14px 18px; gap: 10px; }
+    .faq__item button { font-size: 18.5px; } .faq__r p { padding-right: 10px; }
+    .rodape { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: 34px; } .rodape > div:first-child { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01s !important; animation-delay: 0s !important; transition-duration: .01s !important; } }
+</style>
+</head>
+<body>
+<header class="topo">
+  <a class="marca" href="./"><img src="img/icone-96.png" alt="">Prep Wiki BR</a>
+  <nav aria-label="Página inicial"><a href="./#guias">Guias</a><a href="./#busca">Busca</a><a href="./#acervos">Acervos</a><a href="./#privado">Privacidade</a><a href="./#perguntas">Perguntas</a></nav>
+  <div class="fim">
+    <a class="demo-l" href="https://prep-demo.bigode.org/" target="_blank" rel="noopener"><i class="ponto"></i><span class="lg">Demonstração</span><span class="pq">Demo</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+    <a class="apoio" href="./#apoiar" aria-label="Apoiar o projeto"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.500 12.572l-7.500 7.428-7.500-7.428a5 5 0 1 1 7.500-6.566 5 5 0 1 1 7.500 6.572"/></svg><span>Apoiar o projeto</span></a>
+  </div>
+</header>
+
+<main class="noite">
+  <section class="sec capa">
+    <div class="foco" style="--x:80%;--y:46%"></div>
+    <div>
+      <p class="sobre mono"><i></i>Passo a passo · Docker</p>
+      <h1 class="aceso">A biblioteca em casa, em <em>4 passos.</em></h1>
+      <p class="lead">O Prep Wiki BR roda num computador ou num Raspberry Pi e atende a casa toda pelo navegador: celular, tablet, outro computador. Não precisa saber programar. É instalar um programa e colar um comando.</p>
+      <ul class="roda-em" aria-label="Onde roda">
+        <li class="ok">PC de 64 bits</li><li class="ok">Raspberry Pi 4 e 5</li><li>outro ARM de 64 bits</li>
+      </ul>
+      <p class="nota">Foi testado em PC com Linux, no Mac, no Raspberry Pi 5 e na Radxa Rock 5T. No Windows ainda não.</p>
+      <div class="cod cod--capa"><div class="cod__topo"><span class="mono">Já usa Docker? É só isto</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div>
+<pre>docker run -d --name prep-wiki-br --restart unless-stopped \
+  -p 8099:8080 -v ~/prep-wiki-br:/data ghcr.io/wdonega/prep-wiki-br:latest</pre></div>
+      <p class="nota">Depois, abra <code>http://localhost:8099</code>. Nunca usou Docker? Siga os passos:</p>
+      <nav class="indice" aria-label="Os passos">
+        <a href="#passo-1"><b>1</b>Instalar o Docker</a>
+        <a href="#passo-2"><b>2</b>Colar o comando</a>
+        <a href="#passo-3"><b>3</b>Abrir no navegador</a>
+        <a href="#passo-4"><b>4</b>Baixar os acervos</a>
+      </nav>
+    </div>
+    <div class="capa__lamp" aria-hidden="true"><img src="img/lampiao.png" alt="" width="720" height="720"></div>
+  </section>
+
+  <section class="sec">
+    <p class="sobre mono"><i></i>Antes de começar</p>
+    <h2 class="aceso">O que você precisa</h2>
+    <div class="tres">
+      <article class="vidro" data-ver><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM7 20h10M9 16v4M15 16v4"/></svg><h3>Um computador que fique ligado</h3><p>Pode ser um PC antigo, um mini PC ou um Raspberry Pi. Enquanto ele estiver ligado, a biblioteca está no ar para a casa.</p></article>
+      <article class="vidro" data-ver style="--d:.08s"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0 1.700 3.600 3 8 3s8-1.300 8-3-3.600-3-8-3-8 1.300-8 3zM4 6v6c0 1.700 3.600 3 8 3s8-1.300 8-3V6M4 12v6c0 1.700 3.600 3 8 3s8-1.300 8-3v-6"/></svg><h3>Espaço em disco</h3><p>Depende do que você baixar. Os três guias do projeto somam 46 MB; um conjunto enxuto em português fica em torno de 8 GB.</p></article>
+      <article class="vidro" data-ver style="--d:.16s"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18h.010M9.200 15.200a4 4 0 0 1 5.600 0M6.300 12.300a8 8 0 0 1 11.400 0M3.500 9.500a12 12 0 0 1 17 0"/></svg><h3>Internet, só agora</h3><p>Para instalar e para baixar os acervos. Depois de baixado, tudo funciona sem conexão.</p></article>
+    </div>
+  </section>
+
+  <section class="sec passo" id="passo-1">
+    <div class="foco" style="--x:12%;--y:40%"></div>
+    <b aria-hidden="true">1</b>
+    <div>
+      <h2 class="aceso">Instale o Docker</h2>
+      <p class="txt">O Docker é um programa que roda outros programas dentro de uma caixa fechada, sem espalhar arquivos pelo computador. O Prep Wiki BR vem pronto dentro de uma dessas caixas.</p>
+      <p class="txt">Baixe pelo site oficial e siga o instalador:</p>
+      <p class="txt"><b>Linux:</b> <a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener">Docker Engine</a>, escolhendo a sua distribuição.<br><b>Windows e Mac:</b> <a href="https://docs.docker.com/desktop/" target="_blank" rel="noopener">Docker Desktop</a>. Depois de instalar, abra o programa e deixe-o rodando.</p>
+      <p class="txt">Para conferir, abra o <b>terminal</b> (no Windows, o PowerShell) e digite:</p>
+      <div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>docker --version</pre></div>
+      <p class="nota">Se aparecer algo como <code>Docker version 27…</code>, está instalado. O número pode ser outro.</p>
+    </div>
+  </section>
+
+  <section class="sec passo" id="passo-2">
+    <div class="foco" style="--x:86%;--y:36%"></div>
+    <b aria-hidden="true">2</b>
+    <div>
+      <h2 class="aceso">Cole este comando</h2>
+      <p class="txt">No mesmo terminal, cole o comando abaixo e aperte Enter. Na primeira vez o Docker baixa o Prep Wiki BR, o que leva alguns minutos.</p>
+      <div class="cod" id="comando">
+        <div class="cod__topo"><div class="abas" role="tablist" aria-label="Sistema"><button type="button" role="tab" aria-selected="true" data-aba="unix">Linux e Mac</button><button type="button" role="tab" aria-selected="false" data-aba="win">Windows</button></div><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div>
+<pre data-aba="unix">docker run <span data-p="d">-d</span> <span data-p="nome">--name prep-wiki-br</span> <span data-p="volta">--restart unless-stopped</span> \
+  <span data-p="porta">-p 8099:8080</span> <span data-p="pasta">-v ~/prep-wiki-br:/data</span> <span data-p="imagem">ghcr.io/wdonega/prep-wiki-br:latest</span></pre>
+<pre data-aba="win" hidden>docker run <span data-p="d">-d</span> <span data-p="nome">--name prep-wiki-br</span> <span data-p="volta">--restart unless-stopped</span> <span data-p="porta">-p 8099:8080</span> <span data-p="pasta">-v C:\prep-wiki-br:/data</span> <span data-p="imagem">ghcr.io/wdonega/prep-wiki-br:latest</span></pre>
+      </div>
+      <p class="txt">Não precisa entender o comando para usar. Mas, se quiser saber o que cada parte faz, passe o mouse ou toque numa delas:</p>
+      <ul class="pecas" id="pecas">
+        <li data-p="d"><code>-d</code><span>Roda em segundo plano. Você pode fechar o terminal.</span></li>
+        <li data-p="nome"><code>--name prep-wiki-br</code><span>O nome da caixa, para você se referir a ela depois.</span></li>
+        <li data-p="volta"><code>--restart unless-stopped</code><span>Volta sozinho quando o computador reiniciar.</span></li>
+        <li data-p="porta"><code>-p 8099:8080</code><span>A porta: é o <b>8099</b> do endereço que você vai abrir no navegador.</span></li>
+        <li data-p="pasta"><code>-v ~/prep-wiki-br:/data</code><span>A pasta do seu computador onde os acervos ficam guardados. Se não existir, é criada. Para usar outro disco, troque o caminho antes dos dois-pontos.</span></li>
+        <li data-p="imagem"><code>ghcr.io/wdonega/…</code><span>De onde o Docker baixa o Prep Wiki BR.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec passo" id="passo-3">
+    <div class="foco" style="--x:60%;--y:50%"></div>
+    <b aria-hidden="true">3</b>
+    <div>
+      <h2 class="aceso">Abra no navegador</h2>
+      <p class="txt">No mesmo computador, abra este endereço:</p>
+      <a class="endereco" href="http://localhost:8099" target="_blank" rel="noopener">http://localhost:8099<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+      <p class="txt">Na primeira vez a biblioteca está vazia, e você cai direto na tela de baixar conteúdo.</p>
+    </div>
+  </section>
+
+  <section class="sec passo" id="passo-4">
+    <div class="foco" style="--x:14%;--y:50%"></div>
+    <b aria-hidden="true">4</b>
+    <div>
+      <h2 class="aceso">Escolha e baixe os acervos</h2>
+      <p class="txt">Marque o que interessa e clique em <b>Baixar</b>. Os downloads entram numa fila, um de cada vez, e cada acervo aparece na biblioteca assim que termina. Se a internet cair no meio, ele continua de onde parou.</p>
+      <p class="txt">Para começar leve: os três guias do projeto e uma Wikipédia resumida. Dá para baixar mais depois.</p>
+      <p class="nota">Quer ver como fica antes? A <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">demonstração</a> é uma instalação igual a esta, com 7 acervos.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="foco" style="--x:50%;--y:30%"></div>
+    <p class="sobre mono"><i></i>Depois de instalar</p>
+    <h2 class="aceso">O que vale <em>saber.</em></h2>
+    <div class="quatro">
+      <article class="vidro" data-ver><h3>Abrir de outro aparelho</h3><p>No celular ou em outro computador da mesma rede, troque <code>localhost</code> pelo endereço do computador onde você instalou, por exemplo <code>http://192.168.0.20:8099</code>. Para descobrir esse endereço no Linux:</p>
+        <div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>hostname -I</pre></div>
+        <p class="nota">No Windows, o comando é <code>ipconfig</code>.</p></article>
+      <article class="vidro" data-ver style="--d:.08s"><h3>Pôr uma senha</h3><p>Sem senha, qualquer pessoa na mesma rede consegue baixar e apagar acervos. Para proteger, recrie a caixa com uma senha. Os acervos baixados continuam na pasta.</p>
+        <div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>docker rm -f prep-wiki-br
+docker run -d --name prep-wiki-br --restart unless-stopped \
+  -p 8099:8080 -v ~/prep-wiki-br:/data \
+  -e PREP_SENHA=troque-por-uma-senha-longa \
+  ghcr.io/wdonega/prep-wiki-br:latest</pre></div>
+        <p class="nota">A senha vale para a tela de baixar e apagar. Ler continua aberto para todos.</p></article>
+      <article class="vidro" data-ver><h3>Atualizar o Prep Wiki BR</h3><p>Baixe a versão nova, remova a caixa antiga e rode de novo o comando do passo 2. Os acervos não são apagados.</p>
+        <div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>docker pull ghcr.io/wdonega/prep-wiki-br:latest
+docker rm -f prep-wiki-br</pre></div>
+        <p class="nota">Os acervos têm atualização própria: quando sai uma edição nova, a tela de baixar mostra <b>Atualizar</b>.</p></article>
+      <article class="vidro" data-ver style="--d:.08s"><h3>Parar e ligar de novo</h3><p>A biblioteca volta sozinha quando o computador reinicia. Para desligar e ligar à mão:</p>
+        <div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>docker stop prep-wiki-br
+docker start prep-wiki-br</pre></div></article>
+    </div>
+  </section>
+
+  <section class="sec ajuda">
+    <div class="foco" style="--x:14%;--y:36%"></div>
+    <div>
+      <p class="sobre mono"><i></i>Deu errado?</p>
+      <h2 class="aceso">Os tropeços mais comuns</h2>
+      <p class="lead">Se o seu não está aqui, <a href="https://github.com/wdonega/prep-wiki-br/issues" target="_blank" rel="noopener">conte o que aconteceu</a> no GitHub do projeto.</p>
+    </div>
+    <div class="faq">
+      <div class="faq__item aberto"><button type="button" aria-expanded="true">O terminal diz que o comando docker não existe<i></i></button><div class="faq__r"><div><p>O Docker não está instalado, ou o terminal foi aberto antes da instalação. Feche o terminal, abra de novo e repita <code>docker --version</code>. No Windows e no Mac, o Docker Desktop precisa estar aberto.</p></div></div></div>
+      <div class="faq__item"><button type="button" aria-expanded="false">Aparece "permission denied" no Linux<i></i></button><div class="faq__r"><div><p>O seu usuário não tem permissão para falar com o Docker. Ponha <code>sudo</code> na frente do comando, ou siga os <a href="https://docs.docker.com/engine/install/linux-postinstall/" target="_blank" rel="noopener">passos pós-instalação</a> do Docker para usar sem <code>sudo</code>.</p></div></div></div>
+      <div class="faq__item"><button type="button" aria-expanded="false">A porta 8099 já está em uso<i></i></button><div class="faq__r"><div><p>Outro programa usa essa porta. Rode <code>docker rm -f prep-wiki-br</code> e repita o comando do passo 2 trocando o primeiro número, por exemplo <code>-p 8100:8080</code>. O endereço passa a ser <code>http://localhost:8100</code>.</p></div></div></div>
+      <div class="faq__item"><button type="button" aria-expanded="false">O nome prep-wiki-br já está em uso<i></i></button><div class="faq__r"><div><p>Já existe uma caixa com esse nome, de uma tentativa anterior. Remova com <code>docker rm -f prep-wiki-br</code> e rode o comando de novo. Os acervos baixados continuam na pasta.</p></div></div></div>
+      <div class="faq__item"><button type="button" aria-expanded="false">A página não abre<i></i></button><div class="faq__r"><div><p>Veja se a caixa está rodando com <code>docker ps</code>. Se ela não aparecer na lista, <code>docker logs prep-wiki-br</code> mostra o que aconteceu.</p></div></div></div>
+      <div class="faq__item"><button type="button" aria-expanded="false">O computador de destino não tem internet<i></i></button><div class="faq__r"><div><p>Cada <a href="https://github.com/wdonega/prep-wiki-br/releases?q=imagem&amp;expanded=true" target="_blank" rel="noopener">versão publicada</a> traz o Prep Wiki BR em arquivo, um para PC e um para ARM. Leve o arquivo num pendrive, rode <code>docker load -i</code> seguido do nome do arquivo e depois o comando do passo 2. Os acervos podem ser copiados para a pasta como arquivos <code>.zim</code>.</p></div></div></div>
+    </div>
+  </section>
+
+  <section class="sec fim-d">
+    <div class="foco" style="--x:50%;--y:40%"></div>
+    <h2 class="aceso">Pronto. A biblioteca está acesa.</h2>
+    <p class="lead">Modos do gerenciador, Docker Compose e as outras opções estão na documentação técnica.</p>
+    <div class="acoes">
+      <a class="bt bt--cheio" href="./">Voltar ao início</a>
+      <a class="bt bt--fio" href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/instalar.md" target="_blank" rel="noopener">Documentação técnica <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+    </div>
+  </section>
+  <div class="grao"></div>
+</main>
+
+<footer class="rodape">
+  <div><a class="marca" href="./"><img src="img/icone-96.png" alt="">Prep Wiki BR</a><p>Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.</p></div>
+  <div><h4>Guias</h4><ul><li><a href="./#guias">Sisteminha Embrapa</a></li><li><a href="./#guias">Plantas Medicinais</a></li><li><a href="./#guias">Chuva forte e tempestade</a></li></ul></div>
+  <div><h4>Página inicial</h4><ul><li><a href="./#busca">Busca</a></li><li><a href="./#acervos">Acervos</a></li><li><a href="./#passos">Como começar</a></li><li><a href="./#perguntas">Perguntas</a></li></ul></div>
+  <div><h4>Projeto</h4><ul><li><a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Demonstração ao vivo</a></li><li><a href="https://github.com/wdonega/prep-wiki-br" target="_blank" rel="noopener">Código no GitHub</a></li><li><a href="./#apoiar">Apoiar o projeto</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/issues" target="_blank" rel="noopener">Relatar um problema</a></li></ul></div>
+  <div><h4>Termos</h4><ul><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/privacidade.md" target="_blank" rel="noopener">Política de privacidade</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/termos.md" target="_blank" rel="noopener">Termos de uso</a></li><li><a href="mailto:support@bigode.org">support@bigode.org</a></li></ul></div>
+  <p class="rodape__fim"><span>© 2026 Prep Wiki BR. Código sob a licença GPLv3.</span><span>Ilustrações geradas com IA a partir da arte do projeto. Ícones do Tabler. Nomes e marcas são de seus donos.</span></p>
+</footer>
+
+<script>
+(function () {
+  function cada(sel, f, raiz) { [].forEach.call((raiz || document).querySelectorAll(sel), f); }
+
+  // topo: vira uma faixa de vidro depois de rolar
+  var topo = document.querySelector('.topo');
+  function rolou() { topo.classList.toggle('rolou', scrollY > 30); }
+  addEventListener('scroll', rolou, { passive: true }); rolou();
+
+  // o que entra na tela aparece
+  var ver = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visto'); ver.unobserve(e.target); } }); }, { threshold: .12 });
+  cada('[data-ver]', function (el) { ver.observe(el); });
+
+  // cada título é iluminado pelo foco da sua seção
+  function luzes() {
+    cada('.sec', function (s) {
+      var f = s.querySelector('.foco'); if (!f) return;
+      var x = parseFloat(f.style.getPropertyValue('--x')) / 100, y = parseFloat(f.style.getPropertyValue('--y')) / 100, r = s.getBoundingClientRect(), fx = r.left + r.width * x, fy = r.top + r.height * y;
+      cada('.aceso', function (t) { var q = t.getBoundingClientRect(); t.style.setProperty('--tx', (fx - q.left) + 'px'); t.style.setProperty('--ty', (fy - q.top) + 'px'); }, s);
+    });
+  }
+  luzes(); addEventListener('resize', luzes); addEventListener('load', luzes); if (document.fonts && document.fonts.ready) document.fonts.ready.then(luzes);
+
+  // copiar: o texto do bloco que está à vista, sem as cores
+  function copiar(texto) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(texto);
+    var t = document.createElement('textarea'); t.value = texto; t.setAttribute('readonly', ''); t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select();
+    var ok = document.execCommand('copy'); t.remove(); return ok ? Promise.resolve() : Promise.reject();
+  }
+  cada('.copia', function (b) {
+    b.addEventListener('click', function () {
+      var pre = b.closest('.cod').querySelector('pre:not([hidden])'), rot = b.querySelector('span');
+      copiar(pre.textContent).then(function () { rot.textContent = 'Copiado'; setTimeout(function () { rot.textContent = 'Copiar'; }, 2200); });
+    });
+  });
+
+  // o comando do passo 2: abas por sistema e as partes que acendem
+  var cmd = document.getElementById('comando');
+  cada('.abas button', function (b) {
+    b.addEventListener('click', function () {
+      cada('.abas button', function (o) { o.setAttribute('aria-selected', o === b); }, cmd);
+      cada('pre', function (p) { p.hidden = p.dataset.aba !== b.dataset.aba; }, cmd);
+      cada('#pecas [data-p="pasta"] code', function (c) { c.textContent = b.dataset.aba === 'win' ? '-v C:\\prep-wiki-br:/data' : '-v ~/prep-wiki-br:/data'; });
+    });
+  }, cmd);
+  function acende(p, sim) { cada('[data-p="' + p + '"]', function (el) { el.classList.toggle('luz', sim); }); }
+  cada('#pecas li, #comando pre span', function (el) {
+    var p = el.dataset.p;
+    el.addEventListener('pointerenter', function () { acende(p, true); });
+    el.addEventListener('pointerleave', function () { acende(p, false); });
+    el.addEventListener('click', function () { cada('.luz', function (x) { x.classList.remove('luz'); }); acende(p, true); });
+  });
+
+  // tropeços: abre um, fecha o outro
+  cada('.faq__item button', function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentNode, abrir = !item.classList.contains('aberto');
+      cada('.faq__item', function (i) { i.classList.remove('aberto'); i.querySelector('button').setAttribute('aria-expanded', 'false'); });
+      if (abrir) { item.classList.add('aberto'); b.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

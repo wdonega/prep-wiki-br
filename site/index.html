@@ -485,7 +485,7 @@
         <div class="faq__item aberto"><button type="button" aria-expanded="true">Precisa de internet para usar?<i></i></button><div class="faq__r"><div><p>Só para baixar. Depois de baixado, cada acervo abre, busca e traduz sem conexão.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">Dá para testar antes de instalar?<i></i></button><div class="faq__r"><div><p>Dá. A <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">demonstração ao vivo</a> abre no navegador com 7 acervos de exemplo, sem instalar nada.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">Quanto espaço ocupa?<i></i></button><div class="faq__r"><div><p>Você decide. Os três guias do projeto somam 46 MB, e um conjunto enxuto em português fica em torno de 8 GB. O tamanho de cada acervo aparece antes de baixar.</p></div></div></div>
-        <div class="faq__item"><button type="button" aria-expanded="false">Em quais aparelhos funciona?<i></i></button><div class="faq__r"><div><p>No celular, em Android 10 ou mais novo, de 64 bits. No computador, em Windows e Linux. Pelo Docker, roda num PC ou num Raspberry Pi 4 ou 5 e serve a casa toda pelo navegador.</p></div></div></div>
+        <div class="faq__item"><button type="button" aria-expanded="false">Em quais aparelhos funciona?<i></i></button><div class="faq__r"><div><p>No celular, em Android 10 ou mais novo, de 64 bits. No computador, em Windows e Linux. Pelo Docker, roda num PC ou num Raspberry Pi 4 ou 5 e serve a casa toda pelo navegador; veja o <a href="docker.html">passo a passo</a>.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">A tradução é confiável?<i></i></button><div class="faq__r"><div><p>É feita por máquina, dentro do aparelho, e serve para entender o texto. Em doses, medidas e números, confira o original, que fica a um toque.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">É grátis mesmo?<i></i></button><div class="faq__r"><div><p>É. Não tem anúncio, cadastro nem versão paga. Quem quiser pode apoiar o projeto; o apoio não libera nada.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">De onde vem o conteúdo?<i></i></button><div class="faq__r"><div><p>De fontes abertas, como a Wikipédia e o Kiwix, e de publicações da Embrapa e da Anvisa. Os acervos de saúde são educativos e não substituem um profissional de saúde.</p></div></div></div>
@@ -534,7 +534,7 @@
   <div><a class="marca" href="#"><img src="img/icone-96.png" alt="">Prep Wiki BR</a><p>Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.</p></div>
   <div><h4>Guias</h4><ul><li><a href="#guias">Sisteminha Embrapa</a></li><li><a href="#guias">Plantas Medicinais</a></li><li><a href="#guias">Chuva forte e tempestade</a></li></ul></div>
   <div><h4>Nesta página</h4><ul><li><a href="#busca">Busca</a></li><li><a href="#acervos">Acervos</a></li><li><a href="#passos">Como começar</a></li><li><a href="#perguntas">Perguntas</a></li></ul></div>
-  <div><h4>Projeto</h4><ul><li><a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Demonstração ao vivo</a></li><li><a href="https://github.com/wdonega/prep-wiki-br" target="_blank" rel="noopener">Código no GitHub</a></li><li><a href="#apoiar">Apoiar o projeto</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/issues" target="_blank" rel="noopener">Relatar um problema</a></li></ul></div>
+  <div><h4>Projeto</h4><ul><li><a href="docker.html">Instalar com Docker</a></li><li><a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Demonstração ao vivo</a></li><li><a href="https://github.com/wdonega/prep-wiki-br" target="_blank" rel="noopener">Código no GitHub</a></li><li><a href="#apoiar">Apoiar o projeto</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/issues" target="_blank" rel="noopener">Relatar um problema</a></li></ul></div>
   <div><h4>Termos</h4><ul><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/privacidade.md" target="_blank" rel="noopener">Política de privacidade</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/termos.md" target="_blank" rel="noopener">Termos de uso</a></li><li><a href="mailto:support@bigode.org">support@bigode.org</a></li></ul></div>
   <p class="rodape__fim"><span>© 2026 Prep Wiki BR. Código sob a licença GPLv3.</span><span>Ilustrações e modelos 3D gerados com IA a partir da arte do projeto. Ícones do Tabler. Nomes e marcas são de seus donos.</span></p>
 </footer>
@@ -618,7 +618,7 @@
     android: ['Baixar para Android', '<span>Android 10 ou mais novo</span><span class="sep"> · </span><span>Google Play</span>', 'https://play.google.com/store/apps/details?id=org.bigode.prep'],
     windows: ['Baixar para Windows', 'Para computador com Windows', GH + '/releases'],
     linux: ['Baixar para Linux', 'Para computador com Linux', GH + '/releases'],
-    docker: ['Rodar com Docker', 'Rode no PC ou Raspberry Pi (ou outro ARM)', GH + '#como-instalar'] };
+    docker: ['Rodar com Docker', 'Rode no PC ou Raspberry Pi (ou outro ARM)', 'docker.html'] };
   var ua = navigator.userAgent, meu = /Android/i.test(ua) ? 'android' : /Windows/i.test(ua) ? 'windows' : /Linux|CrOS/i.test(ua) ? 'linux' : /Macintosh/i.test(ua) ? 'docker' : 'android';
   function troca(el, texto) { el.classList.remove('entra'); void el.offsetWidth; el.innerHTML = texto; el.classList.add('entra'); }
   cada('.ab', function (ab) {
@@ -626,7 +626,8 @@
     function mede() { var b = ab.querySelector('[aria-selected="true"]'); if (!b) return; marca.style.setProperty('--mx', b.offsetLeft + 'px'); marca.style.setProperty('--mw', b.offsetWidth + 'px'); }
     function escolhe(so, anima) {
       bs.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.so === so); });
-      bt.href = SO[so][2]; bt.target = '_blank'; bt.rel = 'noopener';
+      // o passo a passo do Docker é uma página do próprio site: abre na mesma aba
+      var fora = /^https?:/.test(SO[so][2]); bt.href = SO[so][2]; bt.target = fora ? '_blank' : ''; bt.rel = fora ? 'noopener' : '';
       // no Docker não há download: o botão mostra um terminal (>_) no lugar da seta
       bt.querySelector('.baixa path').setAttribute('d', so === 'docker' ? 'M5 7l5 5-5 5M13 18h6' : 'M12 4v12M6 11l6 6 6-6M5 20h14'); bt.classList.toggle('ab__bt--cmd', so === 'docker');
       if (anima) { troca(t1, SO[so][0]); troca(t2, SO[so][1]); } else { t1.textContent = SO[so][0]; t2.innerHTML = SO[so][1]; }
