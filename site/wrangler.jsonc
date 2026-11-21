@@ -1,0 +1,14 @@
+// Publica a pasta site/ como arquivos estáticos num Worker da Cloudflare.
+// Deploy: o workflow .github/workflows/site.yml roda "wrangler deploy" a cada push em site/.
+// O nome do Worker não fica aqui: vem da variável CLOUDFLARE_WORKER_NAME do repositório, passada com --name.
+// Na mão: cd site && npx wrangler deploy --name <nome>   (com CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID no ambiente)
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": ".",
+    // /docker serve o docker.html
+    "html_handling": "drop-trailing-slash"
+  }
+  // O domínio prep.bigode.org é ligado ao Worker no painel da Cloudflare, não aqui.
+}

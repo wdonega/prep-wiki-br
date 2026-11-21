@@ -1,0 +1,35 @@
+name: site
+
+# Publica a pasta site/ em https://prep.bigode.org (Worker da Cloudflare, só arquivos estáticos).
+# Roda quando algo em site/ muda. Precisa, no repositório (Settings → Secrets and variables → Actions):
+#   Secrets:
+#     CLOUDFLARE_API_TOKEN    token com a permissão "Edit Cloudflare Workers"
+#     CLOUDFLARE_ACCOUNT_ID   o ID da conta, na lateral do painel da Cloudflare
+#   Variables:
+#     CLOUDFLARE_WORKER_NAME  o nome do Worker que serve o site
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/site.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publicar na Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: site
+          command: deploy --name ${{ vars.CLOUDFLARE_WORKER_NAME }}

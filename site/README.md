@@ -15,7 +15,11 @@ Precisa ser por HTTP. Aberta direto do disco (`file://`), a página aparece, mas
 
 ## Publicar
 
-A pasta inteira vai como arquivos estáticos; qualquer hospedagem desse tipo serve. Não há nada para compilar. O endereço canônico e o cartão de compartilhamento (`share.jpg`) já apontam para `prep.bigode.org`, no `<head>`.
+A pasta inteira vai como arquivos estáticos para o Worker `prep-wiki-br-site` da Cloudflare. Não há nada para compilar. Todo push na `main` que muda algo em `site/` dispara o workflow [`site.yml`](../.github/workflows/site.yml), que roda `wrangler deploy`. A configuração está em `wrangler.jsonc`, e o `.assetsignore` tira deste pacote o que não vai ao ar (este README, a própria configuração).
+
+O workflow usa, nas configurações do repositório no GitHub, os segredos `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` e a variável `CLOUDFLARE_WORKER_NAME`. O domínio `prep.bigode.org` é ligado ao Worker no painel da Cloudflare, não no `wrangler.jsonc`. O endereço canônico e o cartão de compartilhamento (`share.jpg`) já apontam para ele, no `<head>`.
+
+Para publicar na mão: `cd site && npx wrangler deploy --name prep-wiki-br-site`, com o token e o ID da conta no ambiente.
 
 ## O que tem na pasta
 
