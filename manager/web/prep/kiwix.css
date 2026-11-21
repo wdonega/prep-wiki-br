@@ -1,18 +1,14 @@
 /* Entra nas duas páginas com interface própria do Kiwix (/viewer e /search), inserida pelo gerenciador,
-   para acompanharem o visual e o tema claro/escuro do resto. Mesmas cores do base.css. */
+   para acompanharem o visual e o tema de cor do resto. As cores são as do tema escolhido: o tema.css e o
+   tema.js entram antes desta folha (web.go) e dizem também se a página é clara ou escura (color-scheme). */
 :root {
-  color-scheme: light dark;
-  --k-bg: #f4f7f4; --k-surface: #ffffff; --k-surface-2: #edf1ed; --k-border: #dde5df; --k-border-2: #c8d2ca;
-  --k-text: #121a15; --k-text-2: #3b493f; --k-muted: #68756b; --k-accent: #1a8a4a; --k-accent-soft: rgba(26, 138, 74, .10); --k-accent-line: rgba(26, 138, 74, .40);
-  --k-link: #1259b8; --k-visitado: #6b3fa0; --k-brilho: rgba(26, 138, 74, .09); --k-topo: rgba(244, 247, 244, .82);
+  --k-bg: var(--bg); --k-surface: var(--surface); --k-surface-2: var(--surface-2); --k-border: var(--border); --k-border-2: var(--border-2);
+  --k-text: var(--text); --k-text-2: var(--text-2); --k-muted: var(--muted);
+  --k-accent: var(--accent); --k-accent-soft: var(--accent-soft); --k-accent-line: var(--accent-line);
+  --k-link: var(--link); --k-visitado: var(--visitado); --k-brilho: var(--brilho); --k-topo: var(--topo-bg);
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --k-bg: #0b0f0c; --k-surface: #131814; --k-surface-2: #1b221d; --k-border: #232c26; --k-border-2: #34413a;
-    --k-text: #e9eeea; --k-text-2: #b4beb6; --k-muted: #838f86; --k-accent: #4ade80; --k-accent-soft: rgba(74, 222, 128, .12); --k-accent-line: rgba(74, 222, 128, .42);
-    --k-link: #8ab4f8; --k-visitado: #c4a7f5; --k-brilho: rgba(74, 222, 128, .07); --k-topo: rgba(11, 15, 12, .78);
-  }
-}
+/* texto selecionado: o Kiwix usa um azul fixo com letra branca */
+::selection { background-color: var(--k-accent-line); color: var(--k-text); }
 
 /* ---------- barra do leitor (/viewer) ----------
    Os elementos e os comportamentos são os do Kiwix (busca com sugestões, artigo aleatório);
@@ -40,8 +36,11 @@ label[for="kiwix_button_show_toggle"] { display: none !important; }
   font-weight: 700; font-size: 16.3px; line-height: 34px; letter-spacing: -.015em; }
 #kiwix_serve_taskbar_library_button::after { content: "Prep Wiki BR"; }
 .kiwix #kiwixtoolbar #kiwix_serve_taskbar_library_button button { width: 34px; height: 34px !important; padding: 0 !important;
-  border: 0 !important; border-radius: 10px !important; background: linear-gradient(140deg, #2bb866, #15803d) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 2px 8px -2px rgba(21, 128, 61, .6); font-size: 0 !important; position: relative; }
+  border: 0 !important; border-radius: 10px !important; background: linear-gradient(140deg, var(--logo-a), var(--logo-b)) !important;
+  /* a sombra é da cor da marca; onde o navegador não mistura cores (color-mix) fica uma sombra neutra */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 2px 8px -2px rgba(0, 0, 0, .3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 2px 8px -2px color-mix(in srgb, var(--logo-b) 60%, transparent);
+  font-size: 0 !important; position: relative; }
 #kiwix_serve_taskbar_library_button button::before { content: ""; position: absolute; inset: 0; margin: auto; width: 28px; height: 28px;
   background: url("/prep/marca.svg") center / contain no-repeat; }
 
@@ -78,7 +77,7 @@ label[for="kiwixsearchbox"] { font-size: 0 !important; left: 13px !important; wi
 /* artigo aleatório: botão com contorno, ícone e texto, no canto direito, como o "Gerenciar" da página inicial
    (o seletor de idioma da interface, último item da barra, some) */
 #kiwix_serve_taskbar_random_button { order: 3; flex: none; grid-column: 3; justify-self: end; }
-#kiwixtoolbar > a { display: none !important; }
+#kiwixtoolbar > a:not(#prep-voltar) { display: none !important; }
 .kiwix #kiwixtoolbar #kiwix_serve_taskbar_random_button button {
   display: inline-flex !important; align-items: center; justify-content: center; gap: 0; height: 36px !important; box-sizing: border-box;
   padding: 0 14px !important; border: 1px solid var(--k-border-2) !important; border-radius: 10px !important;
@@ -92,13 +91,16 @@ label[for="kiwixsearchbox"] { font-size: 0 !important; left: 13px !important; wi
 
 /* sugestões da busca e carregamento */
 .autoComplete_wrapper > ul { background-color: var(--k-surface) !important; border: 1px solid var(--k-border) !important; margin-top: 8px !important;
-  border-radius: 14px !important; box-shadow: 0 18px 50px -14px rgba(0, 0, 0, .5) !important; padding: 6px !important; }
+  border-radius: 14px !important; box-shadow: var(--shadow-lg) !important; padding: 6px !important; }
 .autoComplete_wrapper > ul > li { background-color: transparent !important; color: var(--k-text) !important; border-radius: 9px !important; }
 .autoComplete_wrapper > ul > li:hover, .autoComplete_wrapper > ul > li[aria-selected="true"] { background-color: var(--k-surface-2) !important; }
 .autoComplete_wrapper > ul > li mark { color: var(--k-accent) !important; }
 a.suggest, a.suggest:visited, a.suggest:hover, a.suggest:active { font-size: 14.5px !important; }
 #kiwix__loader, .loader { background: var(--k-bg) !important; color: var(--k-text-2) !important; }
+.loader .spinner { border-color: var(--k-border-2); border-top-color: var(--k-accent); }
 
+/* tela estreita sem o barra.js (o script não carregou, ou a barra deste Kiwix é outra): só ícones.
+   Com ele, quem desenha a barra do celular é a seção seguinte. */
 @media (max-width: 645px) {
   #kiwixtoolbar { display: flex !important; height: 59px; padding: 0 12px !important; gap: 8px; }
   /* enquanto a busca está em uso o Kiwix esconde os botões para ela ocupar a largura toda */
@@ -116,28 +118,90 @@ a.suggest, a.suggest:visited, a.suggest:hover, a.suggest:active { font-size: 14.
   #kiwix_serve_taskbar_home_button button::before { -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%207v14'/%3E%3Cpath%20d='M3%2018a1%201%200%200%201-1-1V4a1%201%200%200%201%201-1h5a4%204%200%200%201%204%204%204%204%200%200%201%204-4h5a1%201%200%200%201%201%201v13a1%201%200%200%201-1%201h-6a3%203%200%200%200-3%203%203%203%200%200%200-3-3z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%207v14'/%3E%3Cpath%20d='M3%2018a1%201%200%200%201-1-1V4a1%201%200%200%201%201-1h5a4%204%200%200%201%204%204%204%204%200%200%201%204-4h5a1%201%200%200%201%201%201v13a1%201%200%200%201-1%201h-6a3%203%200%200%200-3%203%203%203%200%200%200-3-3z'/%3E%3C/svg%3E") center / contain no-repeat; }
 }
 
-/* ---------- faixa de tradução (traducao.js), logo abaixo da barra do leitor ----------
-   Só existe quando o acervo aberto tem pacote de tradução: diz se a página está traduzida e leva ao original. */
-#prep-trad { display: flex; align-items: center; gap: 9px; min-height: 40px; box-sizing: border-box;
-  padding: 4px max(20px, calc((100% - 1140px) / 2)); border-bottom: 1px solid var(--k-border); background: var(--k-surface);
-  color: var(--k-text-2); font: 13.5px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+/* ---------- barra do leitor no celular (barra.js) ----------
+   No celular a barra é [voltar] [acervo e título da página] [buscar] [mais]. As peças novas são do barra.js,
+   que marca a barra com .prep-barra quando elas estão no lugar. A busca e os botões continuam sendo os do
+   Kiwix: a lupa mostra o campo dele (.prep-buscando) e o "mais" aciona os botões dele, que saem da vista.
+   Em tela larga nada disto aparece: a barra fica como está acima. */
+.kiwix #kiwixtoolbar .prep-bt, #prep-onde, #prep-menu { display: none; }
+/* o Kiwix dá altura, borda e fundo a todo <button> da barra, com !important */
+.kiwix #kiwixtoolbar .prep-bt { flex: none; align-items: center; justify-content: center; width: 44px; height: 44px !important;
+  padding: 0 !important; border: 0 !important; border-radius: 12px !important; background: transparent !important;
+  color: var(--k-text); line-height: 1 !important; }
+.prep-bt svg, #prep-res svg { flex: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.prep-bt:focus-visible, #prep-menu button:focus-visible, #prep-res button:focus-visible { outline: 2px solid var(--k-accent); outline-offset: -2px; }
+#prep-onde { flex: 1 1 auto; min-width: 0; flex-direction: column; justify-content: center; gap: 1px; line-height: 1.3; }
+#prep-acervo, #prep-titulo { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#prep-acervo { font-size: 12px; color: var(--k-text-2); }
+#prep-acervo:empty { display: none; }
+#prep-titulo { font-size: 15px; font-weight: 700; color: var(--k-text); }
+
+@media (max-width: 645px) {
+  #kiwixtoolbarwrapper { position: relative; } /* o menu do "mais" abre a partir daqui */
+  #kiwixtoolbar.prep-barra { height: 56px; padding: 0 4px !important; gap: 4px; }
+  .kiwix #kiwixtoolbar.prep-barra .kiwix_button_cont, .kiwix #kiwixtoolbar.prep-barra .kiwix_searchform { display: none !important; }
+  .kiwix #kiwixtoolbar.prep-barra .prep-bt, #kiwixtoolbar.prep-barra #prep-onde { display: flex; }
+  .kiwix #kiwixtoolbar.prep-barra #prep-fechar { display: none; }
+  /* sem acervo aberto (o Kiwix não achou o título dele) não há onde buscar */
+  .kiwix #kiwixtoolbar.prep-sem-acervo #prep-lupa { display: none; }
+  @media (hover: hover) { .kiwix #kiwixtoolbar .prep-bt:hover { background: var(--k-surface-2) !important; } }
+
+  /* busca aberta: o campo do Kiwix ocupa a barra, com um botão para fechar */
+  .kiwix #kiwixtoolbar.prep-buscando .prep-bt, #kiwixtoolbar.prep-buscando #prep-onde { display: none; }
+  .kiwix #kiwixtoolbar.prep-buscando #prep-fechar { display: flex; }
+  .kiwix #kiwixtoolbar.prep-buscando .kiwix_searchform { display: block !important; order: 0; margin-left: 8px; }
+
+  #prep-menu { position: absolute; top: 50px; right: 6px; z-index: 20; flex-direction: column; min-width: 210px; padding: 6px;
+    border: 1px solid var(--k-border); border-radius: 14px; background: var(--k-surface); box-shadow: var(--shadow-lg);
+    font: 15px/1.3 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+  #prep-menu:not([hidden]) { display: flex; }
+  #prep-menu button { min-height: 44px; padding: 0 12px; border: 0; border-radius: 9px; background: transparent; color: var(--k-text);
+    font: inherit; text-align: left; cursor: pointer; }
+  #prep-menu button[hidden] { display: none; }
+  #prep-menu button:hover, #prep-menu button:focus-visible { background: var(--k-surface-2); }
+}
+
+/* ---------- faixa "Resultado N de M" (barra.js), logo abaixo da barra do leitor ----------
+   Só para quem chegou pela busca da página inicial: diz em que resultado a pessoa está e leva ao anterior e
+   ao seguinte sem voltar à lista. O fundo é o destaque suave por cima do fundo da página (ele é translúcido). */
+#prep-res { display: flex; align-items: center; gap: 4px; height: 44px; box-sizing: border-box; padding: 0 max(20px, calc((100% - 1140px) / 2));
+  background: linear-gradient(var(--k-accent-soft), var(--k-accent-soft)), var(--k-bg); color: var(--k-text);
+  font: 13px/1.3 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+#prep-res[hidden] { display: none; }
+#prep-res-txt { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#prep-res-txt b { font-weight: 700; color: var(--k-accent); }
+#prep-res button { flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 12px; background: transparent; color: var(--k-accent); cursor: pointer; }
+#prep-res button:disabled { color: var(--k-muted); opacity: .6; cursor: default; }
+/* some junto com a barra quando o Kiwix a esconde, como a faixa de tradução */
+body:has(#kiwixtoolbar[style*="fixed"]) #prep-res { display: none; }
+@media (max-width: 645px) { #prep-res { padding: 0 4px 0 16px; } }
+
+/* ---------- tradução (traducao.js): pílula flutuante no canto direito, logo abaixo da barra do leitor ----------
+   Só existe quando o acervo aberto tem pacote de tradução: diz se a página está traduzida e leva ao original.
+   #prep-trad fica no lugar dele (depois da barra) com altura zero, só para marcar onde a pílula começa; quem
+   desenha é .pt-cx, por cima da página, sem tirar altura dela. Vale em pé, deitado e em tela larga. */
+#prep-trad { position: relative; z-index: 15; height: 0; color: var(--k-text-2); font: 12.5px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
 #prep-trad[hidden] { display: none; }
-#prep-trad svg { flex: none; width: 17px; height: 17px; color: var(--k-accent); }
+#prep-trad .pt-cx { position: absolute; top: 8px; right: calc(12px + env(safe-area-inset-right, 0px)); display: flex; align-items: center;
+  gap: 8px; box-sizing: border-box; max-width: min(400px, calc(100vw - 24px)); padding: 4px 4px 4px 12px;
+  border: 1px solid var(--k-border-2); border-radius: 999px; background: var(--k-surface); box-shadow: var(--shadow); }
+#prep-trad svg { flex: none; width: 16px; height: 16px; color: var(--k-accent); }
 #prep-trad[data-estado="original"] svg { color: var(--k-muted); }
-#prep-trad-txt { flex: 1 1 auto; min-width: 0; }
+#prep-trad-txt { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #prep-trad[data-estado="preparando"] #prep-trad-txt, #prep-trad[data-estado="traduzindo"] #prep-trad-txt { color: var(--k-muted); }
-#prep-trad .pt-longo { color: var(--k-muted); }
-#prep-trad-btn { flex: none; height: 30px; padding: 0 12px; border: 1px solid var(--k-border-2); border-radius: 9px; background: var(--k-surface);
-  color: var(--k-text); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s; }
+/* o botão é baixo para a pílula tapar pouco da página; a área de toque passa da borda dele */
+#prep-trad-btn { position: relative; flex: none; height: 34px; padding: 0 12px; border: 1px solid var(--k-border-2); border-radius: 999px;
+  background: var(--k-bg); color: var(--k-accent); font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer;
+  transition: background .15s; }
+#prep-trad-btn::after { content: ""; position: absolute; inset: -6px; }
 #prep-trad-btn:hover { background: var(--k-surface-2); }
 #prep-trad-btn:focus-visible { outline: none; border-color: var(--k-accent-line); box-shadow: 0 0 0 4px var(--k-accent-soft); }
-/* em tela estreita o Kiwix tira a barra de cima ao rolar para baixo (position: fixed); a faixa sai junto */
+/* em tela estreita o Kiwix tira a barra de cima ao rolar para baixo (position: fixed); a pílula sai junto */
 body:has(#kiwixtoolbar[style*="fixed"]) #prep-trad { display: none; }
-@media (max-width: 645px) {
-  #prep-trad { min-height: 44px; padding: 4px 12px; }
-  #prep-trad .pt-longo { display: none; }
-  #prep-trad-btn { height: 36px; }
-}
+/* com mouse a página tem barra de rolagem à direita: a pílula fica mais para dentro */
+@media (hover: hover) and (pointer: fine) { #prep-trad .pt-cx { right: 28px; } }
 
 /* ---------- resultados da busca (/search) e páginas de erro do Kiwix ---------- */
 body:not(:has(#kiwixtoolbar)) {

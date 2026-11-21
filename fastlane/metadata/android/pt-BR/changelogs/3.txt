@@ -1,1 +1,1 @@
-O botão e o gesto de voltar voltam uma página dentro do app, inclusive dentro dos acervos; só fecham o app na página inicial. Nova wiki "Chuva forte e tempestade" no catálogo.
+Primeira versão na Google Play. Visual novo com seis temas, busca por significado em todos os acervos instalados, tradução de páginas e PDFs em inglês dentro do aparelho, leitor de PDF e vídeos, e apoio ao projeto pelo Google Play.

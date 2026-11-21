@@ -1,38 +1,5 @@
 /* Base comum da página inicial e do gerenciador: cores, barra do topo, botões, menus, avisos. */
-:root {
-  color-scheme: light dark;
-  --bg: #f4f7f4; --surface: #ffffff; --surface-2: #edf1ed; --hover: #f6f9f6;
-  --border: #dde5df; --border-2: #c8d2ca;
-  --text: #121a15; --text-2: #3b493f; --muted: #68756b;
-  --accent: #1a8a4a; --accent-hover: #15743d; --on-accent: #ffffff;
-  --accent-soft: rgba(26, 138, 74, .10); --accent-line: rgba(26, 138, 74, .40);
-  --warn: #9a5b00; --warn-soft: rgba(217, 149, 12, .16);
-  --danger: #c0312b; --danger-soft: rgba(192, 49, 43, .10); --on-danger: #ffffff;
-  --info: #1d6fd1; --info-soft: rgba(29, 111, 209, .10);
-  --ardosia: #5b7fa8; /* azul acinzentado, para o que não é destaque (ex.: disco usado por outras coisas) */
-  --shadow: 0 1px 2px rgba(16, 24, 20, .06), 0 10px 28px -14px rgba(16, 24, 20, .22);
-  --shadow-lg: 0 18px 50px -14px rgba(16, 24, 20, .32);
-  --topo-bg: rgba(244, 247, 244, .82);
-  --brilho: rgba(26, 138, 74, .09);
-  --raio: 14px; --raio-p: 10px;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b0f0c; --surface: #131814; --surface-2: #1b221d; --hover: #171d19;
-    --border: #232c26; --border-2: #34413a;
-    --text: #e9eeea; --text-2: #b4beb6; --muted: #838f86;
-    --accent: #4ade80; --accent-hover: #74e8a2; --on-accent: #04260f;
-    --accent-soft: rgba(74, 222, 128, .12); --accent-line: rgba(74, 222, 128, .42);
-    --warn: #fbbf24; --warn-soft: rgba(251, 191, 36, .13);
-    --danger: #f87171; --danger-soft: rgba(248, 113, 113, .13); --on-danger: #2b0808;
-    --info: #7cb7ff; --info-soft: rgba(124, 183, 255, .13);
-    --ardosia: #7799bb;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 30px -14px rgba(0, 0, 0, .9);
-    --shadow-lg: 0 20px 60px -12px rgba(0, 0, 0, .9);
-    --topo-bg: rgba(11, 15, 12, .78);
-    --brilho: rgba(74, 222, 128, .07);
-  }
-}
+/* As cores (variáveis --bg, --accent, …) vêm do tema.css, que tem os seis temas; ele é carregado antes deste. */
 
 *, *::before, *::after { box-sizing: border-box; }
 html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-padding-top: 76px; }
@@ -59,7 +26,7 @@ h1, h2, h3, p { margin: 0; }
 .marca { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 700;
   font-size: 1.02rem; letter-spacing: -.015em; flex: none; border-radius: 10px; }
 .marca-logo { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; color: #fff;
-  background: linear-gradient(140deg, #2bb866, #15803d); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 2px 8px -2px rgba(21, 128, 61, .6); }
+  background: linear-gradient(140deg, var(--logo-a), var(--logo-b)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 2px 8px -2px rgba(21, 128, 61, .6); }
 .marca-logo .i { width: 28px; height: 28px; }
 /* à esquerda da barra: a marca e, depois de um traço, onde a pessoa está (Biblioteca, Gerenciar acervo, o acervo aberto) */
 .topo-esq { display: flex; align-items: center; gap: 16px; min-width: 0; }
@@ -116,7 +83,7 @@ h1, h2, h3, p { margin: 0; }
 .tag-verde { background: var(--accent-soft); color: var(--accent); }
 .tag-azul { background: var(--info-soft); color: var(--info); }
 .tag-vermelho { background: var(--danger-soft); color: var(--danger); }
-@media (prefers-color-scheme: dark) { .tag-amarelo { background: rgba(250, 204, 21, .15); color: #facc15; } }
+html[data-tema$="-escuro"] .tag-amarelo { background: rgba(250, 204, 21, .15); color: #facc15; }
 
 @keyframes surgir { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
 
@@ -131,7 +98,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* ---------- rodapé ---------- */
 /* em linha: o texto e os links (com o quadradinho de 22 px) alinhados pelo meio; quebra em mais linhas no celular */
-.rodape { margin-top: auto; padding: 44px 20px 28px; text-align: center; color: var(--muted); font-size: .8rem;
+.rodape { margin-top: auto; padding: 32px 20px 20px; text-align: center; color: var(--muted); font-size: .8rem;
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center; row-gap: 8px; }
 .rodape-links { display: inline-flex; align-items: center; }
 /* sem espaço para uma linha só (ajustarRodape, em admin.js e home.js): os links vão juntos para baixo */
@@ -142,7 +109,7 @@ h1, h2, h3, p { margin: 0; }
 .rodape .i { width: 14px; height: 14px; }
 /* ícones dos links do rodapé: quadradinho no verde da marca com o traço amarelo, como o coração da página /apoie */
 .rodape a .i { width: 22px; height: 22px; padding: 4px; border-radius: 7px; color: #facc15;
-  background: linear-gradient(140deg, #2bb866, #15803d); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25); }
+  background: linear-gradient(140deg, var(--logo-a), var(--logo-b)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25); }
 .rodape a[href="/apoie"] .i { fill: #facc15; }
 .rodape .sep { margin: 0 8px; opacity: .5; }
 

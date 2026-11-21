@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -15,6 +16,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -45,6 +47,7 @@ type motorBusca struct {
 	mu        sync.Mutex
 	cmd       *exec.Cmd
 	saiu      chan struct{} // fecha quando o processo termina
+	pronto    chan struct{} // fecha quando o modelo acabou de carregar (esperarCarga)
 	url       string
 	ultimoUso time.Time
 
@@ -81,53 +84,144 @@ func (a *App) buscaPronta() bool {
 
 // ---------------------------------------------------------------- o modelo: servidor e vetor
 
-// servidor devolve o endereço do llama-server, iniciando o local se preciso.
+// servidor devolve o endereço do llama-server com o modelo já carregado, iniciando o local se preciso.
 func (m *motorBusca) servidor(ctx context.Context, a *App) (string, error) {
 	if a.cfg.EmbedURL != "" {
 		return a.cfg.EmbedURL, nil
 	}
 	m.mu.Lock()
+	m.ultimoUso = time.Now()
+	if m.cmd == nil || m.terminou() {
+		if err := m.iniciarTravado(a); err != nil {
+			m.mu.Unlock()
+			return "", err
+		}
+	}
+	url, pronto, saiu := m.url, m.pronto, m.saiu
+	m.mu.Unlock()
+	// Cada pedido espera o modelo com o seu próprio contexto. No celular a carga leva vários segundos, e a
+	// página cancela o pedido quando a pessoa continua digitando: o seguinte tem de esperar também, em vez
+	// de ir direto ao llama-server e receber o 503 de "ainda carregando".
+	select {
+	case <-pronto:
+		return url, nil
+	case <-saiu:
+		return "", errors.New("o llama-server parou ao carregar o modelo")
+	case <-ctx.Done():
+		return "", ctx.Err()
+	}
+}
+
+// aquecerBusca deixa a busca pronta antes da primeira pergunta: abre os índices dos acervos instalados e
+// sobe o llama-server, sem esperar nenhum dos dois. Não faz nada se a busca não está instalada.
+func (a *App) aquecerBusca() {
+	if a.cfg.EmbedURL != "" || !a.buscaPronta() {
+		return
+	}
+	var arquivos []string
+	a.mu.Lock()
+	for _, inst := range a.est.Instalados {
+		if inst.Indice != nil {
+			arquivos = append(arquivos, inst.Arquivo)
+		}
+	}
+	a.mu.Unlock()
+	if len(arquivos) == 0 {
+		return
+	}
+	go func() {
+		for _, arq := range arquivos {
+			a.abrirIndice(arq)
+		}
+	}()
+	m := &a.motor
+	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.ultimoUso = time.Now()
-	if m.cmd != nil && !m.terminou() {
-		return m.url, nil
+	if m.cmd == nil || m.terminou() {
+		if err := m.iniciarTravado(a); err != nil {
+			logf("busca: %v", err)
+		}
 	}
+}
+
+// iniciarTravado sobe o llama-server e deixa esperarCarga de olho nele. Chame com m.mu travado.
+func (m *motorBusca) iniciarTravado(a *App) error {
 	modelo := a.modeloInstalado()
 	if a.cfg.LlamaServer == "" || modelo == nil {
-		return "", errors.New("o modelo de busca não está instalado")
+		return errors.New("o modelo de busca não está instalado")
 	}
 	porta := portaLivre()
+	// Sem -t o llama-server usa uma thread por núcleo (10 num celular de 10 núcleos), e elas esperam umas
+	// pelas outras girando. Com a pessoa digitando, a página disputa os mesmos núcleos e uma pergunta que
+	// leva 0,1 s passa a levar muitos segundos (medido: 15 s só no aquecimento). Quatro bastam para um
+	// modelo deste tamanho e deixam núcleo livre para a tela.
+	threads := strconv.Itoa(max(2, min(4, runtime.NumCPU()/2)))
 	cmd := exec.CommandContext(a.ctx, a.cfg.LlamaServer,
+		"-t", threads, "-tb", threads,
 		"-m", filepath.Join(a.pastaDaBusca(), modelo.Arquivo), "--embedding",
 		"--host", "127.0.0.1", "--port", strconv.Itoa(porta), "-c", "2048", "-np", "1", "--no-webui")
 	cmd.Cancel = func() error { return cmd.Process.Signal(os.Interrupt) }
 	cmd.WaitDelay = 5 * time.Second
+	saida, _ := cmd.StdoutPipe()
+	cmd.Stderr = cmd.Stdout
 	if err := cmd.Start(); err != nil {
-		return "", fmt.Errorf("o llama-server não iniciou: %w", err)
+		return fmt.Errorf("o llama-server não iniciou: %w", err)
 	}
-	saiu := make(chan struct{})
-	go func() { cmd.Wait(); close(saiu) }()
-	m.cmd, m.saiu, m.url = cmd, saiu, "http://127.0.0.1:"+strconv.Itoa(porta)
-	logf("busca: llama-server iniciado (pid %d, modelo %s)", cmd.Process.Pid, modelo.Nome)
-	prazo := time.Now().Add(2 * time.Minute) // em aparelho fraco o modelo demora a carregar
-	for time.Now().Before(prazo) {
-		if ctx.Err() != nil {
-			return "", ctx.Err()
-		}
-		if m.terminou() {
-			m.cmd = nil
-			return "", errors.New("o llama-server parou ao carregar o modelo")
-		}
-		if resp, err := a.http.Get(m.url + "/health"); err == nil {
-			resp.Body.Close()
-			if resp.StatusCode == http.StatusOK {
-				return m.url, nil
+	saiu, pronto := make(chan struct{}), make(chan struct{})
+	// o que o llama-server diz enquanto carrega vai para o log (é onde se vê por que a carga demorou);
+	// depois de pronto ele escreve uma linha por pedido, que não interessa
+	go func() {
+		s := bufio.NewScanner(saida)
+		s.Buffer(make([]byte, 64<<10), 1<<20)
+		for s.Scan() {
+			select {
+			case <-pronto:
+			default:
+				logf("[llama] %s", s.Text())
 			}
 		}
-		time.Sleep(150 * time.Millisecond)
+	}()
+	go func() { cmd.Wait(); close(saiu) }()
+	m.cmd, m.saiu, m.pronto, m.url = cmd, saiu, pronto, "http://127.0.0.1:"+strconv.Itoa(porta)
+	logf("busca: llama-server iniciado (pid %d, modelo %s)", cmd.Process.Pid, modelo.Nome)
+	go m.esperarCarga(a, cmd, m.url, pronto, saiu)
+	return nil
+}
+
+// esperarCarga acompanha o llama-server até o modelo responder e então fecha "pronto". Não depende de pedido
+// nenhum: quem pediu a busca pode ter desistido, e o próximo pedido encontra o modelo carregado.
+func (m *motorBusca) esperarCarga(a *App, cmd *exec.Cmd, url string, pronto, saiu chan struct{}) {
+	inicio := time.Now()
+	prazo := time.NewTimer(2 * time.Minute) // em aparelho fraco o modelo demora a carregar
+	defer prazo.Stop()
+	tk := time.NewTicker(150 * time.Millisecond)
+	defer tk.Stop()
+	for {
+		select {
+		case <-saiu:
+			return
+		case <-prazo.C:
+			logf("busca: o modelo demorou demais para carregar; llama-server parado")
+			m.mu.Lock()
+			if m.cmd == cmd {
+				m.pararTravado()
+			} else {
+				cmd.Process.Signal(os.Interrupt)
+			}
+			m.mu.Unlock()
+			return
+		case <-tk.C:
+			if resp, err := a.http.Get(url + "/health"); err == nil {
+				resp.Body.Close()
+				if resp.StatusCode == http.StatusOK {
+					logf("busca: modelo carregado em %.1f s", time.Since(inicio).Seconds())
+					close(pronto)
+					return
+				}
+			}
+		}
 	}
-	m.pararTravado()
-	return "", errors.New("o modelo de busca demorou demais para carregar")
 }
 
 // terminou: o processo do llama-server já saiu. Chame com m.mu travado.
@@ -445,6 +539,14 @@ func (a *App) apiBusca(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(status)
 		json.NewEncoder(w).Encode(v)
 	}
+	// ?aquecer=1: a página avisa que a pessoa pôs o cursor no campo de busca. Sobe o modelo e abre os índices
+	// já, sem esperar: quando a pergunta chegar (três letras e uma pausa depois), a carga já passou.
+	if r.URL.Query().Get("aquecer") != "" {
+		a.aquecerBusca()
+		w.Header().Set("Cache-Control", "no-store")
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	q := strings.Join(strings.Fields(r.URL.Query().Get("q")), " ")
 	if q == "" || len(q) > 500 {
 		responder(http.StatusBadRequest, map[string]string{"erro": "pergunta vazia ou longa demais"})
@@ -477,6 +579,7 @@ func (a *App) apiBusca(w http.ResponseWriter, r *http.Request) {
 	a.indices.mu.RLock()
 	defer a.indices.mu.RUnlock()
 	alvos := a.alvosDaBusca(arquivos)
+	var noModelo time.Duration
 
 	// um vetor por formato de consulta (hoje todos os índices usam o mesmo)
 	type candidato struct {
@@ -493,7 +596,9 @@ func (a *App) apiBusca(w http.ResponseWriter, r *http.Request) {
 		}
 		bitsQ, ok := vetores[formato]
 		if !ok {
+			antes := time.Now()
 			v, err := a.motor.vetor(r.Context(), a, strings.Replace(formato, "{}", q, 1))
+			noModelo += time.Since(antes)
 			if err != nil {
 				logf("busca: %v", err)
 				responder(http.StatusServiceUnavailable, map[string]string{"erro": err.Error()})
@@ -555,6 +660,8 @@ func (a *App) apiBusca(w http.ResponseWriter, r *http.Request) {
 		}(i, p)
 	}
 	wg.Wait()
+	// só os tempos: a pergunta não vai para o log
+	logf("busca: %d resultados em %d ms (modelo %d ms)", len(resultados), time.Since(inicio).Milliseconds(), noModelo.Milliseconds())
 	responder(http.StatusOK, map[string]any{"disponivel": true, "resultados": resultados, "mais": mais,
 		"acervos": len(alvos), "ms": time.Since(inicio).Milliseconds()})
 }
@@ -786,7 +893,7 @@ var (
 	reTitulo     = regexp.MustCompile(`(?is)<title[^>]*>(.*?)</title>`)
 	reEspacos    = regexp.MustCompile(`[ \t\x{a0}]+`)
 	reLinhas     = regexp.MustCompile(`\n\s*\n+`)
-	// o que o indexador pula (rag-prototipo/indice-llm2/indexar.py, _Texto.PULAR)
+	// o que o indexador pula (zimdex/indexar.py, _Texto.PULAR)
 	rePular = func() []*regexp.Regexp {
 		var rs []*regexp.Regexp
 		for _, t := range []string{"script", "style", "nav", "footer", "header", "noscript", "svg", "button", "template"} {

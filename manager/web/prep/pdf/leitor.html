@@ -6,6 +6,8 @@
 <meta name="color-scheme" content="light dark">
 <title>PDF</title>
 <link rel="icon" href="/prep/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/prep/tema.css">
+<script src="/prep/tema.js"></script>
 <link rel="stylesheet" href="/prep/base.css">
 <link rel="stylesheet" href="/prep/pdf/pdfjs/pdf_viewer.css">
 <link rel="stylesheet" href="/prep/pdf/leitor.css">
@@ -36,9 +38,12 @@
   </label>
 </header>
 <div class="lp-estado" id="estado" role="status" hidden>
-  <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
-  <span id="estado-txt"></span>
-  <button type="button" class="btn" id="estado-btn" hidden>Tentar de novo</button>
+  <!-- .lp-cx é a pílula flutuante; a faixa em si fica com altura zero, só marcando o lugar (leitor.css) -->
+  <div class="lp-cx">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+    <span id="estado-txt"></span>
+    <button type="button" class="btn" id="estado-btn" hidden>Tentar de novo</button>
+  </div>
 </div>
 <main id="palco">
   <div id="viewerContainer" tabindex="0"><div id="viewer" class="pdfViewer"></div></div>

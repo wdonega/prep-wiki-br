@@ -20,6 +20,8 @@ const el = (tag, classe, texto) => {
 
 const caixa = $("viewerContainer"), caixaTexto = $("texto"), textoIn = $("texto-in"), campoPag = $("pag");
 const noQuadro = window.top !== window; // dentro do leitor do Kiwix, que já tem a barra dele para voltar
+// lá o nome do arquivo já está na barra de cima e, no celular, os controles descem para o pé da tela (leitor.css)
+document.documentElement.classList.toggle("lp-no-quadro", noQuadro);
 const PREDEFINIDOS = new Set(["page-width", "page-fit", "auto"]);
 const ZOOM_MIN = 0.25, ZOOM_MAX = 8;
 const MAX_VAZIAS = 5; // páginas seguidas sem texto antes de parar de procurar sozinho
@@ -410,8 +412,8 @@ function mostrarEstado() {
   barra.hidden = false;
   barra.dataset.estado = estado;
   $("estado-txt").textContent = texto;
-  // o complemento só aparece onde cabe numa linha (leitor.css)
-  if (estado === "traduzido") $("estado-txt").append(el("span", "lp-longo", " por máquina, neste aparelho. Confira números e doses no original."));
+  // o complemento não cabe na pílula: fica na dica do texto (aparece com o mouse)
+  $("estado-txt").title = estado === "traduzido" ? "Traduzido por máquina, neste aparelho. Confira números e doses no original." : "";
   const botao = $("estado-btn");
   botao.hidden = false;
   botao.textContent = !traduz ? "Traduzir" : estado === "erro" ? "Tentar de novo" : "Ver original";

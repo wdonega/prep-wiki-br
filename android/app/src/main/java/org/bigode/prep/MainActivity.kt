@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -37,16 +38,21 @@ class MainActivity : Activity() {
     private var pediuNotificacao = false
     private var limparHistorico = false
     private var voltar: OnBackInvokedCallback? = null
+    // o "Apoie": compra pelo Google no sabor da Play, a página /apoie no sabor livre (Apoio.kt de cada sabor)
+    private lateinit var apoio: Apoio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        apoio = Apoio(this)
+        apoio.conferirPendentes()
         web = WebView(this)
         web.settings.javaScriptEnabled = true
         web.settings.domStorageEnabled = true
         web.webViewClient = object : WebViewClient() {
             // links para fora (fontes, créditos) abrem no navegador do celular
             override fun shouldOverrideUrlLoading(v: WebView, r: WebResourceRequest): Boolean {
-                if (r.url.host == HOST) return false
+                // o link "Apoie" das páginas: cada sabor do app decide se trata aqui ou se deixa a página abrir
+                if (r.url.host == HOST) return r.url.path == CAMINHO_APOIE && apoio.abrir()
                 startActivity(Intent(Intent.ACTION_VIEW, r.url))
                 return true
             }
@@ -101,17 +107,25 @@ class MainActivity : Activity() {
             }
 
             override fun onHideCustomView() = sairDaTelaCheia()
+
+            // Tema de cor da página. O tema.js escreve no console "prep-tema:<fundo em #rrggbb>:<claro|escuro>"
+            // toda vez que aplica um tema, e a área das barras do sistema vai atrás. A cor vem pelo console
+            // porque o app não expõe nenhuma interface JavaScript, de propósito: ela ficaria ao alcance de
+            // qualquer página aberta aqui, inclusive as dos acervos. Pelo console a página só fala, e o pior
+            // que uma linha destas consegue é trocar a cor das barras. O resto do console segue como antes.
+            override fun onConsoleMessage(m: ConsoleMessage): Boolean {
+                val tema = m.message()?.let { LINHA_DO_TEMA.matchEntire(it) } ?: return super.onConsoleMessage(m)
+                pintarBarras(Color.parseColor(tema.groupValues[1]), tema.groupValues[2] == "escuro")
+                return true
+            }
         }
         // targetSdk 35+ desenha atrás das barras do sistema. A margem vai num contêiner em volta da
         // WebView: padding na própria WebView não afasta o conteúdo e ainda causa defeitos de desenho.
         raiz = FrameLayout(this)
-        // atrás das barras, a mesma cor de fundo da página (--bg em manager/web/prep/base.css)
+        // Atrás das barras, a mesma cor de fundo da página (--bg em manager/web/prep/tema.css). Até a página
+        // dizer qual é o tema (onConsoleMessage, acima) vale o Verde, claro ou escuro conforme o aparelho.
         val escuro = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-        raiz.setBackgroundColor(Color.parseColor(if (escuro) "#0b0f0c" else "#f4f7f4"))
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val claras = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-            window.insetsController?.setSystemBarsAppearance(if (escuro) 0 else claras, claras)
-        }
+        pintarBarras(Color.parseColor(if (escuro) "#0b0f0c" else "#f4f7f4"), escuro)
         raiz.addView(web, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             raiz.setOnApplyWindowInsetsListener { v, insets ->
@@ -123,6 +137,21 @@ class MainActivity : Activity() {
         setContentView(raiz)
         web.loadData("<p style='font-family:sans-serif;padding:2em'>Abrindo a biblioteca…</p>", "text/html", "utf-8")
         iniciarGerenciador()
+    }
+
+    // Pinta a área das barras do sistema com a cor de fundo da página e deixa os ícones delas legíveis: escuros
+    // em tema claro, claros em tema escuro. Do Android 15 em diante o app desenha atrás das barras e o que
+    // aparece é o fundo da raiz; até o 14 (e na barra de três botões) quem pinta é a janela, então a cor vai
+    // para os dois. No Android 10 os ícones não são trocados, como já era, e por isso a cor das barras também
+    // fica a do sistema: mudar só um dos dois deixaria os ícones ilegíveis.
+    @Suppress("DEPRECATION") // statusBarColor e navigationBarColor: é o que pinta as barras até o Android 14
+    private fun pintarBarras(cor: Int, escuro: Boolean) {
+        raiz.setBackgroundColor(cor)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return
+        window.statusBarColor = cor
+        window.navigationBarColor = cor
+        val claras = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+        window.insetsController?.setSystemBarsAppearance(if (escuro) 0 else claras, claras)
     }
 
     // O serviço só pode ser iniciado com a tela visível (Android 8+ recusa com o app em segundo plano, o que
@@ -229,6 +258,7 @@ class MainActivity : Activity() {
 
     override fun onDestroy() {
         Servico.telaAberta = false // sem download em andamento, o Servico encerra o gerenciador e o Kiwix
+        apoio.encerrar()
         super.onDestroy()
     }
 
@@ -236,5 +266,9 @@ class MainActivity : Activity() {
         const val TAG = Servico.TAG
         const val HOST = Servico.HOST
         const val PORTA = Servico.PORTA
+        // a página de apoio do gerenciador (manager/main.go); os links "Apoie" das páginas apontam para ela
+        const val CAMINHO_APOIE = "/apoie"
+        // a linha que o manager/web/prep/tema.js escreve no console: cor de fundo e modo do tema
+        private val LINHA_DO_TEMA = Regex("prep-tema:(#[0-9a-fA-F]{6}):(claro|escuro)")
     }
 }

@@ -1,0 +1,10 @@
+/* Páginas de texto corrido: termos de uso (/termos) e política de privacidade (/privacidade). */
+.doc { max-width: 720px; margin: 0 auto; padding-top: 22px; padding-bottom: 48px; line-height: 1.65; }
+.doc h1 { margin: 0 0 6px; font-size: 1.6rem; letter-spacing: -.02em; line-height: 1.2; }
+.doc h2 { margin: 28px 0 6px; font-size: 1.08rem; letter-spacing: -.01em; }
+.doc p, .doc ul { margin: 0 0 12px; color: var(--text-2); }
+.doc ul { padding-left: 1.2em; }
+.doc li { margin-bottom: 6px; }
+.doc a { color: var(--link, var(--accent)); }
+.doc code { font-size: .88em; overflow-wrap: anywhere; }
+.doc-data { color: var(--muted); font-size: .85rem; }

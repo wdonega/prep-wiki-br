@@ -6,40 +6,55 @@
 <meta name="color-scheme" content="light dark">
 <title>Prep Wiki BR · biblioteca offline</title>
 <link rel="icon" href="/prep/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/prep/tema.css">
+<script src="/prep/tema.js"></script>
 <link rel="stylesheet" href="/prep/base.css">
 <link rel="stylesheet" href="/prep/home.css">
 </head>
 <body>
 <header class="topo">
   <div class="topo-in">
+    <!-- só no celular e só com busca: no lugar da marca entra a seta, que limpa a busca e volta para a lista -->
+    <a class="voltar" id="b-voltar" href="/" aria-label="Limpar a busca e voltar para o início">‹</a>
     <div class="topo-esq">
       <a class="marca" href="/" aria-label="Prep Wiki BR, página inicial">
         <span class="marca-logo"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-caderno"/></svg></span>
         <span class="marca-nome">Prep Wiki BR</span>
       </a>
-      <span class="marca-local">Biblioteca</span>
+      <span class="selo-off">funciona sem internet</span>
     </div>
     <form class="busca" id="busca" role="search" autocomplete="off">
-      <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-search"/></svg>
-      <input id="q" type="search" name="q" placeholder="Buscar nos acervos…" aria-label="Buscar nos acervos" enterkeyhint="search">
+      <svg class="i busca-lupa" aria-hidden="true"><use href="/prep/icones.svg#i-search"/></svg>
+      <input id="q" type="search" name="q" placeholder="Buscar nos acervos" aria-label="Buscar no que está no aparelho" enterkeyhint="search">
       <kbd aria-hidden="true">/</kbd>
+      <button class="busca-b busca-limpar" type="button" id="b-limpar" aria-label="Limpar a busca">
+        <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-x"/></svg>
+      </button>
+      <button class="busca-b busca-ir" type="submit" aria-label="Buscar">
+        <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-search"/></svg>
+      </button>
     </form>
     <nav class="topo-acoes" aria-label="Opções">
-      <a class="btn" href="/admin/" id="b-admin" aria-label="Gerenciar acervo">
-        <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-settings"/></svg><span class="rot">Gerenciar</span>
-      </a>
+      <!-- em tela larga; no celular o mesmo atalho fica preso ao pé da tela (baixar-barra) -->
+      <a class="btn baixar-mais" href="/admin/" id="b-baixar" hidden><span>+ Baixar<span class="rot"> mais conteúdo</span></span></a>
+      <div class="tema" id="tema">
+        <button class="ibtn" type="button" id="b-tema" aria-label="Tema de cores" aria-expanded="false" aria-controls="tema-menu">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <!-- as opções são montadas pelo home.js, com as cores que o tema.js conhece -->
+        <div class="tema-menu" id="tema-menu" role="radiogroup" aria-label="Tema de cores" hidden></div>
+      </div>
     </nav>
   </div>
 </header>
 
 <main class="conteudo">
-  <section class="hero">
-    <h1>Biblioteca</h1>
-    <p class="hero-sub">
-      <span id="resumo">Carregando…</span>
-      <span class="selo-off"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-wifi-off"/></svg>funciona sem internet</span>
-    </p>
-  </section>
+  <section class="chegando" id="chegando" aria-label="Downloads em andamento" hidden></section>
+  <div class="cab" id="cab">
+    <h1 class="cab-tit">No aparelho<span id="cab-n"></span></h1>
+    <span class="cab-resumo" id="resumo">Carregando…</span>
+    <span class="selo-off">funciona sem internet</span>
+  </div>
   <div id="filtros" class="filtros" hidden></div>
   <div id="lista" aria-live="polite"></div>
 </main>
@@ -53,6 +68,12 @@
       <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-heart"/></svg>Apoie</a>
   </span>
 </footer>
+
+<!-- só no celular, preso ao pé da tela: a página inicial só lê, e baixar é uma tarefa à parte (o gerenciador) -->
+<div class="baixar-barra" id="baixar-barra" hidden>
+  <a class="baixar-grande" href="/admin/">+ Baixar mais conteúdo</a>
+  <span class="baixar-leg" id="baixar-leg">precisa de internet</span>
+</div>
 <script src="/prep/home.js"></script>
 </body>
 </html>

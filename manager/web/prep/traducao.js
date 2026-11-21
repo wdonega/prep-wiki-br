@@ -692,10 +692,11 @@
   const faixa = document.createElement("div");
   faixa.id = "prep-trad";
   faixa.hidden = true;
-  faixa.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  // .pt-cx é a pílula flutuante; a faixa em si fica com altura zero, só marcando o lugar (kiwix.css)
+  faixa.innerHTML = `<div class="pt-cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
     <span id="prep-trad-txt" role="status"></span>
-    <button type="button" id="prep-trad-btn"></button>`;
+    <button type="button" id="prep-trad-btn"></button></div>`;
   document.getElementById("kiwixtoolbarwrapper").after(faixa);
   const txt = faixa.querySelector("#prep-trad-txt"), botao = faixa.querySelector("#prep-trad-btn");
 
@@ -717,10 +718,9 @@
     if (p) {
       const idioma = NOME[p.pacote.de] || p.pacote.de;
       txt.textContent = { original: `Página em ${idioma}`, preparando: "Preparando o tradutor…", traduzindo: `Traduzindo do ${idioma}…`,
-        traduzido: `Traduzido do ${idioma}`, erro: "Não deu para traduzir esta página" }[estado];
-      if (estado === "traduzido") { // o complemento só aparece onde cabe (kiwix.css)
-        txt.append(Object.assign(document.createElement("span"), { className: "pt-longo", textContent: " por máquina, neste aparelho. Confira números e doses no original." }));
-      }
+        traduzido: `Traduzido do ${idioma}`, erro: "Não deu para traduzir" }[estado];
+      // o complemento não cabe na pílula: fica na dica do texto (aparece com o mouse)
+      txt.title = estado === "traduzido" ? "Traduzido por máquina, neste aparelho. Confira números e doses no original." : "";
       botao.textContent = estado === "original" ? "Traduzir" : estado === "erro" ? "Tentar de novo" : "Ver original";
       botao.setAttribute("aria-label", estado === "original" ? "Traduzir esta página para português"
         : estado === "erro" ? "Tentar traduzir de novo" : `Ver o original em ${idioma}`);

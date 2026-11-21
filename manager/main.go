@@ -328,9 +328,14 @@ func (a *App) rotas() http.Handler {
 	// sem nada instalado, a própria página inicial diz isso e leva ao gerenciador (home.js)
 	mux.HandleFunc("GET /{$}", pagina(web, "home.html"))
 	mux.HandleFunc("GET /apoie", pagina(web, "apoie.html")) // PIX e Liberapay; funciona offline
+	// termos de uso e política de privacidade: a loja de apps pede os dois, e funcionam offline
+	mux.HandleFunc("GET /termos", pagina(web, "termos.html"))
+	mux.HandleFunc("GET /privacidade", pagina(web, "privacidade.html"))
 	mux.Handle("GET /prep/", estaticos(web))
 	mux.HandleFunc("GET /api/biblioteca", a.apiBiblioteca)
 	mux.HandleFunc("GET /api/busca", a.apiBusca) // busca por significado nos acervos com índice (busca.go)
+	// acervos para baixar quando a biblioteca não tem o que a pessoa procura; provisório (sugestoes.go)
+	mux.HandleFunc("GET /api/sugestoes", a.apiSugestoes)
 	// tradução no cliente (traducao.go): o que o leitor consulta e os arquivos do motor e dos modelos
 	mux.HandleFunc("GET /api/traducao", a.apiTraducao)
 	mux.HandleFunc("GET /prep/"+pastaTraducoes+"/{id}/{versao}/{nome}", a.arquivoTraducao)

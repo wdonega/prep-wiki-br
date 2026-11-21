@@ -4,50 +4,37 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Prep Wiki BR · gerenciar acervo</title>
+<title>Prep Wiki BR · baixar conteúdo</title>
 <link rel="icon" href="/prep/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/prep/tema.css">
+<script src="/prep/tema.js"></script>
 <link rel="stylesheet" href="/prep/base.css">
 <link rel="stylesheet" href="/prep/admin.css">
 </head>
-<body>
-<header class="topo">
-  <div class="topo-in">
-    <div class="topo-esq">
-      <a class="marca" href="/" aria-label="Prep Wiki BR, página inicial">
-        <span class="marca-logo"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-caderno"/></svg></span>
-        <span class="marca-nome">Prep Wiki BR</span>
-      </a>
-      <span class="marca-local">Gerenciar acervo</span>
+<!-- Baixar é uma tarefa à parte da leitura: tem cor própria (a de baixar, do tema), passos e um ✕ que volta para a
+     biblioteca. As vistas (assuntos, itens, espaço e ajustes) saem do hash; quem troca o data-vista é o admin.js. -->
+<body class="pg-tarefa" data-vista="assuntos">
+<main class="tarefa">
+  <header class="tf-topo">
+    <a class="tf-voltar" id="tf-voltar" href="#" hidden></a>
+    <div class="tf-tit">
+      <h1 id="tf-tit">Baixar conteúdo</h1>
+      <span class="tf-net">precisa de internet<span class="so-largo" id="tf-livre"></span></span>
     </div>
-    <nav class="topo-acoes" aria-label="Opções">
-      <a class="btn" href="/"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-library"/></svg><span>Biblioteca</span></a>
-      <button class="btn" type="button" id="b-sair" hidden><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-log-out"/></svg><span>Sair</span></button>
-    </nav>
-  </div>
-</header>
+    <a class="tf-ibtn tf-ajustes" href="#espaco" aria-label="Espaço e ajustes">
+      <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-settings"/></svg><span class="rot">Espaço e ajustes</span></a>
+    <button class="tf-ibtn" type="button" id="b-sair" aria-label="Sair" hidden>
+      <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-log-out"/></svg><span class="rot">Sair</span></button>
+    <a class="tf-ibtn tf-x" href="/" aria-label="Fechar e voltar para a leitura">
+      <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-x"/></svg></a>
+  </header>
 
-<main class="conteudo">
-  <section class="painel" aria-label="Resumo">
-    <div class="stat">
-      <span class="stat-ico"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-package"/></svg></span>
-      <div><div class="stat-val" id="s-instalados">–</div><div class="stat-rot">acervos instalados</div></div>
-    </div>
-    <div class="stat">
-      <span class="stat-ico"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-hard-drive"/></svg></span>
-      <div class="stat-cresce">
-        <div class="stat-val"><span id="s-ocupado">–</span> <small id="s-livre"></small></div>
-        <div class="disco" aria-hidden="true"><i id="s-disco-outros"></i><i id="s-disco-acervo" class="acervo"></i></div>
-        <div class="stat-rot" id="s-disco-rot">espaço em disco</div>
-      </div>
-    </div>
-    <div class="stat">
-      <span class="stat-ico"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-clock"/></svg></span>
-      <div class="stat-cresce"><div class="stat-val stat-val-p" id="s-verificado">–</div><div class="stat-rot">versões verificadas</div></div>
-      <button class="ibtn" id="b-verificar" type="button" data-dica="Verificar versões agora" aria-label="Verificar versões agora">
-        <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-refresh"/></svg>
-      </button>
-    </div>
-  </section>
+  <nav class="tf-passos" aria-label="Passos">
+    <a id="passo-1" class="atual" href="#">1 Assunto</a>
+    <span aria-hidden="true">›</span>
+    <span id="passo-2">2 Itens</span>
+    <a class="tf-livre" id="passos-livre" href="#espaco"></a>
+  </nav>
 
   <div id="faixa-leitura" class="alerta alerta-info" hidden>
     <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-lock"/></svg>
@@ -55,35 +42,82 @@
   </div>
   <div id="alerta" class="alerta" hidden></div>
 
-  <div class="abas" role="tablist" aria-label="Filtrar acervos" id="abas"></div>
-  <div id="lista" aria-live="polite"></div>
+  <section class="tf-chegando" id="chegando" aria-label="Downloads em andamento" hidden></section>
 
-  <section class="grupo" id="extras" aria-labelledby="extras-tit" hidden>
-    <div class="grupo-cab"><h2 id="extras-tit">Busca e tradução</h2><span class="etq">no aparelho, sem internet</span></div>
-    <div class="painel-lista" id="extras-lista"></div>
-    <p class="add-nota">Baixam sozinhos. A busca procura pelo sentido da pergunta dentro dos acervos; a tradução mostra em português
-      as páginas em inglês (é feita por máquina: confira números e doses no original).</p>
-  </section>
-
-  <section class="grupo" id="adicionar" aria-labelledby="adicionar-tit">
-    <div class="grupo-cab"><h2 id="adicionar-tit">Adicionar um acervo seu</h2><span class="etq">link ou arquivo .zim</span></div>
-    <div class="painel-lista add">
-      <form class="add-link" id="f-link" autocomplete="off">
-        <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-link"/></svg>
-        <input id="link" type="url" inputmode="url" placeholder="Cole o link de um arquivo .zim" aria-label="Link de um arquivo .zim" required>
-        <button class="btn" id="b-inspecionar" type="submit">Verificar</button>
-      </form>
-      <div id="previa" hidden></div>
-      <label class="soltar" id="soltar">
-        <input id="arquivo" type="file" accept=".zim" hidden>
-        <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-upload"/></svg>
-        <span><b>Ou envie um arquivo .zim</b> deste aparelho: clique aqui ou arraste o arquivo</span>
+  <div class="tf-corpo">
+    <div class="tf-col-a">
+      <label class="tf-busca">
+        <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-search"/></svg>
+        <input id="q" type="search" placeholder="Procurar no catálogo" aria-label="Procurar no catálogo" autocomplete="off" enterkeyhint="search">
       </label>
-      <div id="envio" hidden></div>
+      <h2 class="tf-rot so-largo">1 · Assunto</h2>
+      <nav id="assuntos" aria-label="Assuntos"></nav>
+      <a class="tf-seu" href="#espaco/adicionar">Tem um link ou arquivo .zim? Adicionar o seu</a>
     </div>
-    <p class="add-nota">O link é conferido antes de baixar: o gerenciador lê só o começo do arquivo para confirmar que é um ZIM e saber o tamanho.
-      Um .zim copiado direto para a pasta de dados também aparece aqui depois de reiniciar.</p>
-  </section>
+    <div class="tf-col-b" id="itens"></div>
+  </div>
+
+  <div class="tf-espaco">
+    <section class="es-disco" aria-label="Espaço em disco">
+      <div class="es-disco-nums"><b id="s-ocupado">–</b><span id="s-livre"></span></div>
+      <div id="s-disco" hidden>
+        <div class="disco" aria-hidden="true"><i id="s-disco-acervo" class="acervo"></i><i id="s-disco-outros"></i></div>
+        <div class="es-legenda"><span><i class="acervo"></i>acervos</span><span><i></i>outras coisas do aparelho</span><span id="s-disco-rot"></span></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="ocupa-tit">
+      <h2 class="tf-rot" id="ocupa-tit">O que ocupa mais</h2>
+      <div id="ocupa"></div>
+    </section>
+
+    <section aria-labelledby="at-rot">
+      <h2 class="tf-rot" id="at-rot">Atualizações</h2>
+      <div class="es-lin">
+        <span class="es-txt"><span class="es-nome" id="at-tit">–</span><span class="es-sub" id="s-verificado"></span></span>
+        <button class="btn" id="b-verificar" type="button"><svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-refresh"/></svg>Verificar</button>
+      </div>
+      <div id="atualizacoes"></div>
+    </section>
+
+    <section id="extras" aria-labelledby="extras-tit" hidden>
+      <h2 class="tf-rot" id="extras-tit">Busca e tradução</h2>
+      <div id="extras-lista"></div>
+      <p class="add-nota">Baixam sozinhos. A busca procura pelo sentido da pergunta dentro dos acervos; a tradução mostra em português
+        as páginas em inglês (é feita por máquina: confira números e doses no original).</p>
+    </section>
+
+    <section id="adicionar" aria-labelledby="adicionar-tit">
+      <h2 class="tf-rot" id="adicionar-tit">Adicionar um acervo seu</h2>
+      <div class="add">
+        <form class="add-link" id="f-link" autocomplete="off">
+          <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-link"/></svg>
+          <input id="link" type="url" inputmode="url" placeholder="Cole o link de um arquivo .zim" aria-label="Link de um arquivo .zim" required>
+          <button class="btn" id="b-inspecionar" type="submit">Verificar</button>
+        </form>
+        <div id="previa" hidden></div>
+        <label class="soltar" id="soltar">
+          <input id="arquivo" type="file" accept=".zim" hidden>
+          <svg class="i" aria-hidden="true"><use href="/prep/icones.svg#i-upload"/></svg>
+          <span><b>Ou envie um arquivo .zim</b> deste aparelho: clique aqui ou arraste o arquivo</span>
+        </label>
+        <div id="envio" hidden></div>
+      </div>
+      <p class="add-nota">O link é conferido antes de baixar: o gerenciador lê só o começo do arquivo para confirmar que é um ZIM e saber o tamanho.
+        Um .zim copiado direto para a pasta de dados também aparece aqui depois de reiniciar.</p>
+    </section>
+
+    <section aria-labelledby="sobre-tit">
+      <h2 class="tf-rot" id="sobre-tit">Sobre</h2>
+      <p class="add-nota"><a href="/privacidade">Política de privacidade</a> · <a href="/termos">Termos de uso</a></p>
+    </section>
+  </div>
+
+  <div class="tf-barra" id="barra" hidden>
+    <div class="tf-barra-txt" aria-live="polite"><b id="barra-n"></b><span id="barra-sobra"></span></div>
+    <button class="tf-baixar" id="b-baixar" type="button">Baixar agora</button>
+    <a class="tf-mais" id="b-mais" href="#">Escolher mais assuntos</a>
+  </div>
 </main>
 
 <footer class="rodape" id="rodape">

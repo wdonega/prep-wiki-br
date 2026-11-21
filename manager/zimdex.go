@@ -19,7 +19,7 @@ import (
 	"sync"
 )
 
-// Leitura de um .zimdex (formato em rag-prototipo/indice-llm2/zimdex.py): zip sem compressão com
+// Leitura de um .zimdex (formato em zimdex/zimdex.py): zip sem compressão com
 //
 //	info.json     ZIM de origem (arquivo, uuid), modelo, texto da consulta, nº de trechos
 //	trechos.tsv   caminho no ZIM <TAB> seção <TAB> nº de caracteres; a linha N é o vetor N

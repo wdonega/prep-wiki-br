@@ -1,5 +1,5 @@
 /* Leitor de PDF (leitor.html): barra em cima, o PDF (PDF.js) ou o texto das páginas embaixo.
-   As cores e os botões vêm de base.css; o desenho das páginas, de pdfjs/pdf_viewer.css. */
+   As cores vêm do tema escolhido (tema.css) e os botões, de base.css; o desenho das páginas, de pdfjs/pdf_viewer.css. */
 html, body { height: 100%; }
 body { min-height: 0; height: 100vh; height: 100dvh; overflow: hidden; background: var(--bg); }
 
@@ -19,14 +19,22 @@ body { min-height: 0; height: 100vh; height: 100dvh; overflow: hidden; backgroun
 .lp-pag input::-webkit-outer-spin-button, .lp-pag input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .lp-pag input:focus-visible { outline: none; border-color: var(--accent-line); box-shadow: 0 0 0 4px var(--accent-soft); }
 
-.lp-estado { flex: none; display: flex; align-items: center; gap: 9px; min-height: 38px; padding: 4px max(14px, calc((100% - 1140px) / 2));
-  background: var(--surface); border-bottom: 1px solid var(--border); color: var(--text-2); font-size: .84rem; line-height: 1.35; }
-.lp-estado .i { width: 17px; height: 17px; color: var(--accent); }
+/* tradução: pílula flutuante no canto direito, logo abaixo da barra, igual à do leitor de páginas (kiwix.css).
+   .lp-estado fica no lugar dele com altura zero, só para marcar onde a pílula começa; quem desenha é .lp-cx,
+   por cima do PDF, sem tirar altura dele. Vale em pé, deitado e em tela larga. */
+.lp-estado { flex: none; position: relative; z-index: 30; height: 0; color: var(--text-2); font-size: 12.5px; line-height: 1.35; }
+.lp-cx { position: absolute; top: 8px; right: calc(12px + env(safe-area-inset-right, 0px)); display: flex; align-items: center; gap: 8px;
+  box-sizing: border-box; max-width: min(400px, calc(100vw - 24px)); padding: 4px 4px 4px 12px; border: 1px solid var(--border-2);
+  border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
+.lp-estado .i { flex: none; width: 16px; height: 16px; color: var(--accent); }
 .lp-estado[data-estado="preparando"], .lp-estado[data-estado="traduzindo"] { color: var(--muted); }
-.lp-estado > span { flex: 1 1 auto; min-width: 0; }
-.lp-longo { display: none; }
-@media (min-width: 760px) { .lp-longo { display: inline; } }
-.lp-estado .btn { height: 30px; font-size: .8rem; }
+#estado-txt { flex: 1 1 auto; min-width: 0; }
+/* o botão é baixo para a pílula tapar pouco da página; a área de toque passa da borda dele */
+.lp-estado .btn { position: relative; flex: none; height: 34px; padding: 0 12px; border-radius: 999px; background: var(--bg);
+  color: var(--accent); font-size: 13px; font-weight: 700; }
+.lp-estado .btn::after { content: ""; position: absolute; inset: -6px; }
+/* com mouse o PDF tem barra de rolagem à direita: a pílula fica mais para dentro */
+@media (hover: hover) and (pointer: fine) { .lp-cx { right: 28px; } }
 
 #palco { flex: 1 1 auto; min-height: 0; position: relative; }
 
@@ -88,4 +96,28 @@ body { min-height: 0; height: 100vh; height: 100dvh; overflow: hidden; backgroun
 @media (max-width: 400px) {
   .lp-titulo { display: none; }
   .lp-modos { margin-right: auto; }
+}
+
+/* No celular, dentro do leitor do Kiwix (.lp-no-quadro, posto pelo leitor.js): a barra de cima já é a dele,
+   com o voltar, o acervo e o nome do arquivo. Os controles do PDF descem para o pé da tela, ao alcance do
+   polegar, com botões do tamanho do dedo. 645 px é a largura em que a barra do Kiwix muda (kiwix.css). */
+@media (max-width: 645px) {
+  .lp-no-quadro .lp-barra { order: 3; gap: 8px; min-height: 64px; padding: 0 12px; background: var(--bg);
+    border-bottom: 0; border-top: 1px solid var(--border); }
+  .lp-no-quadro .lp-titulo { display: none; }
+  .lp-no-quadro .lp-modos { flex: 0 1 150px; min-width: 0; margin-right: 0; padding: 0; overflow: hidden;
+    border: 1.5px solid var(--accent); border-radius: 10px; background: transparent; }
+  .lp-no-quadro .lp-modos button { flex: 1 1 0; min-width: 0; height: 41px; padding: 0 6px; border-radius: 0; color: var(--text); font-size: 13px; font-weight: 500; }
+  .lp-no-quadro .lp-modos button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); font-weight: 700; box-shadow: none; }
+  .lp-no-quadro .lp-zoom { gap: 8px; }
+  .lp-no-quadro .lp-zoom .ibtn { width: 44px; height: 44px; border: 1px solid var(--border-2); border-radius: 10px; color: var(--text); }
+  .lp-no-quadro .lp-pag { margin-left: auto; font-size: 13px; color: var(--text-2); }
+  .lp-no-quadro .lp-pag input { width: 44px; height: 44px; padding: 0 2px; border-radius: 10px; text-align: center; font-size: 14px; }
+
+}
+/* celular estreito: os controles do pé encolhem um pouco para caberem numa linha */
+@media (max-width: 350px) {
+  .lp-no-quadro .lp-barra { gap: 6px; padding: 0 8px; }
+  .lp-no-quadro .lp-zoom { gap: 6px; }
+  .lp-no-quadro .lp-zoom .ibtn, .lp-no-quadro .lp-pag input { width: 40px; }
 }

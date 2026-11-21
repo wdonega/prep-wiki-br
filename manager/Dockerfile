@@ -30,7 +30,7 @@ FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.6.1 AS xx
 FROM --platform=$BUILDPLATFORM alpine:3.22 AS llama
 COPY --from=xx / /
 ARG TARGETPLATFORM
-# fixado num commit: é o mesmo llama.cpp testado no celular (rag-prototipo/bench-android)
+# fixado num commit: é o mesmo llama.cpp testado no celular (mesmo commit do android/preparar-libs.sh)
 ARG LLAMA_CPP=a946eb541a6d3051496bdcc451a0fa85772b8dfd
 RUN apk add --no-cache clang lld llvm cmake make git
 RUN xx-apk add --no-cache gcc g++ musl-dev linux-headers

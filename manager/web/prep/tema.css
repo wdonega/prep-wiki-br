@@ -1,0 +1,109 @@
+/* Temas: as seis cores do app (Verde, Azul e Âmbar, cada uma em claro e escuro). Aqui só há variáveis; quem
+   desenha é o base.css (páginas nossas) e o kiwix.css (leitor). O tema.js põe data-tema no <html>, com a
+   escolha guardada no aparelho; sem escolha vale o Verde, claro ou escuro conforme o sistema.
+
+   Além das cores de sempre, cada tema diz:
+     --baixar, --on-baixar, --baixar-soft   a cor de tudo o que é baixar ou precisa de internet
+     --marca-texto                          fundo do trecho que a busca achou
+     --logo-a, --logo-b                     o degradê do quadradinho da marca
+     --link, --visitado                     links dentro do leitor */
+:root { /* Verde claro: as cores de sempre do app */
+  color-scheme: light;
+  --bg: #f4f7f4; --surface: #ffffff; --surface-2: #edf1ed; --hover: #f6f9f6;
+  --border: #dde5df; --border-2: #c8d2ca;
+  --text: #121a15; --text-2: #3b493f; --muted: #5c695f;
+  /* um tom mais escuro que o verde antigo (#1a8a4a), para o texto verde passar de 4,5:1 sobre o fundo */
+  --accent: #15703c; --accent-hover: #115c31; --on-accent: #ffffff;
+  --accent-soft: rgba(21, 112, 60, .10); --accent-line: rgba(21, 112, 60, .40);
+  --warn: #9a5b00; --warn-soft: rgba(217, 149, 12, .16);
+  --danger: #c0312b; --danger-soft: rgba(192, 49, 43, .10); --on-danger: #ffffff;
+  --info: #1d6fd1; --info-soft: rgba(29, 111, 209, .10);
+  --ardosia: #5b7fa8; /* azul acinzentado, para o que não é destaque (ex.: disco usado por outras coisas) */
+  --shadow: 0 1px 2px rgba(16, 24, 20, .06), 0 10px 28px -14px rgba(16, 24, 20, .22);
+  --shadow-lg: 0 18px 50px -14px rgba(16, 24, 20, .32);
+  --topo-bg: rgba(244, 247, 244, .82);
+  --brilho: rgba(21, 112, 60, .09);
+  --baixar: #1259b8; --on-baixar: #ffffff; --baixar-soft: #e2ecfa;
+  --marca-texto: #cdebd8;
+  --logo-a: #2bb866; --logo-b: #15803d;
+  --link: #1259b8; --visitado: #6b3fa0;
+  --raio: 14px; --raio-p: 10px;
+}
+
+/* o que é do modo escuro em qualquer cor */
+html[data-tema$="-escuro"] {
+  color-scheme: dark;
+  --warn: #fbbf24; --warn-soft: rgba(251, 191, 36, .13);
+  --danger: #f87171; --danger-soft: rgba(248, 113, 113, .13); --on-danger: #2b0808;
+  --ardosia: #7799bb;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 30px -14px rgba(0, 0, 0, .9);
+  --shadow-lg: 0 20px 60px -12px rgba(0, 0, 0, .9);
+  --link: #8ab4f8; --visitado: #c4a7f5;
+}
+
+html[data-tema="verde-escuro"] {
+  --bg: #0b0f0c; --surface: #131814; --surface-2: #1b221d; --hover: #171d19;
+  --border: #232c26; --border-2: #34413a;
+  --text: #e9eeea; --text-2: #b4beb6; --muted: #838f86;
+  --accent: #4ade80; --accent-hover: #74e8a2; --on-accent: #04260f;
+  --accent-soft: rgba(74, 222, 128, .12); --accent-line: rgba(74, 222, 128, .42);
+  --info: #7cb7ff; --info-soft: rgba(124, 183, 255, .13);
+  --topo-bg: rgba(11, 15, 12, .78);
+  --brilho: rgba(74, 222, 128, .07);
+  --baixar: #7cb7ff; --on-baixar: #06203f; --baixar-soft: #14263d;
+  --marca-texto: #1c4a2e;
+}
+
+html[data-tema="azul-claro"] {
+  --bg: #ffffff; --surface: #f4f6fa; --surface-2: #e4e8ef; --hover: #f8f9fc;
+  --border: #e1e5ec; --border-2: #c3cad6;
+  --text: #141821; --text-2: #4b5364; --muted: #5d6677;
+  --accent: #1d4ed8; --accent-hover: #1a43b8; --on-accent: #ffffff;
+  --accent-soft: rgba(29, 78, 216, .09); --accent-line: rgba(29, 78, 216, .40);
+  --info: #1d4ed8; --info-soft: rgba(29, 78, 216, .10);
+  --topo-bg: rgba(255, 255, 255, .84);
+  --brilho: rgba(29, 78, 216, .07);
+  --baixar: #1d4ed8; --on-baixar: #ffffff; --baixar-soft: #e7eeff;
+  --marca-texto: #d6e2ff;
+  --logo-a: #3b82f6; --logo-b: #1d4ed8;
+}
+html[data-tema="azul-escuro"] {
+  --bg: #0e1218; --surface: #171c25; --surface-2: #252c39; --hover: #1b212c;
+  --border: #252c38; --border-2: #3a4353;
+  --text: #e8ecf3; --text-2: #a7b1c2; --muted: #8a95a8;
+  --accent: #8fb4ff; --accent-hover: #b3ccff; --on-accent: #0a1a36;
+  --accent-soft: rgba(143, 180, 255, .13); --accent-line: rgba(143, 180, 255, .42);
+  --info: #8fb4ff; --info-soft: rgba(143, 180, 255, .13);
+  --topo-bg: rgba(14, 18, 24, .80);
+  --brilho: rgba(143, 180, 255, .06);
+  --baixar: #8fb4ff; --on-baixar: #0a1a36; --baixar-soft: #1a2a48;
+  --marca-texto: #26437a;
+  --logo-a: #3b82f6; --logo-b: #1d4ed8;
+}
+
+html[data-tema="ambar-claro"] {
+  --bg: #fbfaf7; --surface: #f3f0ea; --surface-2: #e7e2d9; --hover: #f7f5f0;
+  --border: #e4ded3; --border-2: #cfc6b6;
+  --text: #1c1a17; --text-2: #5a544b; --muted: #665f54;
+  --accent: #9a4505; --accent-hover: #7f3804; --on-accent: #ffffff;
+  --accent-soft: rgba(154, 69, 5, .10); --accent-line: rgba(154, 69, 5, .40);
+  --info: #1d4ed8; --info-soft: rgba(29, 78, 216, .10);
+  --topo-bg: rgba(251, 250, 247, .84);
+  --brilho: rgba(154, 69, 5, .07);
+  --baixar: #1d4ed8; --on-baixar: #ffffff; --baixar-soft: #e7eeff;
+  --marca-texto: #fbdfa8;
+  --logo-a: #d97706; --logo-b: #92400e;
+}
+html[data-tema="ambar-escuro"] {
+  --bg: #141210; --surface: #1d1a16; --surface-2: #2b2721; --hover: #221f1a;
+  --border: #2e2a24; --border-2: #453f36;
+  --text: #f1ece4; --text-2: #b8afa2; --muted: #968d80;
+  --accent: #f5b54a; --accent-hover: #f8c873; --on-accent: #2a1c02;
+  --accent-soft: rgba(245, 181, 74, .13); --accent-line: rgba(245, 181, 74, .42);
+  --info: #8fb4ff; --info-soft: rgba(143, 180, 255, .13);
+  --topo-bg: rgba(20, 18, 16, .80);
+  --brilho: rgba(245, 181, 74, .06);
+  --baixar: #8fb4ff; --on-baixar: #0a1a36; --baixar-soft: #1a2a48;
+  --marca-texto: #55400f;
+  --logo-a: #d97706; --logo-b: #92400e;
+}

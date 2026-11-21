@@ -27,7 +27,7 @@ echo "gerenciador (NDK $(basename "$NDK"), API $API)"
 
 # llama-server (llama.cpp): roda o modelo da busca por significado (manager/busca.go). O gerenciador o inicia
 # na primeira busca e o para depois de um tempo sem uso. Mesmo commit e mesmas opções do teste no celular
-# (rag-prototipo/bench-android) e da imagem Docker (manager/Dockerfile). Precisa do cmake do Android SDK.
+# e da imagem Docker (manager/Dockerfile). Precisa do cmake do Android SDK.
 # Leva uns minutos na primeira vez; depois só recompila se o commit mudar. SEM_LLAMA=1 pula (app sem a busca nova).
 LLAMA_CPP=a946eb541a6d3051496bdcc451a0fa85772b8dfd
 if [ "${SEM_LLAMA:-}" != 1 ]; then

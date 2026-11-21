@@ -64,7 +64,7 @@ func estaticos(web fs.FS) http.Handler {
 // entra uma folha de estilo nossa, para acompanharem o tema claro/escuro do resto.
 var paginasDoKiwix = map[string]bool{"/viewer": true, "/search": true}
 
-const folhaKiwix = `<link rel="stylesheet" href="/prep/kiwix.css">`
+const folhaKiwix = `<link rel="stylesheet" href="/prep/tema.css"><script src="/prep/tema.js"></script><link rel="stylesheet" href="/prep/kiwix.css">`
 
 // O Kiwix escolhe o idioma da própria interface pelo localStorage ("userlang") ou, na falta, pelo navegador.
 // Como o seletor de idioma dele fica escondido, o leitor fixa português antes de os scripts do Kiwix rodarem
@@ -78,6 +78,11 @@ const scriptTraducao = `<script src="/prep/traducao.js" defer></script>`
 // O leitor também ganha o script dos vídeos: liga a legenda em português e abre o vídeo no ponto que a
 // busca achou (web/prep/video.js).
 const scriptVideo = `<script src="/prep/video.js" defer></script>`
+
+// E o script da barra: no celular ela vira [voltar] [acervo e título] [buscar] [mais], e quem chegou pela
+// busca da página inicial ganha a faixa "Resultado N de M" (web/prep/barra.js). Entra por último: a faixa dele
+// fica logo abaixo da barra, antes da faixa de tradução, que o traducao.js já pôs quando ele roda.
+const scriptBarra = `<script src="/prep/barra.js" defer></script>`
 
 func (a *App) proxyKiwix(web fs.FS) *httputil.ReverseProxy {
 	proxy := httputil.NewSingleHostReverseProxy(a.urlKiwix)
@@ -154,6 +159,7 @@ func (a *App) proxyKiwix(web fs.FS) *httputil.ReverseProxy {
 				if len(a.traducoesInstaladas()) > 0 {
 					extra += scriptTraducao
 				}
+				extra += scriptBarra
 			}
 			corpo = append(corpo[:i:i], append([]byte(extra), corpo[i:]...)...)
 		}

@@ -1,1 +1,1 @@
-The back button and gesture now go back one page inside the app, including inside collections; they only close the app on the home page. New "Chuva forte e tempestade" (heavy rain and storms) wiki in the catalog.
+First release on Google Play. New look with six themes, search by meaning across all installed collections, on-device translation of English pages and PDFs, PDF and video reader, and project support through Google Play.

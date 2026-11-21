@@ -1,99 +1,165 @@
-/* Gerenciador: resumo, abas e a lista de acervos do catálogo. */
+/* Baixar conteúdo (/admin/): a tarefa de baixar, em dois passos (assuntos → itens), e a vista "Espaço e ajustes".
+   Baixar tem cor própria, a --baixar do tema, para não se confundir com a leitura. Celular primeiro: uma vista
+   por vez, escolhida por body[data-vista] (quem troca é o admin.js); a partir de 900 px os dois passos ficam
+   lado a lado num cartão centralizado. O fim do arquivo veste também a tela de senha (entrar.html). */
 
-/* ---------- resumo ---------- */
-.painel { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; padding-top: 26px; }
-.stat { display: flex; align-items: center; gap: 13px; padding: 15px 16px; min-width: 0; border-radius: var(--raio);
-  background: var(--surface); border: 1px solid var(--border); }
-.stat-ico { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center;
-  background: var(--accent-soft); color: var(--accent); }
-.stat-ico .i { width: 19px; height: 19px; }
-.stat-cresce { flex: 1; min-width: 0; }
-.stat-val { font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; font-variant-numeric: tabular-nums;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.stat-val small { font-size: .8rem; font-weight: 500; color: var(--muted); letter-spacing: 0; }
-.stat-val-p { font-size: 1.02rem; font-weight: 650; }
-.stat-rot { font-size: .78rem; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.disco { height: 6px; margin: 7px 0 5px; border-radius: 999px; background: var(--surface-2); overflow: hidden; display: flex; }
-.disco i { display: block; height: 100%; width: 0; background: var(--ardosia); transition: width .5s; } /* outros usos: azul acinzentado, distinto do espaço livre (a trilha) e do verde do acervo */
-.disco i.acervo { background: var(--accent); }
+.tarefa { flex: 1 0 auto; width: 100%; display: flex; flex-direction: column; background: var(--surface); }
+/* aqui os avisos flutuantes ficam em cima, logo abaixo do cabeçalho e dos passos: embaixo está a barra do "Baixar agora" */
+.pg-tarefa .avisos { top: 108px; bottom: auto; }
 
-.alerta { margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; padding: 11px 14px; border-radius: var(--raio-p);
+/* ---------- cabeçalho da tarefa, na cor de baixar ---------- */
+.tf-topo { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 4px; min-height: 56px; padding: 0 4px;
+  background: var(--baixar); color: var(--on-baixar); }
+.tarefa :focus-visible { outline-color: var(--baixar); }
+.tf-topo :focus-visible { outline-color: var(--on-baixar); outline-offset: -3px; }
+.tf-ibtn, .tf-voltar { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 44px;
+  border: 0; border-radius: 10px; background: transparent; color: inherit; font: inherit; font-size: .875rem; font-weight: 600;
+  text-decoration: none; white-space: nowrap; cursor: pointer; }
+.tf-ibtn { min-width: 44px; padding: 0; }
+.tf-ibtn .i { width: 20px; height: 20px; }
+.tf-ibtn .rot { display: none; }
+.tf-voltar { padding: 0 8px; max-width: 42%; overflow: hidden; text-overflow: ellipsis; display: inline-block; line-height: 44px; }
+.tf-ibtn:hover, .tf-voltar:hover { background: rgba(255, 255, 255, .16); }
+/* o título e, se couber na mesma linha, o "precisa de internet" à direita; sem espaço, ele desce para baixo do título */
+.tf-tit { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 12px; padding: 0 8px; }
+.tf-tit h1 { min-width: 0; font-size: 1.0625rem; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tf-net { font-size: .78rem; font-weight: 600; white-space: nowrap; }
+
+.tf-passos { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; background: var(--baixar-soft);
+  color: var(--text-2); font-size: .8125rem; }
+.tf-passos a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: none; }
+.tf-passos .atual { font-weight: 700; color: var(--baixar); }
+.tf-passos .tf-livre { margin-left: auto; }
+
+.alerta { margin: 12px 16px 0; display: flex; align-items: flex-start; gap: 10px; padding: 11px 14px; border-radius: var(--raio-p);
   background: var(--warn-soft); color: var(--warn); font-size: .875rem; }
 .alerta-info { background: var(--info-soft); color: var(--info); }
 .alerta .i { width: 17px; height: 17px; margin-top: 2px; }
 
-/* ---------- abas ---------- */
-.abas { margin-top: 24px; display: inline-flex; gap: 2px; padding: 4px; border-radius: 12px; background: var(--surface-2);
-  max-width: 100%; overflow-x: auto; scrollbar-width: none; }
-.abas::-webkit-scrollbar { display: none; }
-.aba { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 13px; border: 0; border-radius: 9px;
-  background: transparent; color: var(--text-2); font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
-.aba:hover { color: var(--text); }
-.aba .n { font-size: .72rem; font-weight: 650; color: var(--muted); font-variant-numeric: tabular-nums; }
-.aba[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0, 0, 0, .14), 0 0 0 1px var(--border); }
-.aba.aviso .n { color: var(--warn); }
+/* rótulo de seção ("Chegando · 2", "1 · Assunto", "O que ocupa mais") */
+.tf-rot { display: block; padding: 18px 16px 6px; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--text-2); }
+.nada { padding: 28px 16px; text-align: center; color: var(--muted); font-size: .9rem; }
+/* dentro da tarefa todo botão é alvo de toque */
+.tarefa .btn, .dlg .btn { height: 44px; }
+/* botão de baixar: contorno na cor de baixar; cheio quando é a ação principal */
+.btn-baixar { border: 1.5px solid var(--baixar); background: transparent; color: var(--baixar); font-weight: 700; }
+.btn-baixar:hover { background: var(--baixar-soft); }
+.btn-baixar.cheio, .btn-baixar.cheio:hover { background: var(--baixar); color: var(--on-baixar); }
 
-/* ---------- grupos ---------- */
-.grupo { margin-top: 26px; }
-.grupo-cab { display: flex; align-items: center; gap: 10px; margin: 0 2px 10px; }
-.grupo-cab h2 { font-size: .98rem; font-weight: 700; letter-spacing: -.012em; }
-.grupo-cab .cont { margin-left: auto; font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.painel-lista { border-radius: var(--raio); background: var(--surface); border: 1px solid var(--border); overflow: hidden; }
+/* ---------- chegando: o que está vindo e o que falhou, de qualquer assunto ---------- */
+.tf-chegando { border-bottom: 1px solid var(--border-2); }
+.tf-chegando .tf-rot { padding-top: 14px; }
+.tf-chegando .it:last-child { border-bottom: 0; }
 
-/* ---------- linha de um acervo ---------- */
-.lin { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 14px; align-items: center;
-  padding: 14px 16px; position: relative; transition: background .15s; }
-.lin + .lin, .lin-tema + .lin, .lin + .lin-tema { border-top: 1px solid var(--border); }
-/* linha compacta: o modelo de busca e os pacotes de tradução, que baixam sozinhos e não se apagam */
-.lin.mini { padding-top: 9px; padding-bottom: 9px; }
-.lin.mini .lin-st .i { width: 17px; height: 17px; }
-.lin.mini .lin-nome { font-size: .9rem; font-weight: 600; }
-.lin.mini .lin-meta { margin-top: 1px; }
-.lin.mini .btn { height: 32px; }
-.lin-tema { padding: 8px 16px; background: var(--surface-2); color: var(--text-2); font-size: .7rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .09em; }
-.lin:hover { background: var(--hover); }
-.lin-st { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; align-self: start; margin-top: 1px;
-  background: var(--surface-2); color: var(--muted); }
-.lin-st .i { width: 17px; height: 17px; }
-.lin.s-instalado .lin-st { background: var(--accent-soft); color: var(--accent); }
-.lin.s-desatualizado .lin-st { background: var(--warn-soft); color: var(--warn); }
-.lin.s-baixando .lin-st, .lin.s-verificando .lin-st, .lin.s-na_fila .lin-st, .lin.s-apagando .lin-st { background: var(--info-soft); color: var(--info); }
+/* ---------- passo 1: procurar e os assuntos ---------- */
+.tf-busca { display: flex; align-items: center; gap: 10px; height: 48px; margin: 12px 16px 4px; padding: 0 14px;
+  border: 1.5px solid var(--border-2); border-radius: 12px; background: var(--bg); color: var(--text-2); cursor: text; }
+.tf-busca:focus-within { border-color: var(--baixar); box-shadow: 0 0 0 3px var(--baixar-soft); }
+.tf-busca .i { width: 18px; height: 18px; }
+.tf-busca input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--text);
+  font: inherit; font-size: 1rem; }
+.tf-busca input::placeholder { color: var(--muted); }
 
-.lin-tit { font-weight: 650; font-size: .96rem; letter-spacing: -.01em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-/* etiquetas do item (tags do catálogo e situação): ao lado do nome; no celular, numa linha própria logo abaixo */
-.lin-etqs { display: inline-flex; flex-wrap: wrap; gap: 6px; }
-.lin-desc { font-size: .86rem; color: var(--text-2); margin-top: 2px; }
-.lin-meta { font-size: .76rem; color: var(--muted); margin-top: 5px; display: flex; flex-wrap: wrap; gap: 2px 0; }
-.lin-meta > span { white-space: nowrap; }
-.lin-meta > span:not(:last-child)::after { content: "·"; margin: 0 7px; opacity: .6; }
-.lin-meta .novo { color: var(--warn); font-weight: 600; }
+.as { display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 8px 16px; border-bottom: 1px solid var(--border);
+  color: var(--text); text-decoration: none; }
+.as:hover { background: var(--hover); }
+.as-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.as-nome { font-size: .9375rem; font-weight: 600; }
+.as-sub { font-size: .78rem; color: var(--muted); }
+.as-est { flex: none; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+.as-est.marcados { color: var(--baixar); }
+.as-seta { flex: none; font-size: 1.25rem; line-height: 1; color: var(--muted); }
+.tf-seu { display: flex; align-items: center; min-height: 52px; padding: 0 16px; color: var(--text); font-size: .84rem; font-weight: 600; }
 
-.lin-acoes { display: flex; align-items: center; gap: 6px; }
-.lin-tam { font-size: .82rem; font-weight: 600; color: var(--text-2); font-variant-numeric: tabular-nums; margin-right: 6px; white-space: nowrap; }
-.lin-acoes .btn { min-width: 104px; }
-.lin-acoes .ibtn { width: 36px; height: 36px; }
-.lin-acoes .ibtn .i { width: 17px; height: 17px; }
+/* ---------- passo 2: os acervos do assunto, com caixa de marcar ---------- */
+.pn-cab { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 12px 16px; border-bottom: 1px solid var(--border-2); }
+.pn-cab .tf-rot { padding: 0; }
+.pn-dica { font-size: .8125rem; color: var(--text-2); }
+.pn-volta { color: var(--text); font-size: .8125rem; font-weight: 600; text-decoration: none; }
+.pn-volta:hover { text-decoration: underline; }
 
-.lin-extra { grid-column: 2 / -1; }
-.prog { margin-top: 11px; }
-.prog-barra { height: 7px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
-.prog-barra i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--info), var(--accent));
-  transition: width .9s linear; }
+.it { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; border-bottom: 1px solid var(--border); }
+.it.tem { background: var(--surface-2); }
+.it.marcado { background: var(--baixar-soft); }
+.it-rot { display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 64px; padding: 8px 16px; cursor: pointer; }
+.it-rot.fixo { cursor: default; }
+.it-rot input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--baixar); cursor: inherit; }
+.it-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.it-nome { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: .9rem; font-weight: 600; }
+/* etiquetas do item (tags do catálogo e situação), ao lado do nome */
+.it-etqs { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.it-desc { font-size: .78rem; color: var(--muted); }
+.it.marcado .it-desc { color: var(--text-2); }
+.it-meta { font-size: .75rem; color: var(--muted); }
+.it-meta .novo { color: var(--warn); font-weight: 600; }
+.it-tam { flex: none; font-size: .8125rem; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.it.tem .it-tam { font-weight: 400; color: var(--muted); }
+.it.marcado .it-tam { font-weight: 700; color: var(--baixar); }
+.it-acoes { display: flex; align-items: center; gap: 4px; padding-right: 8px; }
+.it-acoes .btn { padding: 0 12px; font-size: .8125rem; }
+.it-acoes .ibtn { width: 44px; height: 44px; }
+.it-acoes .ibtn .i { width: 18px; height: 18px; }
+/* progresso e erro: embaixo, alinhados com o texto (depois da caixa de marcar) */
+.it-extra { grid-column: 1 / -1; padding: 0 16px 12px 50px; }
+.it.sem-caixa { background: transparent; } /* o fundo cinza é o da caixa travada; sem caixa não há o que travar */
+.it.sem-caixa .it-rot { min-height: 52px; }
+.it.sem-caixa .it-extra { padding-left: 16px; }
+
+.prog-barra { height: 7px; border-radius: 999px; background: var(--border); overflow: hidden; }
+.prog-barra i { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--baixar); transition: width .9s linear; }
 .prog-barra.indefinida i { width: 40% !important; animation: vaivem 1.1s ease-in-out infinite alternate; transition: none; }
 @keyframes vaivem { from { margin-left: 0; } to { margin-left: 60%; } }
 .prog-info { margin-top: 6px; display: flex; justify-content: space-between; gap: 4px 14px; flex-wrap: wrap; font-size: .76rem;
   color: var(--muted); font-variant-numeric: tabular-nums; }
 .prog-info b { color: var(--text); font-weight: 650; }
-
-.lin-erro { margin-top: 10px; display: flex; align-items: flex-start; gap: 8px; padding: 8px 11px; border-radius: 9px;
+.lin-erro { display: flex; align-items: flex-start; gap: 8px; padding: 8px 11px; border-radius: 9px;
   background: var(--danger-soft); color: var(--danger); font-size: .8rem; }
+.prog + .lin-erro { margin-top: 10px; }
 .lin-erro .i { width: 15px; height: 15px; margin-top: 2px; }
 
-.lin-meta .so-cel { display: none; }
+/* ---------- a barra do "Baixar agora", presa no pé da tela ---------- */
+.tf-barra { position: sticky; bottom: 0; z-index: 20; margin-top: auto; display: flex; flex-direction: column; gap: 10px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: var(--baixar-soft); border-top: 1.5px solid var(--baixar); }
+.tf-barra-txt { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; }
+.tf-barra-txt b { font-size: .9375rem; font-weight: 700; }
+.tf-barra-txt span { font-size: .78rem; color: var(--text-2); }
+.tf-barra-txt .falta { color: var(--danger); font-weight: 600; }
+.tf-baixar { height: 52px; padding: 0 20px; border: 0; border-radius: 12px; background: var(--baixar); color: var(--on-baixar);
+  font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; }
+.tf-baixar:disabled { opacity: .5; cursor: default; }
+.tf-mais { display: flex; align-items: center; justify-content: center; height: 44px; margin: -6px 0; color: var(--text);
+  font-size: .875rem; font-weight: 600; }
 
-/* ---------- adicionar um acervo seu ---------- */
-.add { padding: 14px 16px; display: grid; gap: 12px; }
+/* ---------- espaço e ajustes ---------- */
+.tf-espaco { display: none; padding: 16px 0 28px; }
+body[data-vista="espaco"] .tf-espaco { display: block; }
+body[data-vista="espaco"] :is(.tf-passos, .tf-corpo, .tf-net, .tf-ajustes) { display: none; }
+.es-disco { display: flex; flex-direction: column; gap: 10px; margin: 0 16px; padding: 14px; border: 1.5px solid var(--border-2); border-radius: 12px; }
+.es-disco-nums { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; }
+.es-disco-nums b { font-size: 1.1875rem; font-weight: 700; letter-spacing: -.01em; }
+.es-disco-nums span { font-size: .8125rem; color: var(--muted); }
+.disco { display: flex; height: 8px; border-radius: 999px; background: var(--border); overflow: hidden; }
+.disco i { display: block; height: 100%; width: 0; background: var(--ardosia); transition: width .5s; } /* outros usos: azul acinzentado, distinto do espaço livre (a trilha) e da cor do acervo */
+.disco i.acervo { background: var(--accent); }
+.es-legenda { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; color: var(--muted); }
+.es-legenda i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 3px; background: var(--ardosia); }
+.es-legenda i.acervo { background: var(--accent); }
+.es-legenda span:last-child { margin-left: auto; }
+
+.es-lin { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; min-height: 52px; padding: 4px 16px; border-bottom: 1px solid var(--border); }
+.es-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.es-nome { font-size: .9rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.es-sub { font-size: .78rem; color: var(--muted); }
+.es-tam { flex: none; font-size: .8125rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.es-ok { flex: none; font-size: .8125rem; font-weight: 600; white-space: nowrap; }
+.es-lin .btn { flex: none; padding: 0 12px; font-size: .8125rem; }
+.es-extra { flex-basis: 100%; padding: 4px 0 8px; }
+.es-mais { display: flex; align-items: center; height: 44px; padding: 0 16px; border: 0; background: transparent; color: var(--text);
+  font: inherit; font-size: .84rem; font-weight: 600; text-decoration: underline; cursor: pointer; }
+
+/* ---------- adicionar um acervo seu (o campo com ícone, .add-link, é também o da tela de senha) ---------- */
+.add { padding: 4px 16px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; } /* minmax(0, …): o campo do link encolhe em tela estreita em vez de alargar a página */
 .add-link { display: flex; align-items: center; gap: 8px; position: relative; }
 .add-link > .i { position: absolute; left: 13px; width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
 .add-link input { flex: 1; min-width: 0; height: 40px; padding: 0 12px 0 38px; border-radius: 10px; border: 1px solid var(--border-2);
@@ -101,23 +167,24 @@
 .add-link input::placeholder { color: var(--muted); }
 .add-link input:focus { outline: none; border-color: var(--accent-line); box-shadow: 0 0 0 4px var(--accent-soft); }
 .add-link .btn { height: 40px; }
-.soltar { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 10px; border: 1px dashed var(--border-2);
+.add .add-link input, .add .add-link .btn { height: 44px; }
+.add .add-link input { font-size: 1rem; }
+.soltar { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 14px 12px; border-radius: 12px; border: 1.5px dashed var(--border-2);
   color: var(--text-2); font-size: .88rem; cursor: pointer; transition: border-color .15s, background .15s, color .15s; }
 .soltar > .i { width: 20px; height: 20px; color: var(--muted); }
 .soltar b { color: var(--text); font-weight: 650; }
-.soltar:hover, .soltar.sobre { border-color: var(--accent-line); background: var(--accent-soft); color: var(--text); }
-.soltar.sobre > .i, .soltar:hover > .i { color: var(--accent); }
+.soltar:hover, .soltar.sobre { border-color: var(--baixar); background: var(--baixar-soft); color: var(--text); }
+.soltar.sobre > .i, .soltar:hover > .i { color: var(--baixar); }
 .previa, .envio { padding: 13px 14px; border-radius: 10px; background: var(--surface-2); }
 .previa-tit { font-weight: 650; font-size: .96rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.previa .lin-meta { margin-top: 7px; }
+.previa .it-desc { margin-top: 2px; }
+.previa .it-meta { margin-top: 7px; }
 .previa-acoes { margin-top: 12px; display: flex; gap: 8px; }
 .envio-nome { font-weight: 600; font-size: .9rem; display: flex; align-items: center; gap: 10px; }
 .envio-nome span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.envio-nome .btn { margin-left: auto; height: 30px; padding: 0 10px; font-size: .8rem; }
-.add .lin-erro { margin-top: 0; }
-.add-nota { margin: 9px 2px 0; font-size: .78rem; color: var(--muted); }
-
-.nada { margin-top: 40px; text-align: center; color: var(--muted); font-size: .9rem; }
+.envio-nome .btn { margin-left: auto; padding: 0 12px; font-size: .8125rem; }
+.envio .prog { margin-top: 10px; }
+.add-nota { margin: 9px 16px 0; font-size: .78rem; color: var(--muted); }
 
 /* ---------- confirmação ---------- */
 .dlg { width: min(92vw, 400px); padding: 0; border: 1px solid var(--border); border-radius: 18px; background: var(--surface);
@@ -132,31 +199,62 @@
 .dlg p { margin-top: 6px; font-size: .9rem; color: var(--text-2); }
 .dlg-acoes { margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px; }
 
-@media (max-width: 860px) {
-  .painel { grid-template-columns: 1fr 1fr; }
-  .painel .stat:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+/* ---------- celular: uma vista por vez ---------- */
+/* "not all and (min-width)" é o avesso exato da regra da tela larga, sem fresta entre as duas */
+@media not all and (min-width: 900px) {
+  .so-largo { display: none !important; }
+  body[data-vista="assuntos"] .tf-col-b, body[data-vista="itens"] .tf-col-a { display: none; }
+  /* procurando: o campo fica e o resultado toma o lugar dos assuntos */
+  body[data-vista="busca"] :is(#assuntos, .tf-seu) { display: none; }
+  /* no passo 1 o ✕ fica à esquerda (é o "voltar" dali); dentro de um assunto o voltar entra na esquerda,
+     o título vai para o meio e sobra só o ✕ à direita */
+  body:is([data-vista="assuntos"], [data-vista="busca"]) .tf-x { order: -1; }
+  body[data-vista="itens"] :is(.tf-net, .tf-ajustes, #b-sair) { display: none; }
+  body:is([data-vista="itens"], [data-vista="espaco"]) .tf-tit { justify-content: center; }
+  /* atualizar e apagar não cabem ao lado do nome: descem para uma linha própria */
+  .it.s-desatualizado .it-acoes { grid-column: 1 / -1; justify-content: flex-end; padding: 0 8px 10px; }
 }
-@media (max-width: 640px) {
-  .lin-tit { row-gap: 6px; }
-  .lin-etqs { flex-basis: 100%; }
-  .painel { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 10px; padding-top: 16px; }
-  .stat-rot { white-space: normal; }
-  .stat .ibtn { width: 36px; height: 36px; margin-right: -4px; }
-  .painel .stat:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
-  .painel .stat:not(:nth-child(2)) .stat-ico { display: none; }
-  .stat { padding: 13px 14px; }
-  .lin { column-gap: 11px; padding: 13px 12px; }
-  .lin-tam { display: none; }
-  .lin-meta .so-cel { display: inline; }
-  .lin-meta .novo { white-space: normal; }
-  .lin-acoes .btn { min-width: 0; width: 40px; height: 40px; padding: 0; }
-  .lin-acoes .btn .rot { display: none; }
-  .lin-acoes .btn .i { width: 18px; height: 18px; }
-  .lin-acoes .ibtn { width: 40px; height: 40px; }
-  .lin-extra { grid-column: 1 / -1; }
-  .grupo-cab { flex-wrap: wrap; row-gap: 4px; }
-  .add { padding: 12px; }
-  .soltar { padding: 14px 12px; }
+
+/* ---------- tela larga: assuntos à esquerda, itens à direita, num cartão centralizado ---------- */
+@media (min-width: 900px) {
+  .tarefa { flex: none; width: min(980px, calc(100% - 48px)); margin: 28px auto 0; border: 1px solid var(--border-2);
+    border-radius: 16px; box-shadow: var(--shadow); }
+  /* o cartão não corta o conteúdo (a barra do pé precisa continuar presa à tela): quem encosta nos cantos é que arredonda */
+  .tf-topo { position: static; gap: 8px; min-height: 60px; padding: 0 8px 0 12px; border-radius: 15px 15px 0 0; }
+  .tf-ibtn:not(.tf-x) { padding: 0 12px; }
+  .tf-ibtn .rot { display: inline; }
+  .tf-ibtn:not(.tf-x) .i { width: 17px; height: 17px; }
+  .tf-passos { display: none; }
+
+  .tf-chegando { padding: 0 12px 6px; }
+  .tf-chegando .tf-rot { padding-left: 10px; padding-right: 10px; }
+  .tf-corpo { display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: start; min-height: 420px; }
+  .tf-col-a { align-self: stretch; padding: 16px 12px; border-right: 1px solid var(--border-2); }
+  .tf-col-b { padding: 16px 20px; }
+  .tf-busca { height: 44px; margin: 0 0 14px; }
+  .tf-col-a .tf-rot { padding: 0 10px 8px; }
+  .tf-col-a .as { min-height: 44px; padding: 6px 10px; border-bottom: 0; border-radius: 8px; }
+  .tf-col-a .as-nome { font-size: .84rem; }
+  .tf-col-a :is(.as-seta, .as-dica) { display: none; }
+  .tf-col-a .as[aria-current] { background: var(--baixar-soft); box-shadow: inset 3px 0 0 var(--baixar); }
+  .tf-col-a .as[aria-current] .as-nome { font-weight: 700; }
+  .tf-seu { margin-top: 8px; padding: 0 10px; }
+
+  .pn-cab { padding: 0 0 10px; }
+  .it-rot { min-height: 52px; padding: 6px 10px; }
+  .it-rot input { width: 18px; height: 18px; }
+  .it-extra { padding: 0 10px 12px 40px; }
+  .it.sem-caixa .it-extra { padding-left: 10px; }
+  .tf-col-b .as { padding: 8px 10px; }
+
+  .tf-barra { flex-direction: row; align-items: center; gap: 10px 16px; padding: 12px 20px; border-radius: 0 0 15px 15px; }
+  .tf-barra-txt { flex: 1; justify-content: flex-start; }
+  .tf-baixar { height: 44px; }
+
+  .tf-espaco { width: min(680px, 100%); margin: 0 auto; padding: 24px 4px 32px; }
+  /* ali as linhas de acervo (atualizações) se alinham com as outras linhas da vista */
+  .tf-espaco .it-rot { padding-left: 16px; padding-right: 16px; }
+  .tf-espaco .it.sem-caixa .it-extra { padding-left: 16px; padding-right: 16px; }
 }
 
 /* ---------- tela de senha ---------- */

@@ -16,7 +16,7 @@ import (
 // vídeo, as legendas. Para a pessoa ele não existe como coisa à parte: instalar um acervo baixa o ZIM e o
 // índice, o tamanho mostrado é a soma dos dois e apagar o acervo apaga os dois.
 //
-// Os índices ficam num repositório próprio (rag-prototipo/indice-llm2/zimdex.py), com um indice.json que
+// Os índices ficam num repositório próprio (zimdex/zimdex.py), com um indice.json que
 // diz qual ZIM cada um cobre. A cada verificação de versões o gerenciador lê esse indice.json e anota, em
 // cada edição disponível, o índice que vale para ela. Em disco o índice fica ao lado do ZIM, com o mesmo
 // nome e a extensão .zimdex. Acervo sem índice (os da pessoa, ou edição ainda não indexada) funciona como
