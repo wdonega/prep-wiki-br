@@ -2,7 +2,11 @@
 
 Tudo o que gera os arquivos `.zimdex` que o Prep Wiki BR baixa junto com cada acervo: o índice da busca por
 significado e, nos canais de vídeo, as legendas em inglês e em português. O que sai daqui é publicado em
-<https://huggingface.co/datasets/wdonega/zimdex>, e o gerenciador lê de lá ([`manager/indice.go`](../../manager/indice.go)).
+<https://huggingface.co/datasets/wdonega/zimdex>, e o gerenciador lê de lá ([`manager/indice.go`](../manager/indice.go)).
+
+Nada desta pasta roda nas instalações: é a linha de produção, usada por quem mantém o projeto quando sai uma
+edição nova de um acervo ou quando um acervo entra no catálogo. Ela extrai o texto de cada ZIM (páginas e PDFs),
+calcula os vetores, transcreve o áudio dos vídeos, traduz as legendas e empacota tudo.
 
 São quatro etapas, cada uma com o seu script. Todas retomam de onde pararam.
 
@@ -12,6 +16,24 @@ São quatro etapas, cada uma com o seu script. Todas retomam de onde pararam.
 | 2. Transcrever os vídeos | `legendas/fabrica.py` | os ZIMs dos canais | `legendas/<zim>/<id>.vtt` (inglês) |
 | 3. Traduzir as legendas | `legendas/traduzir.py` | `legendas/` | `legendas-pt/<zim>/<id>.vtt` |
 | 4. Empacotar e publicar | `zimdex.py` | `resultados/`, `legendas/`, `legendas-pt/` | `zimdex/<zim>.zimdex` e `indice.json` no Hugging Face |
+
+## O que tem nesta pasta
+
+| Arquivo | Papel |
+|---|---|
+| `baixar.py` | Etapa 1: baixa os ZIMs do `catalogo.json`, do menor para o maior, com retomada. |
+| `indexar.py` | Etapa 1: tira o texto das páginas e dos PDFs, corta em trechos e calcula os vetores. |
+| `legendas/fabrica.py` | Etapa 2: reparte os vídeos entre os servidores do whisper e grava a transcrição. |
+| `legendas/traduzir.py` | Etapa 3: traduz as legendas para português, frase a frase. |
+| `zimdex.py` | Etapa 4: empacota cada índice num `.zimdex` e publica. O formato está descrito no começo dele. |
+| `iniciar.sh`, `estado.sh` | Sobe a etapa 1 com Docker e mostra o andamento. |
+| `docker-compose.yml`, `Dockerfile` | Os serviços da etapa 1 e a imagem usada por todos os scripts em Python. |
+| `legendas/servidor.sh` | Sobe um servidor do whisper numa placa. |
+| `legendas/traduzir-servidor.sh` | Sobe o servidor do tradutor (NVIDIA ou Vulkan). |
+| `llm5/embed.sh`, `bc250/embed.sh` | Servidores de embeddings em máquinas extras do laboratório. |
+| `catalogo.json` | Cópia do `manager/catalogo.json` usada na última rodada. |
+| `resultados-formatos.md` | A comparação que levou ao formato do índice (por que só o sinal de cada dimensão). |
+| `legendas/antigo/` | O caminho anterior de transcrição, na CPU. Fica como referência. |
 
 ## O que precisa
 
@@ -48,7 +70,7 @@ Os scripts esperam estar todos na raiz de uma pasta de trabalho (aqui, `~/prep-i
 ```
 
 Para montar: copie o conteúdo desta pasta para lá, copie `legendas/fabrica.py` e `legendas/traduzir.py` para a
-raiz e ponha o `manager/catalogo.json` do projeto como `catalogo.json`.
+raiz e ponha o [`manager/catalogo.json`](../manager/catalogo.json) do projeto como `catalogo.json`.
 
 ## 1. Baixar e indexar
 
@@ -95,8 +117,8 @@ O `fabrica.py` lê cada vídeo direto do ZIM, sem extrair para o disco, e grava 
 `prep-indice-indexar` é a do `Dockerfile` desta pasta (o `iniciar.sh` a constrói). Os 887 vídeos dos 8 canais
 (238 horas de áudio) levaram 1h40 com três placas.
 
-`extrair.py`, `transcrever.sh` e `fila.sh` são o caminho antigo, que extraía os vídeos para o disco e rodava o
-whisper na CPU. Ficam como referência.
+Os scripts de [`legendas/antigo/`](legendas/antigo) (`extrair.py`, `transcrever.sh` e `fila.sh`) são o caminho
+anterior, que extraía os vídeos para o disco e rodava o whisper na CPU. Ficam como referência.
 
 ## 3. Traduzir as legendas
 
@@ -138,7 +160,38 @@ meio da tradução ele sobe os canais que já fecharam. Para testar um gerenciad
 HTTP e aponte `PREP_ZIMDEX_URL` para ela.
 
 O formato do `.zimdex` e do `indice.json` está descrito no começo do [`zimdex.py`](zimdex.py); quem lê é o
-[`manager/zimdex.go`](../../manager/zimdex.go).
+[`manager/zimdex.go`](../manager/zimdex.go).
+
+## O formato, em resumo
+
+Um `.zimdex` é um zip sem compressão, que o gerenciador lê direto, sem descompactar:
+
+| Dentro do zip | O que é |
+|---|---|
+| `info.json` | O ZIM de origem (arquivo e uuid), o modelo, o formato e o número de trechos. |
+| `trechos.tsv` | Um trecho por linha: caminho no ZIM, seção (ou "p. N" num PDF) e número de caracteres. |
+| `vetores.bin` | 96 bytes por trecho: o sinal de cada uma das 768 dimensões do vetor. |
+| `legendas/` | Só nos canais de vídeo: `<id do vídeo>.<língua>.vtt`, em inglês e em português. |
+
+O nome é o do ZIM, com `.zimdex` no lugar de `.zim`; o uuid no `info.json` diz de qual edição ele é. Guardar só
+o sinal de cada dimensão deixa o índice pequeno o bastante para celular e Raspberry Pi; na Wikipédia em português
+ele achou o artigo certo entre os 20 candidatos em 94% das perguntas, contra 96% do vetor inteiro em int8
+([`resultados-formatos.md`](resultados-formatos.md)).
+
+## Variáveis dos scripts
+
+| Variável | Script | Padrão | Para quê |
+|---|---|---|---|
+| `ETAPA` | `indexar.py` | `texto` | `texto` indexa só os acervos de páginas; `todos` inclui PDFs, vídeos e mapas. |
+| `SERVIDORES` | `indexar.py`, `fabrica.py`, `traduzir.py` | um servidor local | Os endereços dos servidores de embeddings, de transcrição ou de tradução. |
+| `SERVIDORES_EXTRAS` | `indexar.py` | vazio | Servidores de embeddings em outras máquinas. Se um cair, o trabalho volta para a fila. |
+| `POR_SERVIDOR` | `fabrica.py`, `traduzir.py` | 2 e 8 | Pedidos simultâneos por servidor. |
+| `CANAIS` | `fabrica.py` | os canais do catálogo | Quais canais de vídeo transcrever. |
+| `SAIDA` | `indexar.py` | a própria pasta | Outra pasta de saída, para testar sem mexer no que já foi feito. |
+| `ZIMDEX_LOCAL` | `zimdex.py` | vazio | Grava a estrutura numa pasta, em vez de publicar. |
+| `ZIMDEX_TMP` | `zimdex.py` | `/tmp/zimdex` | Pasta de trabalho do empacotamento. |
+| `HF_TOKEN` | `zimdex.py` | obrigatório para publicar | O token do Hugging Face. Fica num arquivo fora do projeto. |
+| `GPU` | `traduzir-servidor.sh` | todas as placas | O índice ou o UUID de uma placa. |
 
 ## O que deu errado nesta rodada (para não repetir)
 
