@@ -31,5 +31,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # a action traz um wrangler 3 antigo, que não publica Worker só de arquivos estáticos
+          wranglerVersion: "4"
           workingDirectory: site
           command: deploy --name ${{ vars.CLOUDFLARE_WORKER_NAME }}
