@@ -613,13 +613,19 @@
   var parado = matchMedia('(prefers-reduced-motion: reduce)').matches, GH = 'https://github.com/wdonega/prep-wiki-br';
   function cada(sel, f, raiz) { [].forEach.call((raiz || document).querySelectorAll(sel), f); }
 
-  /* ---- baixar: o sistema de quem visita já vem escolhido; no Mac, que não tem versão própria, vale o Docker ---- */
+  /* ---- baixar: o cartão com uma aba por sistema ---- */
   var SO = {
     android: ['Baixar para Android', 'Direto da Google Play Store', 'https://play.google.com/store/apps/details?id=org.bigode.prep'],
-    windows: ['Baixar para Windows', 'Para computador com Windows', GH + '/releases'],
-    linux: ['Baixar para Linux', 'Para computador com Linux', GH + '/releases'],
+    windows: ['Baixar para Windows', 'Windows 10 e 11 · instalador ou zip', GH + '/releases?q=desktop-v&expanded=true'],
+    linux: ['Baixar para Linux', 'AppImage, .deb ou .rpm', GH + '/releases?q=desktop-v&expanded=true'],
     docker: ['Rodar com Docker', 'Rode no PC ou Raspberry Pi (ou outro ARM)', 'docker.html'] };
-  var ua = navigator.userAgent, meu = /Android/i.test(ua) ? 'android' : /Windows/i.test(ua) ? 'windows' : /Linux|CrOS/i.test(ua) ? 'linux' : /Macintosh/i.test(ua) ? 'docker' : 'android';
+  // O sistema de quem visita já vem escolhido: Android, Windows e Linux têm versão própria; qualquer outro
+  // (Mac, iPhone, iPad...) vai para o Docker. O Android vem antes porque o navegador dele também diz "Linux".
+  var ua = navigator.userAgent, plat = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '').toLowerCase();
+  var meu = /android/i.test(ua) || plat === 'android' ? 'android'
+    : /windows/i.test(ua) || plat.indexOf('win') === 0 ? 'windows'
+    : /linux|cros|x11/i.test(ua) || /linux|chrome os/.test(plat) ? 'linux'
+    : 'docker';
   function troca(el, texto) { el.classList.remove('entra'); void el.offsetWidth; el.innerHTML = texto; el.classList.add('entra'); }
   cada('.ab', function (ab) {
     var t1 = ab.querySelector('.ab__txt'), t2 = ab.querySelector('.ab__sub'), bt = ab.querySelector('.ab__bt'), marca = ab.querySelector('.ab__marca'), bs = [].slice.call(ab.querySelectorAll('.ab__abas button'));
