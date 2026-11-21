@@ -16,6 +16,7 @@ import (
 	"embed"
 	"encoding/json"
 	"errors"
+	"io"
 	"log"
 	"net"
 	"net/http"
@@ -205,6 +206,16 @@ func main() {
 	}
 	ctx, parar := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer parar()
+	if os.Getenv("PREP_FIM_COM_STDIN") == "1" {
+		// App de desktop: quem abriu o gerenciador segura a entrada dele aberta. Quando o app fecha, de
+		// propósito ou à força, o sistema fecha a entrada, e o gerenciador encerra direito, com o Kiwix e o
+		// llama-server. Funciona igual no Windows, onde não há sinal para pedir a um processo que pare.
+		go func() {
+			io.Copy(io.Discard, os.Stdin)
+			logf("o app que abriu o gerenciador fechou; encerrando")
+			parar()
+		}()
+	}
 
 	a := &App{
 		cfg: cfg, embutido: embutido, ctx: ctx,

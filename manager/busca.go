@@ -161,7 +161,7 @@ func (m *motorBusca) iniciarTravado(a *App) error {
 		"-t", threads, "-tb", threads,
 		"-m", filepath.Join(a.pastaDaBusca(), modelo.Arquivo), "--embedding",
 		"--host", "127.0.0.1", "--port", strconv.Itoa(porta), "-c", "2048", "-np", "1", "--no-webui")
-	cmd.Cancel = func() error { return cmd.Process.Signal(os.Interrupt) }
+	cmd.Cancel = func() error { return interromper(cmd.Process) }
 	cmd.WaitDelay = 5 * time.Second
 	saida, _ := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
@@ -207,7 +207,7 @@ func (m *motorBusca) esperarCarga(a *App, cmd *exec.Cmd, url string, pronto, sai
 			if m.cmd == cmd {
 				m.pararTravado()
 			} else {
-				cmd.Process.Signal(os.Interrupt)
+				interromper(cmd.Process)
 			}
 			m.mu.Unlock()
 			return
@@ -236,7 +236,7 @@ func (m *motorBusca) terminou() bool {
 
 func (m *motorBusca) pararTravado() {
 	if m.cmd != nil && m.cmd.Process != nil && !m.terminou() {
-		m.cmd.Process.Signal(os.Interrupt)
+		interromper(m.cmd.Process)
 	}
 	m.cmd = nil
 }

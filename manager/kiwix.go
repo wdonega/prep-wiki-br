@@ -112,7 +112,7 @@ func (a *App) supervisionarKiwix() {
 
 		cmd := exec.CommandContext(a.ctx, a.cfg.KiwixServe, args...)
 		cmd.Dir = a.cfg.Dados
-		cmd.Cancel = func() error { return cmd.Process.Signal(os.Interrupt) }
+		cmd.Cancel = func() error { return interromper(cmd.Process) }
 		cmd.WaitDelay = 5 * time.Second
 		saida, _ := cmd.StdoutPipe()
 		cmd.Stderr = cmd.Stdout
