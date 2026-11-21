@@ -10,6 +10,7 @@ O Prep Wiki BR baixa acervos no formato [ZIM](https://openzim.org/) (Wikipédia,
 | **Demonstração ao vivo** | <https://prep-demo.bigode.org>, uma instalação real com 7 acervos |
 | **Imagem Docker** | `ghcr.io/wdonega/prep-wiki-br` ([como instalar](#como-instalar)) |
 | **App Android** | `org.bigode.prep`, em teste na Google Play |
+| **App de desktop** | Windows e Linux, em preparação ([`desktop/`](desktop)) |
 | **Índices de busca** | <https://huggingface.co/datasets/wdonega/zimdex> |
 
 Este README é para quem quer entender como o projeto foi feito ou contribuir. Para usar, comece pela página do projeto.
@@ -70,6 +71,7 @@ No Docker, o `kiwix-serve` e o `llama-server` são processos dentro da mesma ima
 |---|---|---|
 | [`manager/`](manager) | O gerenciador em Go, as páginas e o catálogo. É o produto. | [`manager/README.md`](manager/README.md) |
 | [`android/`](android) | O app Android, que embute o gerenciador. | [`android/README.md`](android/README.md) |
+| [`desktop/`](desktop) | O app de desktop (Windows e Linux), em Electron: sobe o gerenciador e mostra a biblioteca numa janela. | [`desktop/README.md`](desktop/README.md) |
 | [`zimdex/`](zimdex) | A fábrica dos índices de busca e das legendas: extrai texto, calcula vetores, transcreve e traduz vídeos. | [`zimdex/README.md`](zimdex/README.md) |
 | [`sisteminha-embrapa/`](sisteminha-embrapa), [`plantas-medicinais/`](plantas-medicinais), [`chuvas-tempestades/`](chuvas-tempestades) | As fontes das três wikis do projeto. | README de cada pasta |
 | [`site/`](site) | A página do projeto (prep.bigode.org). | [`site/README.md`](site/README.md) |
@@ -109,6 +111,7 @@ Para rodar fora do Docker, com as páginas lidas do disco e sem recompilar a cad
 | mudar a interface ou a API | [`manager/README.md`](manager/README.md) |
 | acrescentar um acervo ao catálogo | [`manager/README.md`](manager/README.md#o-catálogo) |
 | gerar o APK | [`android/README.md`](android/README.md) |
+| gerar o app de desktop | [`desktop/README.md`](desktop/README.md) |
 | gerar ou refazer um índice de busca | [`zimdex/README.md`](zimdex/README.md) |
 | gerar uma das wikis | `python3 -m venv venv && venv/bin/pip install -r requirements.txt`, depois `cd plantas-medicinais && ../venv/bin/python build.py` |
 | criar uma wiki nova | uma pasta com um `build.py` que gere um `*.zim`, mais uma cópia de [`plantas-medicinais.yml`](.github/workflows/plantas-medicinais.yml) com o nome trocado |
@@ -138,6 +141,7 @@ Ideias para as próximas wikis, todas a partir de material de órgãos públicos
 | **Catálogo** | Basta o `manager/catalogo.json` chegar à `main`: as instalações o leem de lá. |
 | **Índices de busca** | À mão, pelo `zimdex/zimdex.py`, para o Hugging Face. |
 | **App Android** | À mão: o bundle assinado sobe pela Play Console. |
+| **App de desktop** | Uma tag `desktop-vX.Y.Z` roda o [`desktop.yml`](.github/workflows/desktop.yml), que gera o instalador e o zip do Windows, o AppImage, o `.deb` e o `.rpm` (x64 e ARM) e publica a release. |
 | **Página do projeto** | À mão: a pasta `site/` é publicada como arquivos estáticos. |
 
 ## Apoie o projeto

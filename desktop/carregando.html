@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>Prep Wiki BR</title>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { display: grid; place-items: center; background: radial-gradient(ellipse 60% 55% at 50% 42%, #3a2a10 0%, #0f1a12 55%, #050e09 100%); color: #f3ead0; font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Ubuntu, sans-serif; text-align: center; -webkit-user-select: none; user-select: none; }
+  img { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 0 0 1px rgba(246,183,74,.35), 0 0 70px rgba(246,160,60,.35); animation: respira 2.4s ease-in-out infinite; }
+  @keyframes respira { 50% { box-shadow: 0 0 0 1px rgba(246,183,74,.55), 0 0 110px rgba(246,160,60,.55); } }
+  h1 { margin: 22px 0 6px; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+  p { margin: 0; color: #b9b79f; }
+  .erro img { animation: none; filter: grayscale(.6); }
+  .erro p { max-width: 34em; padding: 0 20px; }
+  code { color: #ffd98a; font-size: .92em; word-break: break-all; }
+</style>
+</head>
+<body>
+<main id="caixa">
+  <img src="icone/janela.png" alt="">
+  <h1>Prep Wiki BR</h1>
+  <p id="msg">Abrindo a biblioteca…</p>
+</main>
+<script>
+  // o processo principal troca a mensagem por um erro passando ?erro=…&log=… no endereço
+  const q = new URLSearchParams(location.search);
+  if (q.get('erro')) {
+    document.getElementById('caixa').className = 'erro';
+    const p = document.getElementById('msg');
+    p.textContent = q.get('erro') + ' ';
+    if (q.get('log')) { const c = document.createElement('code'); c.textContent = q.get('log'); p.append('Detalhes no registro: ', c); }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# sha-256 dos binários de fora que vão no app de desktop. O empacotar.sh recusa o que não está aqui.
+# Conferidos com o digest das releases do llama.cpp e com o .md5 publicado pelo Kiwix.
+a9898fc5363437327350db669bbc03dcc7ecfd498dae727d7184bebe77019514 kiwix-tools_linux-aarch64-3.8.2.tar.gz
+b0ae98dd344aa0469a15ab42feff6d5aafb79541a82fb4e2647c74b073123815 kiwix-tools_linux-x86_64-3.8.2.tar.gz
+5c64d43176627e558a117146b02ea36b7da2b0cd3a332cbff075cde05d9585f9 kiwix-tools_macos-arm64-3.8.2.tar.gz
+fcd01ed2b93e9a68632c7863c83b9f66bf64406a66357be1df7b8b75596f3e45 kiwix-tools_win-x86_64-3.8.1.zip
+93cc3614324962e2ea35fc96f6fae6063f7016b22bb18b16aa027fe2a7baa43e llama-b12431-bin-macos-arm64.tar.gz
+87b09405e88d3cfa0a3cd51929a5fad9a4da23af8b139097aef64403d50b21a2 llama-b12431-bin-win-cpu-x64.zip

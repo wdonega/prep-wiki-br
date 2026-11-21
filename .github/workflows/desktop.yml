@@ -1,0 +1,129 @@
+name: desktop
+
+# App de desktop (desktop/, Electron): instalador e zip do Windows; AppImage, .deb e .rpm do Linux, em x64 e
+# ARM. Uma tag desktop-vX.Y.Z publica a release; rodar à mão (workflow_dispatch) só gera os arquivos, para
+# baixar e testar. Não roda em push comum: o app de desktop tem versão própria.
+on:
+  push:
+    tags: ["desktop-v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # criar a release
+
+jobs:
+  # O llama-server de Linux é compilado aqui (o oficial exige OpenSSL 3). Uma máquina de cada arquitetura,
+  # sem emulação. O resultado fica em cache até o Dockerfile ou o script mudarem.
+  llama-linux:
+    strategy:
+      matrix:
+        include:
+          - arq: amd64
+            runner: ubuntu-latest
+          - arq: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: desktop/.cache/llama-linux-${{ matrix.arq }}
+          key: llama-linux-${{ matrix.arq }}-${{ hashFiles('desktop/llama-linux.Dockerfile', 'desktop/llama-linux.sh') }}
+      - if: steps.cache.outputs.cache-hit != 'true'
+        run: desktop/llama-linux.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: llama-linux-${{ matrix.arq }}
+          path: desktop/.cache/llama-linux-${{ matrix.arq }}
+
+  linux:
+    needs: llama-linux
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: manager/go.mod
+          cache-dependency-path: manager/go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Versão
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/desktop-v* ]]; then V=${GITHUB_REF#refs/tags/desktop-v}; else V=0.0.$GITHUB_RUN_NUMBER; fi
+          echo "VERSAO=$V" >> "$GITHUB_ENV"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: llama-linux-*
+          path: desktop/.cache
+      - run: chmod +x .cache/llama-linux-*/llama-server
+      - run: |
+          ./binarios.sh linux-x64 "$VERSAO"
+          ./binarios.sh linux-arm64 "$VERSAO"
+      - run: sudo apt-get install -y -qq rpm   # o .rpm precisa do rpmbuild
+      - run: npm ci --no-audit --no-fund
+      - run: npx electron-builder --linux --x64 --arm64 --publish never -c.extraMetadata.version="$VERSAO"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-linux
+          path: |
+            desktop/dist/*.AppImage
+            desktop/dist/*.deb
+            desktop/dist/*.rpm
+
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: manager/go.mod
+          cache-dependency-path: manager/go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Versão
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/desktop-v* ]]; then V=${GITHUB_REF#refs/tags/desktop-v}; else V=0.0.$GITHUB_RUN_NUMBER; fi
+          echo "VERSAO=$V" >> "$GITHUB_ENV"
+      - run: ./binarios.sh win-x64 "$VERSAO"
+      - run: npm ci --no-audit --no-fund
+      - run: npx electron-builder --win --x64 --publish never -c.extraMetadata.version="$VERSAO"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-windows
+          path: |
+            desktop/dist/*.exe
+            desktop/dist/*.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/desktop-v')
+    needs: [linux, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: desktop-*
+          merge-multiple: true
+          path: arquivos
+      - name: Publicar a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V=${GITHUB_REF_NAME#desktop-v}
+          (cd arquivos && sha256sum * > SHA256SUMS.txt)
+          gh release create "$GITHUB_REF_NAME" arquivos/* --repo "$GITHUB_REPOSITORY" \
+            --title "App de desktop – $V" \
+            --notes "Prep Wiki BR para computador. Windows: o instalador (…-instalador.exe) ou o zip portátil. Linux: o AppImage (roda sem instalar), o .deb (Ubuntu, Debian, Mint) ou o .rpm (Fedora, openSUSE). Os acervos ficam na pasta do usuário. Mais em https://github.com/wdonega/prep-wiki-br/blob/main/desktop/README.md"

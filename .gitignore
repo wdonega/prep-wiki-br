@@ -22,6 +22,10 @@ android/keystore.properties
 # binário do gerenciador compilado à mão (go build)
 manager/manager
 
+# app de desktop: o que o empacotar.sh baixa e gera
+desktop/.cache/
+desktop/dist/
+
 # rascunhos, tentativas e arte extra: nada daqui entra no produto
 #   rascunhos/       conceitos da landing page, capturas, a página antiga
 #   rag-prototipo/   laboratório da busca: comparações de modelos, de formatos de índice e testes no celular
