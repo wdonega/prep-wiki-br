@@ -2,174 +2,140 @@
 
 **Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.**
 
-Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar na sua máquina. O Prep Wiki BR é uma biblioteca offline que você instala num computador, num mini PC ou num Raspberry Pi e acessa pelo navegador de qualquer aparelho da casa. Você escolhe o que baixar numa lista pronta de 82 acervos, e depois tudo funciona sem internet.
+O Prep Wiki BR baixa acervos no formato [ZIM](https://openzim.org/) (Wikipédia, iFixit, manuais, canais de vídeo) e os serve numa porta só, com busca por significado, tradução do inglês e leitor de PDF, tudo rodando na própria máquina. O mesmo gerenciador, escrito em Go, roda num container Docker e dentro do app Android.
 
-![Página inicial da biblioteca, com os acervos instalados](docs/img/biblioteca.png)
-
-**Neste README:**
-[O que é](#o-que-é) ·
-[O que tem](#o-que-tem) ([em português](#em-português), [Prepper em inglês](#prepper-em-inglês)) ·
-[Como instalar](#como-instalar) ·
-[As três wikis do projeto](#as-três-wikis-do-projeto) ·
-[Para quem quer mexer](#para-quem-quer-mexer) ·
-[Apoie](#apoie-o-projeto) ·
-[Licenças](#licenças) ·
-[Agradecimentos](#agradecimentos)
-
-## O que é
-
-<img src="docs/img/celular.png" alt="A biblioteca no celular" width="250" align="right">
-
-São três partes, servidas numa porta só:
-
-- **Biblioteca:** a página inicial, com os acervos instalados, filtro por categoria e busca dentro do texto de todos eles.
-- **Gerenciador:** a lista de acervos disponíveis. Você baixa, atualiza e apaga com um clique. Ele mostra o tamanho de cada um e o espaço livre em disco.
-- **Leitor:** cada acervo abre como um site, com busca própria e artigo aleatório.
-
-O projeto também produz **três wikis próprias**, escritas a partir de publicações oficiais: [Sisteminha Embrapa](#sisteminha-embrapa), [Plantas Medicinais](#plantas-medicinais) e [Chuva forte e tempestade](#chuvas-tempestades).
-
-Para conferir o conteúdo antes de instalar, o acervo em português está no ar em **[prep.bigode.org](https://prep.bigode.org/#lang=por)**. Esse endereço ainda mostra a interface padrão do Kiwix, não a das imagens deste README.
-
-<br clear="right">
-
-| Gerenciador | Leitor |
+| | |
 |---|---|
-| ![Gerenciador com um download em andamento](docs/img/gerenciador.png) | ![Página de uma planta medicinal aberta no leitor](docs/img/leitor.png) |
+| **Página do projeto** | <https://prep.bigode.org> (código em [`site/`](site)) |
+| **Demonstração ao vivo** | <https://prep-demo.bigode.org>, uma instalação real com 7 acervos |
+| **Imagem Docker** | `ghcr.io/wdonega/prep-wiki-br` ([como instalar](#como-instalar)) |
+| **App Android** | `org.bigode.prep`, em teste na Google Play |
+| **Índices de busca** | <https://huggingface.co/datasets/wdonega/zimdex> |
 
-## O que tem
+Este README é para quem quer entender como o projeto foi feito ou contribuir. Para usar, comece pela página do projeto.
 
-São 82 acervos no catálogo, em novembro de 2026. Você instala só os que quiser. Os tamanhos mudam um pouco a cada edição.
+## O que ele faz
 
-### Em português
+**Acervos**
 
-| Grupo | Acervos | Tamanho |
+- **Catálogo:** 81 acervos em 10 grupos, definidos em [`manager/catalogo.json`](manager/catalogo.json). O gerenciador busca a versão mais nova desse arquivo no GitHub a cada verificação, então uma mudança no catálogo chega às instalações sem imagem nova. A lista está em [`docs/acervos.md`](docs/acervos.md).
+- **Downloads:** fila com um download por vez, retomada de onde parou, troca automática de mirror e conferência por sha-256 antes de o acervo entrar na biblioteca. A edição mais recente de cada acervo é descoberta no mirror do Kiwix.
+- **Acervos de fora do catálogo:** qualquer `.zim` entra por link (conferido antes de baixar), por envio do arquivo ou copiado para a pasta de dados.
+- **Três wikis próprias:** Sisteminha Embrapa, Plantas Medicinais e Chuva forte e tempestade, geradas de Markdown e PDFs de órgãos públicos por um `build.py` e publicadas como ZIM pelo GitHub Actions.
+
+**Leitura**
+
+- **Uma porta só:** o gerenciador fica na frente do `kiwix-serve` e faz proxy para ele. Nas páginas do leitor, injeta o próprio CSS e os próprios scripts (tema, barra no celular, tradução, player de vídeo).
+- **Leitor de PDF:** o [PDF.js](https://mozilla.github.io/pdf.js/) vai embutido no binário. Um PDF aberto como página vira o leitor, com zoom, salto de página, lembrança de onde a pessoa parou e um modo só de texto.
+- **Tradução no cliente:** o motor [Bergamot](https://github.com/browsermt/bergamot-translator) em WebAssembly, com o modelo inglês-português do Firefox Translations, traduz no navegador o que está na tela, num worker, e guarda o resultado no IndexedDB. No PDF, a tradução cobre cada parágrafo no lugar do original. O pacote (42 MB) é baixado à parte e nenhum texto sai da máquina.
+- **Temas:** três cores (verde, azul, âmbar) em claro, escuro ou automático, aplicadas também às páginas do leitor.
+
+**Busca**
+
+- **Busca por significado:** cada acervo pode ter um índice `.zimdex` com um vetor por trecho de texto. A pergunta vira um vetor pelo mesmo modelo (embeddinggemma, 310 MB, num `llama-server` do llama.cpp iniciado na primeira busca e parado depois de 15 minutos sem uso) e é comparada com todos os trechos. Uma pergunta em português acha texto em inglês.
+- **Resultado no lugar certo:** cada resultado abre a página, o PDF na página certa ou o vídeo no ponto da fala.
+- **Índices compactos:** só o sinal de cada uma das 768 dimensões é guardado, 96 bytes por trecho. O índice da Wikipédia completa tem 1,2 GB; os 78 índices somam 3,7 GB.
+- **Sem índice ou sem modelo,** a busca é a do Kiwix, por palavras.
+- **Legendas:** os canais de vídeo ganham legenda em inglês (transcrição por whisper) e em português (tradução por TranslateGemma), que vêm dentro do índice do canal.
+
+**Operação**
+
+- **Senha e modos:** `PREP_SENHA` protege o gerenciador; `PREP_ADMIN` escolhe entre `completo`, `leitura` e `desligado`, com a trava no servidor.
+- **Container sem privilégio:** roda como usuário comum; no Compose, com sistema de arquivos só leitura e sem capacidades.
+- **App Android:** o gerenciador vai dentro do APK como processo filho, o Kiwix vem da `libkiwix`, e os downloads continuam com a tela apagada num serviço em primeiro plano.
+
+## Arquitetura
+
+```
+              navegador ou WebView do app
+                        │  HTTP, uma porta
+                        ▼
+        ┌──────────────────────────────────┐
+        │   gerenciador (Go, manager/)     │  páginas próprias: biblioteca, gerenciador, apoie
+        │                                  │  API: /api/biblioteca, /api/busca, /api/baixar…
+        └───┬───────────┬──────────────┬───┘
+     proxy  │           │ embeddings   │ downloads
+            ▼           ▼              ▼
+      kiwix-serve   llama-server   mirrors do Kiwix, releases do GitHub
+      (lê os ZIMs)  (sob demanda)  e Hugging Face (índices e modelo)
+            │           │
+            └── pasta de dados: *.zim, *.zimdex, tradução, modelo da busca
+```
+
+No Docker, o `kiwix-serve` e o `llama-server` são processos dentro da mesma imagem. No Android não há `kiwix-serve`: o app usa a `libkiwix` e o gerenciador roda com `PREP_KIWIX_EXTERNO=1`.
+
+## Mapa do repositório
+
+| Pasta | O que é | Documentação |
 |---|---|---|
-| **Deste projeto** | [Sisteminha Embrapa](#sisteminha-embrapa), [Plantas Medicinais](#plantas-medicinais) e [Chuva forte e tempestade](#chuvas-tempestades) | 46 MB |
-| **Wikipédia** (escolha uma) | Completa com imagens (20,6 GB), sem imagens (7,1 GB) ou resumida (1,7 GB). Só os 50 mil melhores artigos: com imagens (3,0 GB), sem imagens (1,1 GB) ou resumida (153 MB) | 153 MB a 20,6 GB |
-| **Wikipédia por tema** | Medicina, Química, Física, Matemática, Biologia molecular e celular, História, Geografia, Computação | 1,8 GB |
-| **Estudo** | Vikidia (enciclopédia para crianças), Wikilivros, Wikiversidade, PhET (simulações de ciências) | 371 MB |
-| **Consertos** | iFixit | 3,6 GB |
-| **Programação** | Stack Overflow em Português, freeCodeCamp | 945 MB |
-| **Livros e textos** | Wikisource, Projeto Gutenberg, Wikiquote | 2,3 GB |
-| **Língua e viagem** | Wikcionário, Portuguese Language Q&A, Wikivoyage | 448 MB |
-| **Mapas** | Brasil (3,1 GB) e América do Sul (5,5 GB), com estradas e pontos de referência. A interface do mapa é em inglês | 8,6 GB |
+| [`manager/`](manager) | O gerenciador em Go, as páginas e o catálogo. É o produto. | [`manager/README.md`](manager/README.md) |
+| [`android/`](android) | O app Android, que embute o gerenciador. | [`android/README.md`](android/README.md) |
+| [`zimdex/`](zimdex) | A fábrica dos índices de busca e das legendas: extrai texto, calcula vetores, transcreve e traduz vídeos. | [`zimdex/README.md`](zimdex/README.md) |
+| [`sisteminha-embrapa/`](sisteminha-embrapa), [`plantas-medicinais/`](plantas-medicinais), [`chuvas-tempestades/`](chuvas-tempestades) | As fontes das três wikis do projeto. | README de cada pasta |
+| [`site/`](site) | A página do projeto (prep.bigode.org). | [`site/README.md`](site/README.md) |
+| [`docs/`](docs) | Instalação, lista de acervos, privacidade, termos e apoio. | |
+| [`fastlane/`](fastlane) | Textos e imagens da ficha do app na loja. | |
+| [`arte/`](arte) | O ícone e a arte de origem do projeto. | |
+| [`.github/workflows/`](.github/workflows) | Publicação da imagem Docker e das três wikis. | [Publicação](#publicação) |
 
-Um conjunto enxuto em português (as três wikis, a Wikipédia dos 50 mil melhores com imagens, Medicina, iFixit, Estudo e Língua e viagem) fica em torno de 8 GB.
-
-### Prepper, em inglês
-
-Material de preparação que não existe em português, ou que é melhor no original. São 49 acervos.
-
-| Tema | Acervos | Tamanho |
-|---|---|---|
-| **Preparação e sobrevivência** | Post Disaster Resource Library, Ready.gov, True Prepper, manuais do Exército dos EUA, A Library of Knots, Nós (Wikipédia), The Great Outdoors Q&A, Amateur Radio Q&A, Rabbit Waves | 12,7 GB |
-| | Survivor Library: livros sobre como viver quando a tecnologia falha | 220 GB |
-| **Água, comida e horta** | Water Treatment Library, Food for Preppers, guia de conservas caseiras do USDA, Gardening Q&A, Gardenology, Seasoned Advice Q&A, Grim Grains, Based Cooking, Sustainable Living Q&A | 1,5 GB |
-| **Saúde** | Medical Library (medicina de campo), MDWiki, Medicina (Wikipédia), MedlinePlus, remédios de A a Z do NHS, saúde do viajante do CDC, Military Medicine, Surviving Residency, WikiVet | 7,0 GB |
-| **Energia e baixa tecnologia** | Low-tech Magazine, Hundred Rabbits, Appropedia, energypedia, CD3WD, Permacomputing | 2,8 GB |
-| **Consertos e habilidades** | iFixit em inglês, Restarters, e perguntas e respostas sobre casa, mecânica, eletrônica, marcenaria e bicicleta | 10,9 GB |
-| **Vídeos** | Learning Self-Reliance, Urban Prepper, Canadian Prepper (4 playlists), S2 Underground | 19,0 GB |
-| **Referência** | CIA World Factbook (edição de 2020) | 407 MB |
-
-**Tradução para português.** No fim da lista do gerenciador dá para baixar o pacote de tradução do inglês (42 MB). Com ele instalado, as páginas dos acervos em inglês abrem em português, e uma faixa no alto da página leva ao original com um toque. A tradução é feita no próprio aparelho, pelo navegador, sem internet: o acervo não muda e nenhum texto sai da máquina. É tradução por máquina, serve para entender o texto: nomes de páginas, códigos, fórmulas e números com símbolo (`−27 °C`, `5 µg`) ficam como no original, e vale conferir doses e medidas no original antes de agir.
-
-**PDF abre aqui mesmo.** Vários desses acervos são coleções de PDF (manuais, livros). Eles abrem num leitor próprio, dentro do navegador ou do app, sem depender de outro aplicativo: zoom, salto de página, e ele lembra onde você parou. Com o pacote de tradução instalado, a página aparece em português: o texto traduzido vai em cima do original, no mesmo lugar, e as figuras, as tabelas e o sumário ficam onde estavam (**Ver original** desfaz). O botão **Texto** mostra só o texto das páginas em coluna, do tamanho da tela. PDF escaneado, sem texto por baixo da imagem, só tem a visão de página, sem tradução.
-
-A lista completa, com a descrição de cada acervo, está em [`manager/catalogo.json`](manager/catalogo.json) e aparece no gerenciador.
+Ficam fora do git, no `.gitignore`: `rascunhos/` (conceitos da página, capturas, tentativas) e `rag-prototipo/` (o laboratório da busca, com comparações de modelos e de formatos de índice).
 
 ## Como instalar
-
-Precisa só do [Docker](https://docs.docker.com/engine/install/) e de espaço em disco para o que você for baixar. A imagem existe para PC (x86 de 64 bits) e para ARM de 64 bits, como o Raspberry Pi 4 e 5. Foi testada em PC com Linux; no Raspberry Pi ainda não.
 
 ```bash
 docker run -d --name prep-wiki-br --restart unless-stopped \
   -p 8099:8080 -v ~/prep-wiki-br:/data ghcr.io/wdonega/prep-wiki-br:latest
 ```
 
-Abra **http://localhost:8099** (ou `http://<ip-da-máquina>:8099` de outro aparelho da rede). Na primeira vez a biblioteca está vazia e você cai direto no gerenciador:
+Abra `http://localhost:8099`. A imagem existe para PC (x86 de 64 bits) e para ARM de 64 bits, como o Raspberry Pi 4 e 5. Senha, modos, instalação sem internet e Docker Compose estão em [`docs/instalar.md`](docs/instalar.md).
 
-1. Escolha os acervos e clique em **Baixar**. Os downloads vão para uma fila, um de cada vez.
-2. Cada acervo aparece na biblioteca assim que termina, sem reiniciar nada.
-3. Para voltar ao gerenciador depois, use o botão **Gerenciar** no topo.
+## Desenvolver
 
-O que vale saber:
-
-- **Onde ficam os arquivos:** na pasta que você indicou no `-v` (no exemplo, `~/prep-wiki-br`). Se ela não existir, é criada. Para usar outro disco, troque o caminho.
-- **Sem root:** o container usa o root só no instante da partida, para criar a pasta e acertar o dono dela. Daí em diante o gerenciador e o Kiwix rodam como usuário comum. Os arquivos ficam com o usuário 1000, o primeiro usuário comum da maioria das máquinas; para outro, acrescente `-e PREP_UID=... -e PREP_GID=...`. Se a pasta já existe e é sua, ele usa o seu usuário.
-- **Porta:** troque o `8099` do `-p` pela que preferir.
-- **Downloads:** vêm dos mirrors oficiais do Kiwix e das releases deste repositório. Se um mirror cai, o gerenciador troca para o próximo e continua de onde parou. Cada arquivo é conferido por sha-256 antes de entrar na biblioteca.
-- **Acervos seus:** no fim do gerenciador dá para acrescentar qualquer arquivo `.zim` que não esteja na lista, colando o link ou enviando o arquivo do seu aparelho. O link é conferido antes de baixar. Um `.zim` copiado direto para a pasta também entra, depois de reiniciar o container.
-- **Atualizações dos acervos:** quando sai uma edição nova de um acervo instalado, o gerenciador mostra **Atualizar**.
-- **Senha do gerenciador:** acrescente `-e PREP_SENHA=sua-senha` ao `docker run` e o gerenciador passa a pedir a senha (o navegador fica lembrado por 30 dias; o botão **Sair** desconecta). A biblioteca e a leitura continuam abertas para todo mundo. Sem `PREP_SENHA`, qualquer pessoa na mesma rede consegue baixar e apagar acervos. Para abrir na internet, use a senha e acesse por HTTPS (um proxy ou um túnel na frente), senão a senha passa aberta pela rede.
-- **Modo do gerenciador:** `-e PREP_ADMIN=` com `completo` (o padrão: baixa, apaga, acrescenta), `leitura` (mostra o que está instalado, as versões e o disco, sem nenhuma ação) ou `desligado` (o gerenciador não existe: só a biblioteca fica no ar, e acervos novos entram copiando o `.zim` para a pasta e reiniciando). A trava é no servidor: nos modos `leitura` e `desligado` as ações nem existem, não estão só escondidas. A senha vale nos modos `completo` e `leitura`. Um valor errado impede o container de subir, para nunca cair no modo aberto por engano.
-- **Versões da imagem:** `:latest` é sempre a mais recente. Cada versão também tem uma tag fixa no formato `AAAA-MM-DD-rN` (por exemplo `:2026-11-13-r2`), listada nas [releases](https://github.com/wdonega/prep-wiki-br/releases?q=imagem&expanded=true). Para ficar numa versão específica, troque `latest` por ela. A versão em uso aparece no rodapé do gerenciador.
-- **Instalar numa máquina sem internet:** cada [release da imagem](https://github.com/wdonega/prep-wiki-br/releases?q=imagem&expanded=true) traz a imagem em arquivo (`.tar.gz`, ~30 MB), um para PC (`amd64`) e um para ARM (`arm64`). Leve o arquivo para a máquina, rode `docker load -i <arquivo>` e depois o `docker run` de cima.
-- **Atualizar o Prep Wiki BR:** `docker pull ghcr.io/wdonega/prep-wiki-br:latest`, depois `docker rm -f prep-wiki-br` e o mesmo `docker run` de cima. Os acervos baixados continuam na pasta.
-
-<details>
-<summary><b>Com Docker Compose, a partir do código</b></summary>
-
-Para quem quer mexer no projeto ou prefere um container mais trancado (sistema de arquivos só leitura, sem privilégios, sem root nem na partida):
+O caminho mais curto para subir o gerenciador a partir do código:
 
 ```bash
-git clone https://github.com/wdonega/prep-wiki-br.git
-cd prep-wiki-br/manager
-docker compose up -d --build
+cd manager
+docker compose up -d --build        # sobe em http://localhost:8099
+go test ./...
 ```
 
-Os acervos ficam em `manager/dados/`. Porta, pasta, usuário e senha mudam num arquivo `manager/.env`, com `PREP_PORTA`, `PREP_PASTA`, `PREP_UID`, `PREP_GID`, `PREP_SENHA` e `PREP_ADMIN`. Se o seu usuário não for o 1000 (veja com `id -u`), ajuste os dois últimos. Para atualizar: `git pull` e `docker compose up -d --build`.
+Para rodar fora do Docker, com as páginas lidas do disco e sem recompilar a cada ajuste, veja [`manager/README.md`](manager/README.md). Cada parte tem o seu próprio passo a passo:
 
-</details>
+| Quero… | Onde |
+|---|---|
+| mudar a interface ou a API | [`manager/README.md`](manager/README.md) |
+| acrescentar um acervo ao catálogo | [`manager/README.md`](manager/README.md#o-catálogo) |
+| gerar o APK | [`android/README.md`](android/README.md) |
+| gerar ou refazer um índice de busca | [`zimdex/README.md`](zimdex/README.md) |
+| gerar uma das wikis | `python3 -m venv venv && venv/bin/pip install -r requirements.txt`, depois `cd plantas-medicinais && ../venv/bin/python build.py` |
+| criar uma wiki nova | uma pasta com um `build.py` que gere um `*.zim`, mais uma cópia de [`plantas-medicinais.yml`](.github/workflows/plantas-medicinais.yml) com o nome trocado |
+| mexer na página do projeto | [`site/README.md`](site/README.md) |
 
-## As três wikis do projeto
+## Contribuir
 
-Cada uma é um arquivo `.zim` gerado a partir de publicações oficiais, com o texto reorganizado para leitura, busca, índice e citação da página de origem. Nas duas primeiras, os PDFs originais vão junto dentro do arquivo.
-
-Elas já vêm no catálogo do Prep Wiki BR, mas não dependem dele: o arquivo abre em qualquer Kiwix, seja o aplicativo de celular, o [Kiwix Desktop](https://kiwix.org/pt-br/applications/) ou um `kiwix-serve`. É só baixar e abrir.
-
-| | O que tem | Ver online | Baixar |
-|---|---|---|---|
-| <a id="sisteminha-embrapa"></a>**[Sisteminha Embrapa](sisteminha-embrapa)** | Produção integrada de alimentos para a agricultura familiar: tanque de peixes com biofiltro, aves, horta e compostagem. Com figuras, as 52 perguntas e respostas da Embrapa e uma calculadora de ração. | [prep.bigode.org](https://prep.bigode.org/content/sisteminha-embrapa_pt/index) | [sisteminha-embrapa_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/sisteminha-embrapa-latest/sisteminha-embrapa_pt.zim) (16 MB)<br><sub>[sha256](https://github.com/wdonega/prep-wiki-br/releases/download/sisteminha-embrapa-latest/sisteminha-embrapa_pt.zim.sha256) · [versões anteriores](https://github.com/wdonega/prep-wiki-br/releases?q=sisteminha-embrapa&expanded=true)</sub> |
-| <a id="plantas-medicinais"></a>**[Plantas Medicinais](plantas-medicinais)** | 85 plantas do Formulário de Fitoterápicos da Anvisa (fórmula, preparo, dose, advertências e foto), com seções de preparo caseiro, cultivo e uso seguro no SUS. | [prep.bigode.org](https://prep.bigode.org/content/plantas-medicinais_pt/index) | [plantas-medicinais_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/plantas-medicinais-latest/plantas-medicinais_pt.zim) (29 MB)<br><sub>[sha256](https://github.com/wdonega/prep-wiki-br/releases/download/plantas-medicinais-latest/plantas-medicinais_pt.zim.sha256) · [versões anteriores](https://github.com/wdonega/prep-wiki-br/releases?q=plantas-medicinais&expanded=true)</sub> |
-
-| <a id="chuvas-tempestades"></a>**[Chuva forte e tempestade](chuvas-tempestades)** | O que fazer antes, durante e depois de alagamento, enchente, enxurrada, deslizamento, vendaval, granizo, raio e tornado: ficar ilhado, carro na água, lona no telhado passo a passo, limpeza, saúde, direitos (FGTS e ajuda) e El Niño. 36 páginas, com a fonte de cada orientação. | [prep.bigode.org](https://prep.bigode.org/content/chuvas-tempestades_pt/index) | [chuvas-tempestades_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/chuvas-tempestades-latest/chuvas-tempestades_pt.zim) (0,6 MB)<br><sub>[sha256](https://github.com/wdonega/prep-wiki-br/releases/download/chuvas-tempestades-latest/chuvas-tempestades_pt.zim.sha256) · [versões anteriores](https://github.com/wdonega/prep-wiki-br/releases?q=chuvas-tempestades&expanded=true)</sub> |
-
-O link de download é fixo e aponta sempre para a versão mais recente. Os acervos de saúde são educativos e **não substituem um profissional de saúde**.
-
-## Para quem quer mexer
-
-```
-manager/              o Prep Wiki BR: gerenciador em Go, páginas e catálogo
-  catalogo.json       a lista de acervos (o que existe, em que grupo, com que descrição)
-  web/                página inicial, gerenciador e o estilo aplicado ao leitor
-sisteminha-embrapa/   fonte da wiki do Sisteminha (textos, figuras, build.py)
-plantas-medicinais/   fonte da wiki de Plantas Medicinais
-chuvas-tempestades/   fonte da wiki Chuva forte e tempestade (textos, fontes, pesquisa, build.py)
-```
-
-- **Acrescentar um acervo ao catálogo:** inclua uma linha em `manager/catalogo.json` com o nome do arquivo no Kiwix (sem a data), a pasta em que ele fica em `download.kiwix.org/zim/`, o grupo, o título e a descrição. A edição mais recente é descoberta sozinha.
-- **O catálogo se atualiza sozinho:** antes de cada verificação de versões, o gerenciador baixa o `manager/catalogo.json` da branch `main` do GitHub e guarda uma cópia na pasta de dados. Uma mudança no catálogo chega a todas as instalações sem imagem nova (é ignorada se o arquivo for inválido ou tiver `versao` menor que a do catálogo embutido). O que sair do catálogo e estiver baixado não some: vai para o grupo **Fora do catálogo** até ser apagado, e volta ao lugar se reaparecer. `PREP_CATALOGO_URL` troca o endereço; `PREP_CATALOGO_URL=desligado` fica só com o catálogo embutido.
-- **Tags:** cada acervo lista as suas em `"tags": ["lancamento"]`, e o bloco `tags` do catálogo dá o título e a cor de cada uma: um nome da paleta (`amarelo`, `verde`, `azul`, `vermelho`, `cinza`), que se ajusta ao tema claro e escuro, ou uma cor em hexadecimal (`#7c3aed`). Tag sem definição, ou sem cor, aparece com o próprio nome em cinza. Elas aparecem no gerenciador.
-- **Tradução no cliente:** o bloco `traducao` do catálogo lista os pacotes (`en-pt`): o motor [Bergamot](https://github.com/browsermt/bergamot-translator) em WebAssembly e o modelo do [Firefox Translations](https://github.com/mozilla/firefox-translations-models) para o par de idiomas, cada arquivo com tamanho, sha-256 e uma lista de endereços. Nada disso vai no binário: o gerenciador baixa, confere e guarda em `dados/traducao/<id>/` ([`traducao.go`](manager/traducao.go)), e só então a página do leitor recebe o [`traducao.js`](manager/web/prep/traducao.js), que traduz bloco a bloco o que está na tela, num worker ([`traducao-worker.js`](manager/web/prep/traducao-worker.js)), e guarda o resultado no IndexedDB do navegador. Para trocar um arquivo ou acrescentar um endereço (um mirror próprio, por exemplo), mude o catálogo e suba a `versao` do pacote: as instalações mostram "versão nova". Gerenciadores antigos ignoram o bloco.
-- **Leitor de PDF:** quando o navegador abre um PDF de um acervo como página, o gerenciador entrega no mesmo endereço a página do leitor ([`leitorpdf.go`](manager/leitorpdf.go), [`pdf/leitor.js`](manager/web/prep/pdf/leitor.js)), que busca o arquivo aos pedaços com o [PDF.js](https://mozilla.github.io/pdf.js/). O PDF.js vai dentro do binário, em [`manager/web/prep/pdf/pdfjs/`](manager/web/prep/pdf/pdfjs/) (a versão está no arquivo `VERSAO`; para atualizar, troque os arquivos pelos do pacote `pdfjs-dist` do npm, build `legacy`). O leitor tira o texto de cada página, remonta os parágrafos com a posição de cada um e usa o mesmo motor de tradução dos artigos: no modo Página, a tradução de cada parágrafo cobre o original no lugar dele, com a cor de fundo e a cor da letra lidas da página desenhada; no modo Texto, os parágrafos viram uma coluna de leitura.
-- **Índice de busca (zimdex):** cada acervo do catálogo pode ter um índice, um arquivo `.zimdex` com os vetores da busca por significado e, nos canais de vídeo, as legendas. Para quem usa ele não existe à parte: instalar um acervo baixa o ZIM e o índice, o tamanho mostrado é a soma dos dois e apagar o acervo apaga os dois ([`indice.go`](manager/indice.go)). Os índices ficam num repositório próprio, com um `indice.json` que diz qual edição de qual ZIM cada um cobre; o gerenciador lê esse arquivo a cada verificação de versões (`PREP_ZIMDEX_URL` troca o endereço; `PREP_ZIMDEX_URL=desligado` não baixa índices). Um acervo já instalado cujo índice ainda não veio aparece com "falta o índice de busca", e Atualizar baixa só ele. Em disco o índice fica ao lado do ZIM, com o mesmo nome; um `.zimdex` copiado à mão para a pasta é reconhecido na partida. Quem gera os índices é o [`rag-prototipo/indice-llm2/`](rag-prototipo/indice-llm2/).
-- **Busca por significado:** a caixa de busca da página inicial procura pelo sentido da pergunta dentro dos acervos que têm índice: acha "como tratar água" numa página que fala em "purificação", e pergunta em português acha texto em inglês. A pergunta vira um vetor, pelo mesmo modelo que gerou os índices, e é comparada com todos os trechos ([`busca.go`](manager/busca.go), [`zimdex.go`](manager/zimdex.go)); cada resultado abre a página, o PDF na página certa ou o vídeo no ponto da fala. O modelo roda num `llama-server` do [llama.cpp](https://github.com/ggml-org/llama.cpp): o da imagem Docker e do app (`PREP_LLAMA_SERVER` aponta outro), iniciado na primeira busca e parado depois de 15 minutos sem uso, ou um servidor que já exista (`PREP_EMBED_URL=http://maquina:8080`). O arquivo do modelo (310 MB) baixa sozinho junto com o primeiro índice e fica em `dados/busca/`. Sem modelo ou sem índice, e para os acervos acrescentados pela pessoa, a busca é a de sempre: por palavras, do próprio Kiwix.
-- **Legendas nos vídeos:** os canais de vídeo ganham legenda em inglês (a transcrição do áudio) e em português (a tradução dela), feitas por máquina. Elas vêm dentro do índice do canal, e o ZIM não muda: o gerenciador acrescenta as línguas ao botão de legenda do player e entrega os arquivos ([`legendas.go`](manager/legendas.go)). A legenda abre ligada em português, e a escolha da pessoa (outra língua ou desligada) vale para os vídeos seguintes ([`video.js`](manager/web/prep/video.js)).
-- **Gerar uma das wikis na sua máquina:**
-  ```bash
-  python3 -m venv venv && venv/bin/pip install -r requirements.txt
-  cd plantas-medicinais && ../venv/bin/python build.py
-  ```
-- **Imagem Docker:** um push na `main` que mexe em `manager/` roda o workflow [`imagem.yml`](.github/workflows/imagem.yml), que monta a imagem para `amd64` e `arm64`, publica em `ghcr.io/wdonega/prep-wiki-br` com as tags `AAAA-MM-DD-rN` e `latest`, e cria uma release `imagem-AAAA-MM-DD-rN`.
-- **Releases das wikis:** cada wiki tem um workflow no GitHub Actions. Um push na `main` que mexe na pasta dela gera o ZIM de novo e publica uma release com tag `<pasta>-AAAA-MM-DD-rN`. A release `<pasta>-latest` também é atualizada, e é ela que mantém o link fixo.
-- **Criar uma wiki nova:** uma pasta com um `build.py` que gere um `*.zim`, mais uma cópia de `.github/workflows/plantas-medicinais.yml` com o nome da pasta trocado.
+- **Problemas e sugestões de acervo:** nas [issues](https://github.com/wdonega/prep-wiki-br/issues).
+- **Língua:** o código, os comentários e as mensagens são em português. Os comentários explicam o porquê de uma decisão, não o que a linha faz.
+- **Dependências:** o gerenciador usa só a biblioteca padrão do Go (o `go.mod` não tem `require`). As páginas são HTML, CSS e JavaScript sem framework nem etapa de build.
+- **Testes:** o gerenciador tem testes em `manager/*_test.go`. Rode `go test ./...` antes de enviar uma mudança.
+- **Conteúdo das wikis:** toda afirmação cita a página da publicação de origem. O README de cada wiki descreve o formato.
 
 Ideias para as próximas wikis, todas a partir de material de órgãos públicos:
 
 - **Embrapa** ([Infoteca-e](https://www.infoteca.cnptia.embrapa.br/)): cisternas, conservação de alimentos, pequenos animais, horta e biodigestor.
-- **Defesa Civil:** seca e estiagem, calor extremo e incêndio florestal (chuva e tempestade já têm a sua wiki).
+- **Defesa Civil:** seca e estiagem, calor extremo e incêndio florestal.
 - **Ministério da Saúde** ([BVS](https://bvsms.saude.gov.br/)): primeiros socorros, tratamento de água e doenças de veiculação hídrica.
 - **ASA Brasil:** cisterna de placas e convivência com o semiárido.
+
+## Publicação
+
+| O quê | Como |
+|---|---|
+| **Imagem Docker** | Um push na `main` que mexe em `manager/` roda o [`imagem.yml`](.github/workflows/imagem.yml): monta a imagem para `amd64` e `arm64`, publica em `ghcr.io/wdonega/prep-wiki-br` com as tags `AAAA-MM-DD-rN` e `latest`, e cria a release `imagem-AAAA-MM-DD-rN`. |
+| **Wikis** | Um push que mexe na pasta de uma wiki gera o ZIM de novo e publica a release `<pasta>-AAAA-MM-DD-rN`. A release `<pasta>-latest` também é atualizada, e é ela que mantém o link de download fixo. |
+| **Catálogo** | Basta o `manager/catalogo.json` chegar à `main`: as instalações o leem de lá. |
+| **Índices de busca** | À mão, pelo `zimdex/zimdex.py`, para o Hugging Face. |
+| **App Android** | À mão: o bundle assinado sobe pela Play Console. |
+| **Página do projeto** | À mão: a pasta `site/` é publicada como arquivos estáticos. |
 
 ## Apoie o projeto
 
@@ -180,16 +146,18 @@ O Prep Wiki BR é gratuito e sem anúncios. Se ele foi útil, dá para apoiar po
 - O **código** deste repositório (gerenciador, app Android, scripts de build, CSS e JS) é software livre, sob a [GPLv3 ou posterior](LICENSE): pode usar, estudar, modificar e redistribuir, desde que as versões modificadas sigam abertas sob a mesma licença.
 - O **conteúdo das três wikis** vem de publicações públicas (Embrapa, Anvisa, Ministério da Saúde, Defesa Civil e, na de chuva e tempestade, também do governo federal dos EUA, em domínio público), reorganizadas para uso **pessoal e educativo, sem fins comerciais**. Toda página cita a fonte. Os créditos completos estão no README de cada wiki e dentro de cada ZIM.
 - As **fotos** da wiki de plantas vêm do Wikimedia Commons, com licenças livres, e o autor é creditado em cada imagem.
-- O **pacote de tradução** também não é deste projeto e é baixado à parte: o motor Bergamot e os modelos do Firefox Translations, da Mozilla, são software livre sob a MPL 2.0.
-- O **leitor de PDF** usa o [PDF.js](https://mozilla.github.io/pdf.js/), da Mozilla, sob a licença Apache 2.0, distribuído junto com o gerenciador. As licenças dele, dos decodificadores de imagem e das fontes que o acompanham estão em [`manager/web/prep/pdf/pdfjs/`](manager/web/prep/pdf/pdfjs/).
+- O **pacote de tradução** não é deste projeto e é baixado à parte: o motor Bergamot e os modelos do Firefox Translations, da Mozilla, são software livre sob a MPL 2.0.
+- O **leitor de PDF** usa o PDF.js, da Mozilla, sob a licença Apache 2.0, distribuído junto com o gerenciador. As licenças dele, dos decodificadores de imagem e das fontes que o acompanham estão em [`manager/web/prep/pdf/pdfjs/`](manager/web/prep/pdf/pdfjs/).
+- A **página do projeto** usa o [three.js](https://threejs.org/) (MIT) e ícones do [Tabler](https://tabler.io/icons) (MIT). As ilustrações e o modelo 3D foram gerados com IA a partir da arte do projeto; os detalhes estão em [`site/README.md`](site/README.md).
 - Os **outros acervos** não são deste projeto. Cada um segue a licença da sua origem (os da Wikimedia, por exemplo, são CC BY-SA). Alguns, como o iFixit, não permitem uso comercial.
 
 ## Agradecimentos
 
 O Prep Wiki BR é um projeto independente, sem relação oficial com nenhum dos nomes abaixo. Ele só existe porque esse trabalho todo é público.
 
-- **[Kiwix](https://kiwix.org/) e [openZIM](https://openzim.org/):** o formato ZIM, o `kiwix-serve` que roda por baixo do leitor, os aplicativos de celular e computador, os mirrors de download e a maior parte dos acervos do catálogo, que eles empacotam e mantêm atualizados.
+- **[Kiwix](https://kiwix.org/) e [openZIM](https://openzim.org/):** o formato ZIM, o `kiwix-serve` que roda por baixo do leitor, a `libkiwix` do app, os mirrors de download e a maior parte dos acervos do catálogo, que eles empacotam e mantêm atualizados.
 - **Wikimedia e seus voluntários:** Wikipédia, Wikcionário, Wikilivros, Wikiversidade, Wikisource, Wikiquote, Wikivoyage e o Wikimedia Commons, de onde vêm as fotos das plantas.
 - **Embrapa, Anvisa, Ministério da Saúde, Defesas Civis, Corpos de Bombeiros e os órgãos federais dos EUA (NWS, FEMA, USACE, CDC, EPA):** as publicações que deram origem às três wikis do projeto.
-- **Quem produz os outros acervos do catálogo:** iFixit, Stack Exchange, PhET, Vikidia, Projeto Gutenberg, freeCodeCamp, OpenStreetMap, Low-tech Magazine, Hundred Rabbits, Appropedia, energypedia, CD3WD, Survivor Library, MDWiki e WikiProjectMed, MedlinePlus, NHS, CDC, WikiVet, Ready.gov, e os canais e sites de preparação listados no gerenciador.
+- **Quem produz os outros acervos do catálogo:** iFixit, Stack Exchange, PhET, Vikidia, Projeto Gutenberg, freeCodeCamp, OpenStreetMap, Low-tech Magazine, Hundred Rabbits, Appropedia, energypedia, CD3WD, MDWiki e WikiProjectMed, MedlinePlus, NHS, CDC, WikiVet, Ready.gov, e os canais e sites de preparação listados no gerenciador.
+- **[llama.cpp](https://github.com/ggml-org/llama.cpp), [whisper.cpp](https://github.com/ggerganov/whisper.cpp), Bergamot e PDF.js:** os motores da busca, das legendas, da tradução e do leitor de PDF.
 - **[Lucide](https://lucide.dev/):** os ícones da interface.

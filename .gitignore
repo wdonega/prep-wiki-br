@@ -1,5 +1,6 @@
 *.zim
 __pycache__/
+.DS_Store
 venv/
 .venv/
 .idea/
@@ -17,3 +18,12 @@ android/.build/
 # chave de assinatura do release (nunca no git)
 android/keystore.properties
 *.jks
+
+# binário do gerenciador compilado à mão (go build)
+manager/manager
+
+# rascunhos, tentativas e arte extra: nada daqui entra no produto
+#   rascunhos/       conceitos da landing page, capturas, a página antiga
+#   rag-prototipo/   laboratório da busca: comparações de modelos, de formatos de índice e testes no celular
+rascunhos/
+rag-prototipo/
