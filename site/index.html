@@ -604,7 +604,7 @@
   // a distribuição nem se é ARM, então o botão leva à página, na escolha da distribuição.
   var REL = GH + '/releases/download/desktop-v0.1.0/';
   var SO = {
-    android: ['Baixar para Android', 'Direto da Google Play Store', 'https://play.google.com/store/apps/details?id=org.bigode.prep', 'baixa'],
+    android: ['Baixar para Android', 'Teste fechado · passo a passo', 'baixar.html#android', 'pagina'],
     windows: ['Baixar para Windows', 'Instalador .exe · 138 MB', REL + 'prep-wiki-br-0.1.0-windows-x64-instalador.exe', 'baixa'],
     mac: ['Instalar no Mac', 'Homebrew · Apple Silicon e Intel', 'baixar.html#mac', 'cmd'],
     linux: ['Instalar no Linux', 'Debian, Ubuntu, Fedora e outras', 'baixar.html#linux', 'pagina'],
@@ -622,8 +622,8 @@
   cada('.ab', function (ab) {
     var s = SO[meu], bt = ab.querySelector('.ab__bt');
     ab.querySelector('.ab__txt').textContent = s[0]; ab.querySelector('.ab__sub').textContent = s[1];
-    // a Google Play abre em outra aba; o instalador e as páginas do próprio site, na mesma
-    bt.href = s[2]; if (meu === 'android') { bt.target = '_blank'; bt.rel = 'noopener'; }
+    // o instalador e as páginas do próprio site abrem na mesma aba (o Android vai ao passo a passo do teste fechado)
+    bt.href = s[2];
     // onde não há download direto, o ícone da direita é um terminal (>_) ou uma seta para a página
     bt.querySelector('.baixa path').setAttribute('d', SETA[s[3]]); bt.classList.toggle('ab__bt--cmd', s[3] !== 'baixa');
     // o ícone do sistema vai para o botão e sai da fila dos outros
