@@ -1,5 +1,5 @@
 {
-  "versao": 9,
+  "versao": 10,
   "grupos": [
     {"id": "projeto", "titulo": "Deste projeto"},
     {"id": "wikipedia", "titulo": "Wikipédia", "dica": "escolha uma"},
@@ -36,6 +36,7 @@
     {"id": "sisteminha-embrapa_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "sisteminha-embrapa-latest", "arquivo": "sisteminha-embrapa_pt.zim", "grupo": "projeto", "tags": ["recomendado"], "titulo": "Sisteminha Embrapa", "descricao": "Produção integrada de alimentos no quintal: tanque de peixes com biofiltro, aves, horta e compostagem."},
     {"id": "plantas-medicinais_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "plantas-medicinais-latest", "arquivo": "plantas-medicinais_pt.zim", "grupo": "projeto", "tags": ["recomendado"], "titulo": "Plantas Medicinais", "descricao": "85 plantas do Formulário de Fitoterápicos da Anvisa, com preparo, cultivo e uso seguro no SUS."},
     {"id": "chuvas-tempestades_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "chuvas-tempestades-latest", "arquivo": "chuvas-tempestades_pt.zim", "grupo": "projeto", "tags": ["lancamento", "recomendado"], "titulo": "Chuva forte e tempestade", "descricao": "O que fazer antes, durante e depois de enchente, vendaval, granizo, raio e deslizamento: ilhado, carro na água, lona no telhado, saúde e direitos."},
+    {"id": "lugares-seguros_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "lugares-seguros-latest", "arquivo": "lugares-seguros_pt.zim", "grupo": "projeto", "tags": ["lancamento"], "titulo": "Lugares seguros no Brasil", "descricao": "Onde morar com mais segurança no longo prazo: mapa das notas das 27 UFs em crime, desastres, densidade e autossuficiência, com regiões, fronteiras e rotas de fuga."},
 
     {"id": "wikipedia_pt_all_maxi", "origem": "kiwix", "pasta": "wikipedia", "grupo": "wikipedia", "titulo": "Wikipédia completa · com imagens", "descricao": "Todos os artigos, completos, com imagens. A versão mais pesada."},
     {"id": "wikipedia_pt_all_nopic", "origem": "kiwix", "pasta": "wikipedia", "grupo": "wikipedia", "titulo": "Wikipédia completa · sem imagens", "descricao": "Todos os artigos, completos, só texto."},
