@@ -1,0 +1,14 @@
+name: lugares-seguros
+# Só por disparo manual: este guia muda com frequência, e cada release nova pede índice de busca novo
+# (o índice é amarrado ao identificador do ZIM). Rode pelo botão "Run workflow" ou por `gh workflow run`.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  zim:
+    uses: ./.github/workflows/_build-zim.yml
+    with:
+      projeto: lugares-seguros
