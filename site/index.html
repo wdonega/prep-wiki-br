@@ -119,7 +119,6 @@
   .baixa { width: 18px; height: 18px; flex: none; stroke-width: 2.4; }
   a:hover > .baixa, button:hover > .baixa { animation: cai .9s ease-in-out infinite; }
   @keyframes cai { 0% { transform: translateY(-4px); opacity: .2; } 55% { transform: translateY(1px); opacity: 1; } 100% { transform: translateY(1px); opacity: 1; } }
-  .entra { animation: entra .32s cubic-bezier(.2,.8,.2,1); } @keyframes entra { from { transform: translateY(70%); opacity: 0; } }
 
   .n3 { top: 55.5vh; }
   .ab { --cr: 540px; position: relative; isolation: isolate; width: 346px; padding: 7px; border-radius: 25px; background: linear-gradient(180deg, rgba(243,234,208,.075), rgba(243,234,208,.028)); box-shadow: 0 22px 50px -26px rgba(0,0,0,.55); -webkit-backdrop-filter: blur(7px) saturate(1.25); backdrop-filter: blur(7px) saturate(1.25); }
@@ -127,22 +126,20 @@
   .ab::before { content: ""; position: absolute; inset: 0; z-index: -1; padding: 1px; border-radius: inherit; pointer-events: none; background: radial-gradient(circle var(--cr) at var(--cx, 120%) var(--cy, 40%), rgba(255,228,172,1), rgba(255,198,108,.8) 42%, rgba(243,234,208,.26) 72%, rgba(243,234,208,.12)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
   /* o reflexo por dentro: um banho de luz que vem do lampião e treme com a chama */
   .ab::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; background: radial-gradient(circle var(--cr) at var(--cx, 120%) var(--cy, 40%), rgba(255,178,92,.2), rgba(255,160,70,.07) 52%, transparent 80%); opacity: calc(.82 + (var(--f) - 1) * 2.4); }
-  .ab__abas { position: relative; display: flex; gap: 4px; margin-bottom: 7px; }
-  .ab__marca { position: absolute; left: 0; top: 0; bottom: 0; width: var(--mw, 0px); border-radius: 999px; background: rgba(246,183,74,.13); box-shadow: inset 0 0 0 1px rgba(246,183,74,.5), 0 0 22px rgba(246,160,60,.2); transform: translateX(var(--mx, 0px)); pointer-events: none; }
-  .ab.vivo .ab__marca { transition: transform .42s cubic-bezier(.3,1.25,.5,1), width .42s cubic-bezier(.2,.8,.2,1); }
-  .ab__abas button { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; padding: 0 11px; border-radius: 999px; color: #b9b39c; font-weight: 600; font-size: 14.5px; flex-grow: 0; transition: color .2s, background .25s, box-shadow .25s, flex-grow .4s cubic-bezier(.2,.8,.2,1); }
-  .ab__abas button:hover { color: var(--tinta); } .ab__abas button:hover svg { transform: translateY(-1px) scale(1.08); }
-  .ab__abas svg { width: 22px; height: 22px; flex: none; stroke-width: 1.7; transition: transform .25s cubic-bezier(.2,.8,.2,1); }
-  .ab__abas span { max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0; transition: max-width .4s cubic-bezier(.2,.8,.2,1), opacity .25s; }
-  .ab__abas button[aria-selected="true"] { flex-grow: 1; color: #ffd27a; }
-  .ab__abas button[aria-selected="true"] span { max-width: 90px; opacity: 1; }
-  .ab__bt { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 62px; padding: 0 12px 0 20px; border-radius: 19px; background: linear-gradient(180deg, #ffc55c, var(--ambar) 55%, #eaa536); color: #1b1505; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 40px rgba(246,160,60,.34); transition: transform .2s, box-shadow .3s; }
+  /* o botão leva direto ao sistema de quem visita; embaixo, um link para a página com todos os outros (baixar.html) */
+  .ab__bt .ab__so { width: 26px; height: 26px; flex: none; stroke-width: 1.8; }
+  .ab__outro { display: flex; align-items: center; gap: 8px; min-height: 46px; margin-top: 3px; padding: 4px 12px 4px 16px; border-radius: 16px; font-size: 14.5px; font-weight: 600; line-height: 1.25; color: #e4dcc0; transition: background .25s, color .2s; }
+  .ab__outro:hover { background: rgba(243,234,208,.06); color: var(--tinta); }
+  .ab__outro .lg { flex: 1; min-width: 0; } .ab__outro .pq { display: none; flex: 1; min-width: 0; white-space: nowrap; }
+  .ab__icones { display: flex; align-items: center; gap: 8px; color: #b9b39c; } .ab__icones svg { width: 19px; height: 19px; flex: none; stroke-width: 1.7; }
+  .ab__outro .ab__seta { width: 17px; height: 17px; flex: none; margin-left: 4px; color: var(--ambar); stroke-width: 2.2; transition: transform .25s; } .ab__outro:hover .ab__seta { transform: translateX(3px); }
+  .ab__bt { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 62px; padding: 0 12px 0 16px; border-radius: 19px; background: linear-gradient(180deg, #ffc55c, var(--ambar) 55%, #eaa536); color: #1b1505; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 40px rgba(246,160,60,.34); transition: transform .2s, box-shadow .3s; }
   .ab__bt::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 36%, rgba(255,255,255,.5) 50%, transparent 64%); transform: translateX(-120%); pointer-events: none; }
   .ab__bt:hover::after { transform: translateX(120%); transition: transform .75s cubic-bezier(.2,.7,.2,1); }
   .ab__bt .baixa { width: 38px; height: 38px; padding: 10px; border-radius: 50%; background: rgba(27,21,5,.13); }
   .ab__bt:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 0 0 5px rgba(246,183,74,.16), 0 12px 46px rgba(246,160,60,.5); } .ab__bt:active { transform: scale(.985); }
-  .ab__bt > span { overflow: hidden; } .ab__bt b { display: block; font-weight: 700; font-size: 16.5px; line-height: 1.15; }
-  .ab__bt small { display: block; margin-top: 4px; font: 500 10.5px/1.25 "DM Mono", ui-monospace, monospace; letter-spacing: 0; opacity: .78; white-space: nowrap; }
+  .ab__bt > span { flex: 1; min-width: 0; overflow: hidden; } .ab__bt b { display: block; font-weight: 700; font-size: 16.5px; line-height: 1.15; }
+  .ab__bt small { display: block; margin-top: 4px; font: 500 10.5px/1.25 "DM Mono", ui-monospace, monospace; letter-spacing: 0; opacity: .78; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ab__link { position: relative; margin-left: 14px; display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 600; color: #d9d2b8; }
   .ab__link svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; } .ab__link:hover { color: var(--tinta); } .ab__link:hover svg { transform: translateX(3px); }
   /* ================= página inteira ================= */
@@ -309,15 +306,16 @@
     .passo .tela { height: 330px; } .passo .tel { margin-top: 30px; width: 54%; } .passo__t b { font-size: 58px; }
     .perguntas__topo { position: static; } .faq__item button { font-size: 19px; padding: 18px 0; } .faq__r p { padding-right: 10px; font-size: 16px; }
     .fecho .aceso { font-size: clamp(48px, 14vw, 88px); } .fecho .ab { width: min(100%, 330px); }
-    .fecho .ab .ab__abas button[aria-selected="true"] span, .fecho .ab .ab__abas span { display: none; }
     .rodape { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: 34px; } .rodape > div:first-child { grid-column: 1 / -1; }
   }
 
   @media (max-width: 900px) {
     .palco .luz { right: -21vw; }
-    .ab { --cr: 330px; width: 214px; border-radius: 23px; padding: 6px; } .ab__abas { gap: 2px; margin-bottom: 6px; }
-    .ab__abas button { height: 40px; padding: 0; flex: 1; } .ab__abas button[aria-selected="true"] span, .ab__abas span { display: none; }
-    .ab__bt { height: auto; min-height: 60px; gap: 6px; padding: 10px 9px 10px 13px; border-radius: 17px; } .ab__bt .baixa { width: 28px; height: 28px; padding: 6px; } .ab__bt b { font-size: 13.5px; white-space: nowrap; } .ab__bt small { white-space: normal; font-size: 10.5px; }
+    .ab { --cr: 330px; width: 214px; border-radius: 23px; padding: 6px; }
+    .ab__bt { height: auto; min-height: 60px; gap: 8px; padding: 10px 9px 10px 12px; border-radius: 17px; } .ab__bt .ab__so { width: 22px; height: 22px; } .ab__bt .baixa { width: 28px; height: 28px; padding: 6px; } .ab__bt b { font-size: 13.5px; } .ab__bt small { white-space: normal; font-size: 10.5px; }
+    /* no celular o link encolhe: "Outros", os ícones menores e a seta */
+    .palco .ab__outro { gap: 6px; padding: 0 12px; font-size: 13px; } .palco .ab__outro .lg { display: none; } .palco .ab__outro .pq { display: block; }
+    .palco .ab__icones { gap: 6px; } .palco .ab__icones svg { width: 17px; height: 17px; } .palco .ab__outro .ab__seta { width: 16px; height: 16px; margin-left: 0; }
     .ab__link { display: none; }
   }
 
@@ -362,15 +360,8 @@
         <p><b>81 acervos</b> guardados no seu aparelho: três guias que só existem aqui, a Wikipédia, manuais de conserto e <b>PDFs e vídeos traduzidos</b>, com busca em português. Sem sinal, sem conta, sem anúncio.</p>
         <div class="lado">
           <div class="ab">
-            <div class="ab__abas" role="tablist" aria-label="Escolha o sistema">
-              <i class="ab__marca" aria-hidden="true"></i>
-              <button type="button" role="tab" aria-selected="false" data-so="android" aria-label="Android"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v6M20 10v6M7 9h10v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9a5 5 0 0 1 10 0M8 3l1 2M16 3l-1 2M9 18v3M15 18v3"/></svg><span>Android</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="windows" aria-label="Windows"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 20l-12-1.5c-1-.1-1.8-.9-1.8-1.900v-9.200c0-1 .8-1.800 1.800-1.900l12-1.500c1.200-.1 2.200.8 2.200 1.900v12.100c0 1.200-1.100 2.100-2.200 1.900zM12 5v14M4 12h16"/></svg><span>Windows</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="mac" aria-label="Mac"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7c-3 0-4 3-4 5.5c0 3 2 7.5 4 7.5c1.088-.046 1.679-.5 3-.5c1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3c-.019-2.170 2.416-2.954 2.500-3c-1.023-1.492-2.951-1.963-3.500-2c-1.433-.111-2.830 1-3.500 1c-.680 0-1.900-1-3-1zM12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/></svg><span>Mac</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="linux" aria-label="Linux"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.200a3 3 0 0 1 6 0v1.900c0 1.500.9 2.500 1.800 3.800.9 1.300 1.700 2.800 1.700 4.400 0 .6-.1 1.100-.3 1.600M9 7.200v1.900c0 1.500-.9 2.500-1.800 3.800-.9 1.300-1.700 2.800-1.700 4.400 0 .6.1 1.100.3 1.600M4.500 21h4.300c.9 0 1.300-.9.800-1.600l-1.500-2.100M19.500 21h-4.300c-.9 0-1.300-.9-.8-1.600l1.500-2.100M9.600 21h4.800M10.800 9.200l1.200.9 1.200-.9M10.600 6.800v.01M13.400 6.800v.01"/></svg><span>Linux</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="docker" aria-label="Docker"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.540c-1.804-.345-2.701-1.080-3.523-2.940-.487.696-1.102 1.568-.920 2.400.028.238-.320 1.002-.557 1h-14c0 5.208 3.164 7 6.196 7 4.124.022 7.828-1.376 9.854-5 1.146-.101 2.296-1.505 2.950-2.460zM5 10h3v3H5zM8 10h3v3H8zM11 10h3v3h-3zM8 7h3v3H8zM11 7h3v3h-3zM11 4h3v3h-3zM10 16v.01"/></svg><span>Docker</span></button>
-            </div>
-            <a class="ab__bt" href="#"><span><b class="ab__txt">Baixar para Android</b><small class="ab__sub">Direto da Google Play Store</small></span><svg class="baixa" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg></a>
+            <a class="ab__bt" href="baixar.html"><svg class="ab__so" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg><span><b class="ab__txt">Baixar o Prep Wiki BR</b><small class="ab__sub">Android, Windows, Mac, Linux e Docker</small></span><svg class="baixa" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="ab__outro" href="baixar.html"><span class="lg">Outro sistema ou formato</span><span class="pq">Outros</span><span class="ab__icones" aria-hidden="true"><svg data-so="android" viewBox="0 0 24 24"><path d="M4 10v6M20 10v6M7 9h10v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9a5 5 0 0 1 10 0M8 3l1 2M16 3l-1 2M9 18v3M15 18v3"/></svg><svg data-so="windows" viewBox="0 0 24 24"><path d="M17.8 20l-12-1.5c-1-.1-1.8-.9-1.8-1.900v-9.200c0-1 .8-1.800 1.800-1.900l12-1.500c1.200-.1 2.200.8 2.200 1.900v12.100c0 1.200-1.100 2.100-2.200 1.900zM12 5v14M4 12h16"/></svg><svg data-so="mac" viewBox="0 0 24 24"><path d="M9 7c-3 0-4 3-4 5.5c0 3 2 7.5 4 7.5c1.088-.046 1.679-.5 3-.5c1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3c-.019-2.170 2.416-2.954 2.500-3c-1.023-1.492-2.951-1.963-3.500-2c-1.433-.111-2.830 1-3.500 1c-.680 0-1.900-1-3-1zM12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/></svg><svg data-so="linux" viewBox="0 0 24 24"><path d="M9 7.200a3 3 0 0 1 6 0v1.900c0 1.500.9 2.500 1.800 3.800.9 1.300 1.700 2.800 1.700 4.400 0 .6-.1 1.100-.3 1.600M9 7.200v1.900c0 1.500-.9 2.500-1.800 3.800-.9 1.300-1.700 2.800-1.700 4.400 0 .6.1 1.100.3 1.600M4.500 21h4.300c.9 0 1.300-.9.800-1.600l-1.500-2.100M19.500 21h-4.300c-.9 0-1.300-.9-.8-1.600l1.500-2.100M9.600 21h4.800M10.800 9.200l1.200.9 1.200-.9M10.600 6.800v.01M13.400 6.800v.01"/></svg><svg data-so="docker" viewBox="0 0 24 24"><path d="M22 12.540c-1.804-.345-2.701-1.080-3.523-2.940-.487.696-1.102 1.568-.920 2.400.028.238-.320 1.002-.557 1h-14c0 5.208 3.164 7 6.196 7 4.124.022 7.828-1.376 9.854-5 1.146-.101 2.296-1.505 2.950-2.460zM5 10h3v3H5zM8 10h3v3H8zM11 10h3v3h-3zM8 7h3v3H8zM11 7h3v3h-3zM11 4h3v3h-3zM10 16v.01"/></svg></span><svg class="ab__seta" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
           <div class="ab__links"><a class="ab__link ab__link--demo" href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Testar na demonstração <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
         </div>
@@ -486,7 +477,7 @@
         <div class="faq__item aberto"><button type="button" aria-expanded="true">Precisa de internet para usar?<i></i></button><div class="faq__r"><div><p>Só para baixar. Depois de baixado, cada acervo abre, busca e traduz sem conexão.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">Dá para testar antes de instalar?<i></i></button><div class="faq__r"><div><p>Dá. A <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">demonstração ao vivo</a> abre no navegador com 7 acervos de exemplo, sem instalar nada.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">Quanto espaço ocupa?<i></i></button><div class="faq__r"><div><p>Você decide. Os três guias do projeto somam 46 MB, e um conjunto enxuto em português fica em torno de 8 GB. O tamanho de cada acervo aparece antes de baixar.</p></div></div></div>
-        <div class="faq__item"><button type="button" aria-expanded="false">Em quais aparelhos funciona?<i></i></button><div class="faq__r"><div><p>No celular, em Android 10 ou mais novo, de 64 bits. No computador, em Windows e Linux. Pelo Docker, roda num PC ou num Raspberry Pi 4 ou 5 e serve a casa toda pelo navegador; veja o <a href="docker.html">passo a passo</a>.</p></div></div></div>
+        <div class="faq__item"><button type="button" aria-expanded="false">Em quais aparelhos funciona?<i></i></button><div class="faq__r"><div><p>No celular, em Android 10 ou mais novo, de 64 bits. No computador, em Windows, Mac e Linux; veja <a href="baixar.html">como instalar</a> em cada um. Pelo Docker, roda num PC ou num Raspberry Pi 4 ou 5 e serve a casa toda pelo navegador; veja o <a href="docker.html">passo a passo</a>.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">A tradução é confiável?<i></i></button><div class="faq__r"><div><p>É feita por máquina, dentro do aparelho, e serve para entender o texto. Em doses, medidas e números, confira o original, que fica a um toque.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">É grátis mesmo?<i></i></button><div class="faq__r"><div><p>É. Não tem anúncio, cadastro nem versão paga. Quem quiser pode apoiar o projeto; o apoio não libera nada.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">De onde vem o conteúdo?<i></i></button><div class="faq__r"><div><p>De fontes abertas, como a Wikipédia e o Kiwix, e de publicações da Embrapa e da Anvisa. Os acervos de saúde são educativos e não substituem um profissional de saúde.</p></div></div></div>
@@ -514,18 +505,11 @@
     <div class="foco" style="--x:50%;--y:24%"></div>
     <div class="fecho__lamp" aria-hidden="true"><img src="img/lampiao.png" alt="" loading="lazy" width="720" height="720"></div>
     <h2 class="aceso">Baixe enquanto tem internet.</h2>
-    <p class="lead">Grátis, sem cadastro e sem anúncio. Para Android, Windows, Linux e Docker.</p>
+    <p class="lead">Grátis, sem cadastro e sem anúncio. Para Android, Windows, Mac, Linux e Docker.</p>
     <div class="ab">
-            <div class="ab__abas" role="tablist" aria-label="Escolha o sistema">
-              <i class="ab__marca" aria-hidden="true"></i>
-              <button type="button" role="tab" aria-selected="false" data-so="android" aria-label="Android"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v6M20 10v6M7 9h10v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9a5 5 0 0 1 10 0M8 3l1 2M16 3l-1 2M9 18v3M15 18v3"/></svg><span>Android</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="windows" aria-label="Windows"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 20l-12-1.5c-1-.1-1.8-.9-1.8-1.900v-9.200c0-1 .8-1.800 1.800-1.900l12-1.500c1.200-.1 2.200.8 2.200 1.900v12.100c0 1.200-1.100 2.100-2.200 1.900zM12 5v14M4 12h16"/></svg><span>Windows</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="mac" aria-label="Mac"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7c-3 0-4 3-4 5.5c0 3 2 7.5 4 7.5c1.088-.046 1.679-.5 3-.5c1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3c-.019-2.170 2.416-2.954 2.500-3c-1.023-1.492-2.951-1.963-3.500-2c-1.433-.111-2.830 1-3.500 1c-.680 0-1.900-1-3-1zM12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/></svg><span>Mac</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="linux" aria-label="Linux"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.200a3 3 0 0 1 6 0v1.900c0 1.500.9 2.500 1.800 3.800.9 1.300 1.700 2.800 1.700 4.400 0 .6-.1 1.100-.3 1.600M9 7.200v1.900c0 1.500-.9 2.500-1.800 3.800-.9 1.300-1.700 2.800-1.700 4.400 0 .6.1 1.100.3 1.600M4.500 21h4.300c.9 0 1.300-.9.800-1.600l-1.500-2.100M19.500 21h-4.300c-.9 0-1.300-.9-.8-1.600l1.500-2.100M9.600 21h4.800M10.800 9.200l1.200.9 1.200-.9M10.600 6.800v.01M13.400 6.800v.01"/></svg><span>Linux</span></button>
-              <button type="button" role="tab" aria-selected="false" data-so="docker" aria-label="Docker"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.540c-1.804-.345-2.701-1.080-3.523-2.940-.487.696-1.102 1.568-.920 2.400.028.238-.320 1.002-.557 1h-14c0 5.208 3.164 7 6.196 7 4.124.022 7.828-1.376 9.854-5 1.146-.101 2.296-1.505 2.950-2.460zM5 10h3v3H5zM8 10h3v3H8zM11 10h3v3h-3zM8 7h3v3H8zM11 7h3v3h-3zM11 4h3v3h-3zM10 16v.01"/></svg><span>Docker</span></button>
-            </div>
-            <a class="ab__bt" href="#"><span><b class="ab__txt">Baixar para Android</b><small class="ab__sub">Direto da Google Play Store</small></span><svg class="baixa" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg></a>
-          </div>
+      <a class="ab__bt" href="baixar.html"><svg class="ab__so" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg><span><b class="ab__txt">Baixar o Prep Wiki BR</b><small class="ab__sub">Android, Windows, Mac, Linux e Docker</small></span><svg class="baixa" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="ab__outro" href="baixar.html"><span class="lg">Outro sistema ou formato</span><span class="pq">Outros</span><span class="ab__icones" aria-hidden="true"><svg data-so="android" viewBox="0 0 24 24"><path d="M4 10v6M20 10v6M7 9h10v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9a5 5 0 0 1 10 0M8 3l1 2M16 3l-1 2M9 18v3M15 18v3"/></svg><svg data-so="windows" viewBox="0 0 24 24"><path d="M17.8 20l-12-1.5c-1-.1-1.8-.9-1.8-1.900v-9.200c0-1 .8-1.800 1.800-1.900l12-1.500c1.200-.1 2.200.8 2.200 1.900v12.100c0 1.200-1.100 2.100-2.200 1.900zM12 5v14M4 12h16"/></svg><svg data-so="mac" viewBox="0 0 24 24"><path d="M9 7c-3 0-4 3-4 5.5c0 3 2 7.5 4 7.5c1.088-.046 1.679-.5 3-.5c1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3c-.019-2.170 2.416-2.954 2.500-3c-1.023-1.492-2.951-1.963-3.500-2c-1.433-.111-2.830 1-3.500 1c-.680 0-1.900-1-3-1zM12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/></svg><svg data-so="linux" viewBox="0 0 24 24"><path d="M9 7.200a3 3 0 0 1 6 0v1.900c0 1.500.9 2.500 1.800 3.800.9 1.300 1.700 2.800 1.700 4.400 0 .6-.1 1.100-.3 1.600M9 7.200v1.900c0 1.500-.9 2.500-1.800 3.800-.9 1.300-1.700 2.800-1.700 4.400 0 .6.1 1.100.3 1.600M4.500 21h4.300c.9 0 1.300-.9.800-1.600l-1.500-2.100M19.500 21h-4.300c-.9 0-1.300-.9-.8-1.600l1.500-2.100M9.600 21h4.800M10.800 9.200l1.200.9 1.200-.9M10.600 6.800v.01M13.400 6.800v.01"/></svg><svg data-so="docker" viewBox="0 0 24 24"><path d="M22 12.540c-1.804-.345-2.701-1.080-3.523-2.940-.487.696-1.102 1.568-.920 2.400.028.238-.320 1.002-.557 1h-14c0 5.208 3.164 7 6.196 7 4.124.022 7.828-1.376 9.854-5 1.146-.101 2.296-1.505 2.950-2.460zM5 10h3v3H5zM8 10h3v3H8zM11 10h3v3h-3zM8 7h3v3H8zM11 7h3v3h-3zM11 4h3v3h-3zM10 16v.01"/></svg></span><svg class="ab__seta" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
     <div><a class="elo" href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">ou teste antes na demonstração <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-5M10 14L20 4M15 4h5v5"/></svg></a></div>
   </section>
 
@@ -536,7 +520,7 @@
   <div><a class="marca" href="#"><img src="img/icone-96.png" alt="">Prep Wiki BR</a><p>Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.</p></div>
   <div><h4>Guias</h4><ul><li><a href="#guias">Sisteminha Embrapa</a></li><li><a href="#guias">Plantas Medicinais</a></li><li><a href="#guias">Chuva forte e tempestade</a></li></ul></div>
   <div><h4>Nesta página</h4><ul><li><a href="#busca">Busca</a></li><li><a href="#acervos">Acervos</a></li><li><a href="#passos">Como começar</a></li><li><a href="#perguntas">Perguntas</a></li></ul></div>
-  <div><h4>Projeto</h4><ul><li><a href="docker.html">Instalar com Docker</a></li><li><a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Demonstração ao vivo</a></li><li><a href="https://github.com/wdonega/prep-wiki-br" target="_blank" rel="noopener">Código no GitHub</a></li><li><a href="#apoiar">Apoiar o projeto</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/issues" target="_blank" rel="noopener">Relatar um problema</a></li></ul></div>
+  <div><h4>Projeto</h4><ul><li><a href="baixar.html">Baixar e instalar</a></li><li><a href="docker.html">Instalar com Docker</a></li><li><a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Demonstração ao vivo</a></li><li><a href="https://github.com/wdonega/prep-wiki-br" target="_blank" rel="noopener">Código no GitHub</a></li><li><a href="#apoiar">Apoiar o projeto</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/issues" target="_blank" rel="noopener">Relatar um problema</a></li></ul></div>
   <div><h4>Termos</h4><ul><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/privacidade.md" target="_blank" rel="noopener">Política de privacidade</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/termos.md" target="_blank" rel="noopener">Termos de uso</a></li><li><a href="mailto:support@bigode.org">support@bigode.org</a></li></ul></div>
   <p class="rodape__fim"><span>© 2026 Prep Wiki BR. Código sob a licença GPLv3.</span><span>Ilustrações e modelos 3D gerados com IA a partir da arte do projeto. Ícones do Tabler. Nomes e marcas são de seus donos.</span></p>
 </footer>
@@ -615,13 +599,17 @@
   var parado = matchMedia('(prefers-reduced-motion: reduce)').matches, GH = 'https://github.com/wdonega/prep-wiki-br';
   function cada(sel, f, raiz) { [].forEach.call((raiz || document).querySelectorAll(sel), f); }
 
-  /* ---- baixar: o cartão com uma aba por sistema ---- */
+  /* ---- baixar: um botão direto para o sistema de quem visita; o link de baixo leva à página com todos ---- */
+  // [texto, subtítulo, endereço, ícone da direita]. Só o Windows baixa na hora. No Linux o navegador não diz
+  // a distribuição nem se é ARM, então o botão leva à página, na escolha da distribuição.
+  var REL = GH + '/releases/download/desktop-v0.1.0/';
   var SO = {
-    android: ['Baixar para Android', 'Direto da Google Play Store', 'https://play.google.com/store/apps/details?id=org.bigode.prep'],
-    windows: ['Baixar para Windows', 'Windows 10 e 11 · instalador ou zip', GH + '/releases?q=desktop-v&expanded=true'],
-    mac: ['Instalar no Mac', 'Pelo Homebrew · Apple Silicon e Intel', 'mac.html'],
-    linux: ['Baixar para Linux', 'AppImage, .deb ou .rpm', GH + '/releases?q=desktop-v&expanded=true'],
-    docker: ['Rodar com Docker', 'Rode no PC ou Raspberry Pi (ou outro ARM)', 'docker.html'] };
+    android: ['Baixar para Android', 'Direto da Google Play Store', 'https://play.google.com/store/apps/details?id=org.bigode.prep', 'baixa'],
+    windows: ['Baixar para Windows', 'Instalador .exe · 138 MB', REL + 'prep-wiki-br-0.1.0-windows-x64-instalador.exe', 'baixa'],
+    mac: ['Instalar no Mac', 'Homebrew · Apple Silicon e Intel', 'baixar.html#mac', 'cmd'],
+    linux: ['Instalar no Linux', 'Debian, Ubuntu, Fedora e outras', 'baixar.html#linux', 'pagina'],
+    docker: ['Rodar com Docker', 'No PC ou no Raspberry Pi', 'baixar.html#docker', 'cmd'] };
+  var SETA = { baixa: 'M12 4v12M6 11l6 6 6-6M5 20h14', cmd: 'M5 7l5 5-5 5M13 18h6', pagina: 'M5 12h14M13 6l6 6-6 6' };
   // O sistema de quem visita já vem escolhido: Android, Windows, Mac e Linux têm versão própria; qualquer outro
   // (iPhone, iPad...) vai para o Docker. O Android vem antes porque o navegador dele também diz "Linux", e o
   // iPad se apresenta como Mac, mas tem tela de toque.
@@ -631,23 +619,15 @@
     : (/macintosh/i.test(ua) || plat.indexOf('mac') === 0) && !(navigator.maxTouchPoints > 1) ? 'mac'
     : /linux|cros|x11/i.test(ua) || /linux|chrome os/.test(plat) ? 'linux'
     : 'docker';
-  function troca(el, texto) { el.classList.remove('entra'); void el.offsetWidth; el.innerHTML = texto; el.classList.add('entra'); }
   cada('.ab', function (ab) {
-    var t1 = ab.querySelector('.ab__txt'), t2 = ab.querySelector('.ab__sub'), bt = ab.querySelector('.ab__bt'), marca = ab.querySelector('.ab__marca'), bs = [].slice.call(ab.querySelectorAll('.ab__abas button'));
-    function mede() { var b = ab.querySelector('[aria-selected="true"]'); if (!b) return; marca.style.setProperty('--mx', b.offsetLeft + 'px'); marca.style.setProperty('--mw', b.offsetWidth + 'px'); }
-    function escolhe(so, anima) {
-      bs.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.so === so); });
-      // o passo a passo do Docker é uma página do próprio site: abre na mesma aba
-      var fora = /^https?:/.test(SO[so][2]); bt.href = SO[so][2]; bt.target = fora ? '_blank' : ''; bt.rel = fora ? 'noopener' : '';
-      // no Docker não há download: o botão mostra um terminal (>_) no lugar da seta
-      bt.querySelector('.baixa path').setAttribute('d', so === 'docker' || so === 'mac' ? 'M5 7l5 5-5 5M13 18h6' : 'M12 4v12M6 11l6 6 6-6M5 20h14'); bt.classList.toggle('ab__bt--cmd', so === 'docker' || so === 'mac');
-      if (anima) { troca(t1, SO[so][0]); troca(t2, SO[so][1]); } else { t1.textContent = SO[so][0]; t2.innerHTML = SO[so][1]; }
-      requestAnimationFrame(mede);
-    }
-    bs.forEach(function (b) { b.addEventListener('click', function () { escolhe(b.dataset.so, true); }); });
-    if (window.ResizeObserver) { var ro = new ResizeObserver(mede); bs.forEach(function (b) { ro.observe(b); }); }
-    addEventListener('resize', mede);
-    escolhe(meu, false); setTimeout(function () { mede(); ab.classList.add('vivo'); }, 500);
+    var s = SO[meu], bt = ab.querySelector('.ab__bt');
+    ab.querySelector('.ab__txt').textContent = s[0]; ab.querySelector('.ab__sub').textContent = s[1];
+    // a Google Play abre em outra aba; o instalador e as páginas do próprio site, na mesma
+    bt.href = s[2]; if (meu === 'android') { bt.target = '_blank'; bt.rel = 'noopener'; }
+    // onde não há download direto, o ícone da direita é um terminal (>_) ou uma seta para a página
+    bt.querySelector('.baixa path').setAttribute('d', SETA[s[3]]); bt.classList.toggle('ab__bt--cmd', s[3] !== 'baixa');
+    // o ícone do sistema vai para o botão e sai da fila dos outros
+    cada('.ab__icones svg', function (i) { if (i.dataset.so === meu) { ab.querySelector('.ab__so path').setAttribute('d', i.querySelector('path').getAttribute('d')); i.remove(); } }, ab);
   });
 
   /* ---- topo: vira uma faixa de vidro depois de rolar ---- */

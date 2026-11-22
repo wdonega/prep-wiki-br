@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baixar · Prep Wiki BR</title>
+<meta name="description" content="Baixe o Prep Wiki BR para Android, Windows, Mac, Linux ou Docker. A página abre no seu sistema, com o passo a passo de instalação.">
+<link rel="canonical" href="https://prep.bigode.org/baixar">
+<meta name="theme-color" content="#050e09">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prep.bigode.org/baixar">
+<meta property="og:title" content="Baixar o Prep Wiki BR">
+<meta property="og:description" content="Android, Windows, Mac, Linux e Docker. Grátis, sem cadastro e sem anúncio.">
+<meta property="og:image" content="https://prep.bigode.org/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* O topo, o rodapé e as regras de base são os mesmos do index.html. Ao mudar um, mude o outro. */
+  :root { --noite: #050e09; --tinta: #f3ead0; --ambar: #f6b74a; }
+  html { scroll-padding-top: 96px; }
+  body { background: var(--noite); color: var(--tinta); font-family: "Bricolage Grotesque", system-ui, sans-serif; }
+  .mono { font: 500 12px/1.3 "DM Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+
+  .topo { position: fixed; inset: 0 0 auto 0; z-index: 20; display: flex; align-items: center; gap: 40px; padding: 26px 5.5vw; transition: padding .35s, background .35s, box-shadow .35s; }
+  .topo.rolou { padding-top: 12px; padding-bottom: 12px; background: rgba(5,14,9,.74); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); box-shadow: 0 1px 0 rgba(243,234,208,.08); }
+  .marca { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+  .marca img { width: 30px; height: 30px; border-radius: 8px; }
+  .topo nav { display: flex; gap: 28px; font-size: 15px; color: #b9b79f; } .topo nav a:hover { color: var(--tinta); }
+  .topo .fim { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .topo .demo-l { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 15px 0 17px; border-radius: 999px; font-size: 15px; font-weight: 600; color: #e4dcc0; transition: background .25s, color .25s; }
+  .topo .demo-l:hover { background: rgba(243,234,208,.08); color: var(--tinta); } .topo .demo-l .pq { display: none; }
+  .topo .demo-l svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: .75; transition: transform .25s; } .topo .demo-l:hover svg { transform: translate(2px, -2px); }
+  .ponto { position: relative; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--ambar); }
+  .ponto::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--ambar); animation: ping 1.8s ease-out infinite; }
+  @keyframes ping { from { transform: scale(.5); opacity: .9; } to { transform: scale(1.9); opacity: 0; } }
+  .topo .apoio { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px 0 15px; border-radius: 999px; font-size: 15px; font-weight: 600; color: #f6e3b4; box-shadow: inset 0 0 0 1px rgba(246,183,74,.5); transition: background .25s, color .25s, box-shadow .25s; }
+  .topo .apoio svg { width: 17px; height: 17px; color: var(--ambar); fill: rgba(246,183,74,0); transition: fill .3s; }
+  .topo .apoio:hover { background: rgba(246,183,74,.1); color: #fff3d3; box-shadow: inset 0 0 0 1px var(--ambar), 0 0 26px rgba(246,160,60,.22); } .topo .apoio:hover svg { fill: var(--ambar); }
+
+  .noite { position: relative; overflow-x: clip; isolation: isolate; background: var(--noite); }
+  .grao { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: .09; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .sec { position: relative; z-index: 1; padding: 11vh 5.5vw; }
+  .foco { position: absolute; z-index: -1; left: var(--x, 50%); top: var(--y, 50%); width: 88vmax; height: 88vmax; margin: -44vmax 0 0 -44vmax; pointer-events: none; background: radial-gradient(closest-side, rgba(255,160,70,.21), rgba(255,150,60,.07) 45%, transparent 70%), radial-gradient(closest-side, rgba(40,92,60,.4), transparent 80%); animation: respira 6.5s ease-in-out infinite; }
+  @keyframes respira { 50% { opacity: .8; transform: scale(1.035); } }
+  .aceso { font-size: clamp(38px, 5.4vw, 92px); line-height: .94; letter-spacing: -.03em; font-weight: 800; font-stretch: 84%; padding-bottom: .08em; background: radial-gradient(circle var(--raio, 92vmax) at var(--tx, 85%) var(--ty, -40%), #fff1cf 0, #f0cf8e 30%, #b9ad82 60%, #808d75 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .aceso em { font-style: normal; color: var(--ambar); }
+  .sobre { color: #b3c4b0; margin-bottom: 22px; display: flex; align-items: center; gap: 12px; font-size: 14.5px; letter-spacing: .1em; }
+  .sobre i { width: 7px; height: 7px; border-radius: 50%; background: var(--ambar); box-shadow: 0 0 14px 3px rgba(246,183,74,.7); }
+  .lead { margin-top: 24px; max-width: 34em; font-size: 19px; line-height: 1.5; color: #c9c5ac; }
+  .lead a, .passos a, .tambem a, .nota-a a, .depois a { color: #f4dfae; text-decoration: underline; text-decoration-color: rgba(246,183,74,.5); text-underline-offset: 4px; } .lead a:hover, .passos a:hover, .tambem a:hover, .nota-a a:hover, .depois a:hover { color: #fff3d3; }
+  code { font: 500 .88em "DM Mono", ui-monospace, monospace; color: #ffd98a; background: rgba(246,183,74,.1); padding: .12em .4em; border-radius: 6px; white-space: nowrap; }
+  .roda-em { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; } .roda-em li { padding: 8px 12px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.45); font-size: 14px; color: #f4dfae; }
+  .bt { display: inline-flex; align-items: center; gap: 10px; height: 50px; padding: 0 22px; border-radius: 999px; font-weight: 700; font-size: 16px; transition: transform .2s, box-shadow .3s, background .2s, border-color .2s; }
+  .bt--fio { color: var(--tinta); border: 1px solid rgba(243,234,208,.28); } .bt--fio:hover { border-color: rgba(243,234,208,.7); }
+  .bt svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; } .bt:hover svg { transform: translateX(3px); }
+
+  /* ---- capa ---- */
+  .capa { padding-top: 17vh; padding-bottom: 14vh; }
+  .capa .aceso { font-size: clamp(44px, 7vw, 124px); line-height: .9; }
+
+  /* ---- as abas: uma por sistema ---- */
+  .sistemas { margin-top: 5vh; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .sistemas a { display: flex; flex-direction: column; gap: 8px; min-height: 92px; padding: 16px 18px; border-radius: 20px; background: rgba(243,234,208,.04); box-shadow: inset 0 0 0 1px rgba(243,234,208,.14); transition: background .25s, box-shadow .25s, color .2s, transform .25s; }
+  .sistemas a:hover { box-shadow: inset 0 0 0 1px rgba(246,183,74,.45); transform: translateY(-2px); }
+  .sistemas a[aria-current="true"] { background: rgba(246,183,74,.13); box-shadow: inset 0 0 0 1px rgba(246,183,74,.6), 0 0 40px rgba(246,160,60,.12); color: #ffd27a; }
+  .sistemas span { display: flex; align-items: center; gap: 10px; }
+  .sistemas svg { width: 26px; height: 26px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .sistemas b { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
+  .sistemas small { font-size: 14px; line-height: 1.3; color: #b9b79f; }
+  .seu { margin-left: auto; padding: 5px 9px; border-radius: 999px; background: rgba(246,183,74,.16); color: #ffd27a; font: 500 10.5px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+  .seu[hidden] { display: none; }
+
+  /* ---- o painel de cada sistema ---- */
+  .painel { margin-top: 12px; padding: 36px; border-radius: 28px; background: linear-gradient(180deg, rgba(243,234,208,.06), rgba(243,234,208,.025)); box-shadow: inset 0 0 0 1px rgba(243,234,208,.14); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); }
+  .painel[hidden] { display: none; }
+  .painel__grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px 56px; align-items: start; }
+  .painel h2 { font-size: clamp(30px, 3vw, 40px); font-weight: 800; font-stretch: 86%; letter-spacing: -.025em; line-height: 1.05; }
+  .painel .rot { color: #b3c4b0; }
+  .grande { position: relative; overflow: hidden; margin-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 14px; max-width: 480px; min-height: 70px; padding: 12px 14px 12px 24px; border-radius: 20px; background: linear-gradient(180deg, #ffc55c, var(--ambar) 55%, #eaa536); color: #1b1505; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 40px rgba(246,160,60,.34); transition: transform .2s, box-shadow .3s; }
+  .grande:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 0 0 5px rgba(246,183,74,.16), 0 12px 46px rgba(246,160,60,.5); }
+  .grande > span { min-width: 0; } .grande b { display: block; font-size: 19px; font-weight: 700; line-height: 1.15; }
+  .grande small { display: block; margin-top: 5px; font: 500 11.5px/1.35 "DM Mono", ui-monospace, monospace; color: #3d2c08; overflow-wrap: anywhere; }
+  .grande svg { flex: none; width: 44px; height: 44px; padding: 12px; border-radius: 14px; background: rgba(27,21,5,.13); fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .nota-a { margin-top: 18px; max-width: 520px; padding-left: 14px; border-left: 1px solid rgba(246,183,74,.5); font-size: 15px; line-height: 1.5; color: #b9b79f; }
+  .nota-a[hidden], .tambem[hidden] { display: none; }
+  .painel .bt { margin-top: 20px; }
+  .pacotes { margin-top: 30px; } .pacotes ul { margin-top: 10px; }
+  .pacotes li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; column-gap: 18px; align-items: center; padding: 10px 0; border-top: 1px solid rgba(243,234,208,.11); }
+  .pacotes li > span:first-child { min-width: 0; } .pacotes b { font-size: 16.5px; font-weight: 700; } .pacotes .seu { margin-left: 8px; }
+  .pacotes .arq { display: block; margin-top: 3px; font: 400 12px/1.35 "DM Mono", ui-monospace, monospace; color: #9fb39f; overflow-wrap: anywhere; }
+  .pacotes .tam { font: 500 12.5px/1 "DM Mono", ui-monospace, monospace; color: #cfc8ae; white-space: nowrap; }
+  .pacotes li > a { display: inline-flex; align-items: center; justify-content: center; min-width: 86px; min-height: 44px; padding: 0 16px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.5); color: #f6e3b4; font-size: 14.5px; font-weight: 600; transition: background .2s; }
+  .pacotes li > a:hover { background: rgba(246,183,74,.12); }
+  .passos { counter-reset: p; margin-top: 18px; display: flex; flex-direction: column; gap: 24px; }
+  .passos > li { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 16px; align-items: start; }
+  .passos > li::before { counter-increment: p; content: counter(p); display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.5); color: #ffd27a; font: 500 14px/1 "DM Mono", ui-monospace, monospace; }
+  .passos > li > div { min-width: 0; }
+  .passos h3 { padding-top: 6px; font-size: 20px; font-weight: 700; font-stretch: 90%; letter-spacing: -.015em; line-height: 1.2; }
+  .passos p { margin-top: 8px; font-size: 16px; line-height: 1.5; color: #cfc8ae; }
+  .cod { margin-top: 12px; border-radius: 16px; overflow: hidden; background: rgba(3,9,6,.72); box-shadow: inset 0 0 0 1px rgba(246,183,74,.3); }
+  .cod__topo { display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 14px; border-bottom: 1px solid rgba(243,234,208,.09); color: #9fb39f; }
+  .copia { margin-left: auto; display: flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 13px; border-radius: 999px; background: var(--ambar); color: #1b1505; font: 500 11.5px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; transition: transform .15s, box-shadow .25s; }
+  .copia:hover { box-shadow: 0 0 0 5px rgba(246,183,74,.18); } .copia:active { transform: scale(.96); } .copia svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .cod pre { margin: 0; padding: 14px 16px 16px; overflow-x: auto; font: 500 13.5px/1.7 "DM Mono", ui-monospace, monospace; color: #e9dfc2; white-space: pre; }
+  .cod--grande { margin-top: 24px; max-width: 620px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.55), 0 0 0 6px rgba(246,183,74,.06), 0 0 70px rgba(255,160,70,.14); } .cod--grande .cod__topo .mono { color: #f4dfae; } .cod--grande pre { font-size: 14.5px; }
+  .depois { margin-top: 36px; padding-top: 28px; border-top: 1px solid rgba(243,234,208,.11); }
+  .depois__grade { margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .depois article { min-width: 0; padding: 22px; border-radius: 22px; background: rgba(243,234,208,.035); box-shadow: inset 0 0 0 1px rgba(243,234,208,.12); }
+  .depois h3 { font-size: 19px; font-weight: 700; letter-spacing: -.01em; } .depois p { margin-top: 8px; font-size: 15.5px; line-height: 1.5; color: #cfc8ae; }
+
+  /* ---- Linux: uma escolha por distribuição ---- */
+  .distros { margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 8px; }
+  .distros button, .arqs button { text-align: left; background: rgba(243,234,208,.04); box-shadow: inset 0 0 0 1px rgba(243,234,208,.14); transition: background .25s, box-shadow .25s, color .2s; }
+  .distros button { display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 14px; border-radius: 18px; }
+  .distros button:hover, .arqs button:hover { box-shadow: inset 0 0 0 1px rgba(246,183,74,.45); }
+  .distros button[aria-pressed="true"], .arqs button[aria-pressed="true"] { background: rgba(246,183,74,.13); box-shadow: inset 0 0 0 1px rgba(246,183,74,.6); color: #ffd27a; }
+  .distros svg { width: 30px; height: 30px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .distros b, .arqs b { display: block; font-size: 16.5px; font-weight: 700; line-height: 1.2; }
+  .distros small { display: block; margin-top: 3px; font: 500 11.5px/1.2 "DM Mono", ui-monospace, monospace; color: #9fb39f; }
+  .arqs { margin-top: 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+  .arqs > div { display: flex; flex-wrap: wrap; gap: 8px; }
+  .arqs button { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; min-height: 52px; padding: 6px 18px; border-radius: 16px; }
+  .arqs button[hidden] { display: none; } .arqs small { font-size: 13px; line-height: 1.2; color: #b9b79f; }
+  .arqs p { font-size: 14.5px; line-height: 1.45; color: #b9b79f; }
+  .seu-dl { margin-top: 28px; padding: 30px; border-radius: 24px; background: rgba(246,183,74,.07); box-shadow: inset 0 0 0 1px rgba(246,183,74,.6); }
+  .seu-dl__topo { display: flex; align-items: center; gap: 14px; }
+  .seu-dl__topo svg { width: 44px; height: 44px; flex: none; fill: none; stroke: #ffd27a; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .seu-dl__topo .mono { color: #ffd27a; } .seu-dl__topo h3 { margin-top: 4px; font-size: 30px; font-weight: 800; font-stretch: 86%; letter-spacing: -.02em; line-height: 1.1; }
+  .tambem { margin-top: 16px; max-width: 520px; font-size: 15.5px; line-height: 1.5; color: #cfc8ae; }
+
+  .finais { margin-top: 44px; padding-top: 24px; border-top: 1px solid rgba(243,234,208,.11); display: flex; flex-wrap: wrap; gap: 10px 32px; font-size: 16px; font-weight: 600; }
+  .finais a { display: inline-flex; align-items: center; min-height: 44px; color: #f4dfae; } .finais a:hover { color: #fff3d3; }
+
+  .rodape { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 4fr) repeat(4, minmax(0, 2fr)); gap: 30px; padding: 8vh 5.5vw 5vh; background: #040b07; border-top: 1px solid rgba(243,234,208,.1); color: #b9b79f; font-size: 15px; }
+  .rodape .marca { color: var(--tinta); } .rodape > div > p { margin-top: 14px; max-width: 26em; line-height: 1.5; }
+  .rodape h4 { margin: 6px 0 16px; color: #7f927f; font: 500 12px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+  .rodape li { margin-bottom: 10px; } .rodape a { transition: color .2s; } .rodape a:hover { color: var(--tinta); }
+  .rodape__fim { grid-column: 1 / -1; margin-top: 3vh; padding-top: 22px; border-top: 1px solid rgba(243,234,208,.08); display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 13px; line-height: 1.5; color: #7f927f; }
+
+  @media (max-width: 1100px) {
+    .sistemas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .painel__grade, .depois__grade { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .topo { gap: 12px; } .topo nav { display: none; }
+    .topo .demo-l { padding: 0 10px 0 13px; gap: 10px; } .topo .demo-l .lg { display: none; } .topo .demo-l .pq { display: inline; }
+    .topo .apoio { width: 44px; padding: 0; justify-content: center; } .topo .apoio span { display: none; }
+    .sec { padding: 8vh 5.5vw; } .capa { padding-top: 15vh; } .lead { font-size: 17px; }
+    .capa .aceso { font-size: clamp(42px, 13vw, 78px); }
+    .sistemas { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sistemas a:last-child { grid-column: 1 / -1; }
+    .sistemas a { min-height: 0; padding: 14px; } .sistemas b { font-size: 17px; } .sistemas small { font-size: 13px; }
+    /* no celular a etiqueta "seu sistema" desce para a linha de baixo, em vez de vazar a aba */
+    .sistemas span { flex-wrap: wrap; row-gap: 6px; } .sistemas .seu { order: 3; margin-left: 0; }
+    .painel { padding: 22px 18px; border-radius: 24px; } .seu-dl { padding: 20px 16px; } .seu-dl__topo h3 { font-size: 24px; }
+    .distros { grid-template-columns: repeat(2, minmax(0, 1fr)); } .distros button { gap: 10px; padding: 10px 12px; } .distros svg { width: 26px; height: 26px; } .distros b { font-size: 15px; }
+    .pacotes li { grid-template-columns: minmax(0, 1fr) auto; } .pacotes .tam { display: none; }
+    .rodape { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: 34px; } .rodape > div:first-child { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01s !important; animation-delay: 0s !important; transition-duration: .01s !important; } }
+</style>
+</head>
+<body>
+<header class="topo">
+  <a class="marca" href="./"><img src="img/icone-96.png" alt="">Prep Wiki BR</a>
+  <nav aria-label="Página inicial"><a href="./#guias">Guias</a><a href="./#busca">Busca</a><a href="./#acervos">Acervos</a><a href="./#privado">Privacidade</a><a href="./#perguntas">Perguntas</a></nav>
+  <div class="fim">
+    <a class="demo-l" href="https://prep-demo.bigode.org/" target="_blank" rel="noopener"><i class="ponto"></i><span class="lg">Demonstração</span><span class="pq">Demo</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+    <a class="apoio" href="./#apoiar" aria-label="Apoiar o projeto"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.500 12.572l-7.500 7.428-7.500-7.428a5 5 0 1 1 7.500-6.566 5 5 0 1 1 7.500 6.572"/></svg><span>Apoiar o projeto</span></a>
+  </div>
+</header>
+
+<main class="noite">
+  <section class="sec capa">
+    <div class="foco" style="--x:82%;--y:20%"></div>
+    <p class="sobre mono"><i></i>Baixar · versão 0.1.0</p>
+    <h1 class="aceso">Baixe enquanto <em>tem internet.</em></h1>
+    <p class="lead">Grátis, sem cadastro e sem anúncio. A página abre no seu sistema; os outros estão logo abaixo.</p>
+
+    <nav class="sistemas" aria-label="Escolha o sistema">
+      <a href="#android" data-so="android"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v6M20 10v6M7 9h10v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9a5 5 0 0 1 10 0M8 3l1 2M16 3l-1 2M9 18v3M15 18v3"/></svg><b>Android</b><i class="seu" hidden>seu sistema</i></span><small>Pela Google Play</small></a>
+      <a href="#windows" data-so="windows"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 20l-12-1.5c-1-.1-1.8-.9-1.8-1.900v-9.200c0-1 .8-1.800 1.800-1.900l12-1.500c1.200-.1 2.200.8 2.200 1.900v12.100c0 1.200-1.100 2.100-2.200 1.900zM12 5v14M4 12h16"/></svg><b>Windows</b><i class="seu" hidden>seu sistema</i></span><small>Instalador ou zip</small></a>
+      <a href="#mac" data-so="mac"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7c-3 0-4 3-4 5.5c0 3 2 7.5 4 7.5c1.088-.046 1.679-.5 3-.5c1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3c-.019-2.170 2.416-2.954 2.500-3c-1.023-1.492-2.951-1.963-3.500-2c-1.433-.111-2.830 1-3.500 1c-.680 0-1.900-1-3-1zM12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/></svg><b>Mac</b><i class="seu" hidden>seu sistema</i></span><small>Pelo Homebrew</small></a>
+      <a href="#linux" data-so="linux"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.200a3 3 0 0 1 6 0v1.900c0 1.500.9 2.500 1.800 3.800.9 1.300 1.700 2.800 1.700 4.400 0 .6-.1 1.100-.3 1.600M9 7.200v1.900c0 1.500-.9 2.500-1.800 3.800-.9 1.300-1.700 2.800-1.700 4.400 0 .6.1 1.100.3 1.600M4.500 21h4.300c.9 0 1.300-.9.800-1.600l-1.500-2.100M19.500 21h-4.300c-.9 0-1.300-.9-.8-1.600l1.500-2.100M9.600 21h4.800M10.800 9.200l1.200.9 1.200-.9M10.600 6.800v.01M13.400 6.800v.01"/></svg><b>Linux</b><i class="seu" hidden>seu sistema</i></span><small>Debian, Ubuntu, Fedora e outras</small></a>
+      <a href="#docker" data-so="docker"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.540c-1.804-.345-2.701-1.080-3.523-2.940-.487.696-1.102 1.568-.920 2.400.028.238-.320 1.002-.557 1h-14c0 5.208 3.164 7 6.196 7 4.124.022 7.828-1.376 9.854-5 1.146-.101 2.296-1.505 2.950-2.460zM5 10h3v3H5zM8 10h3v3H8zM11 10h3v3h-3zM8 7h3v3H8zM11 7h3v3h-3zM11 4h3v3h-3zM10 16v.01"/></svg><b>Docker</b><i class="seu" hidden>seu sistema</i></span><small>PC ou Raspberry Pi</small></a>
+    </nav>
+
+    <!-- ===== Android ===== -->
+    <section class="painel" id="android" aria-labelledby="t-android">
+      <div class="painel__grade">
+        <div>
+          <h2 id="t-android">No celular ou tablet Android</h2>
+          <ul class="roda-em" aria-label="Onde roda"><li>Android 10 ou mais novo</li><li>64 bits</li></ul>
+          <a class="grande" href="https://play.google.com/store/apps/details?id=org.bigode.prep" target="_blank" rel="noopener"><span><b>Abrir na Google Play</b><small>Loja oficial · instala e atualiza sozinho</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+        </div>
+        <div>
+          <p class="mono rot">Como instalar</p>
+          <ol class="passos">
+            <li><div><h3>Abra a página do app na Google Play</h3><p>O botão ao lado leva direto a ela.</p></div></li>
+            <li><div><h3>Toque em Instalar</h3><p>A loja baixa, instala e depois traz as atualizações.</p></div></li>
+            <li><div><h3>Escolha os acervos</h3><p>Abra o app e marque o que quer guardar no aparelho. Dá para começar leve e baixar mais depois.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Windows ===== -->
+    <section class="painel" id="windows" aria-labelledby="t-windows">
+      <div class="painel__grade">
+        <div>
+          <h2 id="t-windows">No computador com Windows</h2>
+          <ul class="roda-em" aria-label="Onde roda"><li>Windows 10 e 11</li><li>64 bits (x64)</li></ul>
+          <a class="grande" href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0-windows-x64-instalador.exe"><span><b>Baixar o instalador</b><small>prep-wiki-br-0.1.0-windows-x64-instalador.exe · 138 MB</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg></a>
+          <div class="pacotes">
+            <p class="mono rot">Todos os pacotes para Windows</p>
+            <ul>
+              <li><span><b>Instalador</b><span class="arq">prep-wiki-br-0.1.0-windows-x64-instalador.exe</span></span><span class="tam">138 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0-windows-x64-instalador.exe">Baixar</a></li>
+              <li><span><b>Zip, sem instalar</b><span class="arq">prep-wiki-br-0.1.0-windows-x64.zip</span></span><span class="tam">175 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0-windows-x64.zip">Baixar</a></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <p class="mono rot">Como instalar</p>
+          <ol class="passos">
+            <li><div><h3>Baixe o instalador</h3><p>É um arquivo .exe de 138 MB. Quem prefere não instalar pode baixar o zip, extrair numa pasta e abrir o programa de dentro dela.</p></div></li>
+            <li><div><h3>Abra o arquivo baixado</h3><p>O app ainda não tem assinatura paga, e o Windows pode avisar <b>"O Windows protegeu o computador"</b>. Clique em <b>Mais informações</b> e depois em <b>Executar assim mesmo</b>. Siga o instalador até o fim.</p></div></li>
+            <li><div><h3>Abra pelo menu Iniciar</h3><p>Na primeira vez a biblioteca está vazia e você cai direto na tela de baixar conteúdo: marque o que interessa e clique em Baixar.</p></div></li>
+          </ol>
+        </div>
+      </div>
+      <div class="depois">
+        <p class="mono rot">Depois de instalar</p>
+        <div class="depois__grade">
+          <article><h3>Atualizar</h3><p>Baixe o instalador novo nesta página e instale por cima. Os acervos não são apagados.</p></article>
+          <article><h3>Onde ficam os acervos</h3><p>Na pasta abaixo. Cole o endereço na barra do Explorador de Arquivos.</p><div class="cod"><div class="cod__topo"><span class="mono">Pasta</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>%LOCALAPPDATA%\Prep Wiki BR</pre></div></article>
+          <article><h3>Desinstalar</h3><p>Em Configurações → Aplicativos, procure Prep Wiki BR. Os acervos ficam na pasta ao lado, para o caso de você instalar de novo.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Mac ===== -->
+    <section class="painel" id="mac" aria-labelledby="t-mac">
+      <div class="painel__grade">
+        <div>
+          <h2 id="t-mac">No Mac, pelo Homebrew</h2>
+          <ul class="roda-em" aria-label="Onde roda"><li>macOS 12 ou mais novo</li><li>Apple Silicon</li><li>Intel</li></ul>
+          <div class="cod cod--grande"><div class="cod__topo"><span class="mono">Já tem o Homebrew? É só isto</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>brew install --cask wdonega/prep/prep-wiki-br</pre></div>
+          <p class="nota-a">Pelo Homebrew o app abre direto. Baixando o zip à mão, o macOS bloqueia a primeira abertura: libere em Ajustes do Sistema → Privacidade e Segurança → "Abrir mesmo assim".</p>
+          <a class="bt bt--fio" href="mac.html">Passo a passo completo do Mac <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <div class="pacotes">
+            <p class="mono rot">Todos os pacotes para Mac</p>
+            <ul>
+              <li><span><b>Zip · Apple Silicon</b><span class="arq">prep-wiki-br-0.1.0-mac-arm64.zip</span></span><span class="tam">132 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0-mac-arm64.zip">Baixar</a></li>
+              <li><span><b>Zip · Intel</b><span class="arq">prep-wiki-br-0.1.0-mac-x64.zip</span></span><span class="tam">140 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0-mac-x64.zip">Baixar</a></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <p class="mono rot">Como instalar</p>
+          <ol class="passos">
+            <li><div><h3>Instale o Homebrew</h3><p>Abra o Terminal, cole o comando e aperte Enter. Ele vem do <a href="https://brew.sh/pt-br/" target="_blank" rel="noopener">site oficial do Homebrew</a> e pede a senha do Mac. Já tem? Vá para o passo 2.</p>
+              <div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre></div></div></li>
+            <li><div><h3>Instale o Prep Wiki BR</h3><p>No mesmo Terminal. O app vai para a pasta Aplicativos.</p>
+              <div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>brew install --cask wdonega/prep/prep-wiki-br</pre></div></div></li>
+            <li><div><h3>Abra e escolha os acervos</h3><p>Abra o Prep Wiki BR em Aplicativos ou pelo Launchpad. Na primeira vez a biblioteca está vazia e você cai direto na tela de baixar conteúdo.</p></div></li>
+          </ol>
+        </div>
+      </div>
+      <div class="depois">
+        <p class="mono rot">Depois de instalar</p>
+        <div class="depois__grade">
+          <article><h3>Atualizar</h3><p>O Homebrew traz a versão nova. Os acervos não são apagados.</p><div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>brew upgrade --cask prep-wiki-br</pre></div></article>
+          <article><h3>Onde ficam os acervos</h3><p>Pelo menu do app, Biblioteca → Abrir a pasta dos acervos leva direto a ela.</p><div class="cod"><div class="cod__topo"><span class="mono">Pasta</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>~/Library/Application Support/Prep Wiki BR</pre></div></article>
+          <article><h3>Desinstalar</h3><p>Remove o app e mantém os acervos, para o caso de você instalar de novo.</p><div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>brew uninstall --cask prep-wiki-br</pre></div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Linux: a distribuição escolhe o pacote ===== -->
+    <section class="painel" id="linux" aria-labelledby="t-linux">
+      <h2 id="t-linux">No computador com Linux</h2>
+      <p class="tambem">Escolha a sua distribuição. Cada uma recebe o pacote que ela instala melhor, com o comando certo.</p>
+
+      <p class="mono rot" style="margin-top:28px">1 · Sua distribuição</p>
+      <div class="distros" role="group" aria-label="Distribuição">
+        <button type="button" aria-pressed="true" data-distro="ubuntu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M17.723 7.41a7.992 7.992 0 0 0 -3.74 -2.162m-3.971 0a7.993 7.993 0 0 0 -3.789 2.216m-1.881 3.215a8 8 0 0 0 -.342 2.32c0 .738 .1 1.453 .287 2.132m1.96 3.428a7.993 7.993 0 0 0 3.759 2.19m4 0a7.993 7.993 0 0 0 3.747 -2.186m1.962 -3.43a8.008 8.008 0 0 0 .287 -2.131c0 -.764 -.107 -1.503 -.307 -2.203 M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span><b>Ubuntu</b><small>.deb</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="debian"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17c-2.397 -.943 -4 -3.153 -4 -5.635c0 -2.19 1.039 -3.14 1.604 -3.595c2.646 -2.133 6.396 -.27 6.396 3.23c0 2.5 -2.905 2.121 -3.5 1.5c-.595 -.621 -1 -1.5 -.5 -2.5 M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg><span><b>Debian</b><small>.deb</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="mint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h3v8.5a4.5 4.5 0 0 0 4.5 4.5h4a4.5 4.5 0 0 0 4.5 -4.5v-3a4 4 0 0 0 -4 -4h-5 M10 14.5v-4 M10 11.5a1.5 1.5 0 0 1 3 0v3 M13 11.5a1.5 1.5 0 0 1 3 0v3"/></svg><span><b>Linux Mint</b><small>.deb</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="fedora"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 1 0 18h-9v-9a9 9 0 0 1 9 -9z M10.5 17v-6.5a2.5 2.5 0 0 1 4.5 -1.5 M8 12.5h6"/></svg><span><b>Fedora</b><small>.rpm</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="redhat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10.5l1.436 -4c.318 -.876 .728 -1.302 1.359 -1.302c.219 0 1.054 .365 1.88 .583c.825 .219 .733 -.329 .908 -.487c.176 -.158 .355 -.294 .61 -.294c.242 0 .553 .048 1.692 .448c.759 .267 1.493 .574 2.204 .922c1.175 .582 1.426 .913 1.595 1.507l.816 4.623c2.086 .898 3.5 2.357 3.5 3.682c0 1.685 -1.2 3.818 -5.957 3.818c-6.206 0 -14.043 -4.042 -14.043 -7.32c0 -1.044 1.333 -1.77 4 -2.18 M6 10.5c0 .969 4.39 3.5 9.5 3.5c1.314 0 3 .063 3 -1.5"/></svg><span><b>RHEL, Rocky, Alma</b><small>.rpm</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="opensuse"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15c0 -4.5 4 -8 9 -8c4 0 7.5 2.3 8.5 5.5c.2 .8 -.3 1.5 -1.1 1.5h-3.4 M15.5 10.5v.01 M3 15a3 3 0 0 0 3 3a1.5 1.5 0 0 0 0 -3 M6 15h10 M9 15v3 M13 15v3"/></svg><span><b>openSUSE</b><small>.rpm</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="arch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-1.5 4 -4.5 11 -9 18c2.5 -1.6 4.5 -2.6 6.5 -3c.5 -2.5 1.3 -4 2.5 -4s2 1.5 2.5 4c2 .4 4 1.4 6.5 3c-4.5 -7 -7.5 -14 -9 -18z"/></svg><span><b>Arch e Manjaro</b><small>AppImage</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="raspberry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5c-1.5 -2.5 -4 -3.5 -6.5 -3c.8 2.6 3.5 3.8 6.5 3z M12 8.5c1.5 -2.5 4 -3.5 6.5 -3c-.8 2.6 -3.5 3.8 -6.5 3z M6.5 14.5a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0 -11 0 M10 12.5v.01 M14 12.5v.01 M12 15v.01 M9.5 16.5v.01 M14.5 16.5v.01 M12 18v.01"/></svg><span><b>Raspberry Pi OS</b><small>.deb · ARM64</small></span></button>
+        <button type="button" aria-pressed="false" data-distro="outra"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.200a3 3 0 0 1 6 0v1.900c0 1.500.9 2.500 1.800 3.800.9 1.300 1.700 2.800 1.700 4.400 0 .6-.1 1.100-.3 1.600M9 7.200v1.900c0 1.500-.9 2.500-1.800 3.800-.9 1.300-1.700 2.800-1.700 4.400 0 .6.1 1.100.3 1.600M4.500 21h4.300c.9 0 1.300-.9.800-1.600l-1.500-2.100M19.500 21h-4.300c-.9 0-1.300-.9-.8-1.600l1.500-2.100M9.600 21h4.800M10.800 9.200l1.200.9 1.200-.9M10.600 6.800v.01M13.400 6.800v.01"/></svg><span><b>Outra</b><small>AppImage</small></span></button>
+      </div>
+
+      <div class="arqs">
+        <p class="mono rot">2 · Processador</p>
+        <div role="group" aria-label="Processador">
+          <button type="button" aria-pressed="true" data-arq="x"><b>x86_64</b><small>PC comum, Intel ou AMD</small></button>
+          <button type="button" aria-pressed="false" data-arq="a"><b>ARM64</b><small>placas ARM de 64 bits</small></button>
+        </div>
+        <p>Não sabe? No terminal, <code>uname -m</code> responde x86_64 ou aarch64 (ARM64).</p>
+      </div>
+
+      <div class="seu-dl">
+        <div class="painel__grade">
+          <div>
+            <div class="seu-dl__topo"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="lx-icone" d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M17.723 7.41a7.992 7.992 0 0 0 -3.74 -2.162m-3.971 0a7.993 7.993 0 0 0 -3.789 2.216m-1.881 3.215a8 8 0 0 0 -.342 2.32c0 .738 .1 1.453 .287 2.132m1.96 3.428a7.993 7.993 0 0 0 3.759 2.19m4 0a7.993 7.993 0 0 0 3.747 -2.186m1.962 -3.43a8.008 8.008 0 0 0 .287 -2.131c0 -.764 -.107 -1.503 -.307 -2.203 M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><div><p class="mono">Seu download</p><h3 id="lx-titulo">Ubuntu · .deb · x86_64</h3></div></div>
+            <p class="tambem" id="lx-tambem">Serve também para Kubuntu, Xubuntu, Pop!_OS, Zorin OS e elementary OS.</p>
+            <a class="grande" id="lx-bt" href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br_0.1.0_amd64.deb"><span><b>Baixar o .deb</b><small>prep-wiki-br_0.1.0_amd64.deb · 128 MB</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg></a>
+            <p class="nota-a" id="lx-nota" hidden></p>
+          </div>
+          <div>
+            <p class="mono rot">Como instalar</p>
+            <ol class="passos" id="lx-passos">
+              <li><div><h3>Baixe o pacote</h3><p>O botão ao lado baixa prep-wiki-br_0.1.0_amd64.deb.</p></div></li>
+              <li><div><h3>Instale pelo terminal</h3><p>Cole e aperte Enter. Ele pede a sua senha.</p><div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>cd ~/Downloads
+sudo apt install ./prep-wiki-br_0.1.0_amd64.deb</pre></div></div></li>
+              <li><div><h3>Abra e escolha os acervos</h3><p>Procure Prep Wiki BR no menu de aplicativos. Na primeira vez a biblioteca está vazia e você cai direto na tela de baixar conteúdo.</p></div></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="pacotes">
+        <p class="mono rot">Todos os pacotes para Linux</p>
+        <ul id="lx-pacotes">
+          <li data-arq="prep-wiki-br-0.1.0-linux-x86_64.AppImage"><span><b>AppImage · x86_64</b><i class="seu" hidden>o seu</i><span class="arq">prep-wiki-br-0.1.0-linux-x86_64.AppImage</span></span><span class="tam">151 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0-linux-x86_64.AppImage">Baixar</a></li>
+          <li data-arq="prep-wiki-br-0.1.0-linux-arm64.AppImage"><span><b>AppImage · ARM64</b><i class="seu" hidden>o seu</i><span class="arq">prep-wiki-br-0.1.0-linux-arm64.AppImage</span></span><span class="tam">146 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0-linux-arm64.AppImage">Baixar</a></li>
+          <li data-arq="prep-wiki-br_0.1.0_amd64.deb"><span><b>.deb · x86_64</b><i class="seu">o seu</i><span class="arq">prep-wiki-br_0.1.0_amd64.deb</span></span><span class="tam">128 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br_0.1.0_amd64.deb">Baixar</a></li>
+          <li data-arq="prep-wiki-br_0.1.0_arm64.deb"><span><b>.deb · ARM64</b><i class="seu" hidden>o seu</i><span class="arq">prep-wiki-br_0.1.0_arm64.deb</span></span><span class="tam">118 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br_0.1.0_arm64.deb">Baixar</a></li>
+          <li data-arq="prep-wiki-br-0.1.0.x86_64.rpm"><span><b>.rpm · x86_64</b><i class="seu" hidden>o seu</i><span class="arq">prep-wiki-br-0.1.0.x86_64.rpm</span></span><span class="tam">100 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0.x86_64.rpm">Baixar</a></li>
+          <li data-arq="prep-wiki-br-0.1.0.aarch64.rpm"><span><b>.rpm · ARM64</b><i class="seu" hidden>o seu</i><span class="arq">prep-wiki-br-0.1.0.aarch64.rpm</span></span><span class="tam">93 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/prep-wiki-br-0.1.0.aarch64.rpm">Baixar</a></li>
+        </ul>
+      </div>
+
+      <div class="depois">
+        <p class="mono rot">Depois de instalar</p>
+        <div class="depois__grade" id="lx-depois">
+          <article><h3>Atualizar</h3><p>Baixe o pacote novo nesta página e rode o mesmo comando do passo 2. Os acervos não são apagados.</p></article>
+          <article><h3>Onde ficam os acervos</h3><p>Na pasta abaixo, a mesma para os três formatos.</p><div class="cod"><div class="cod__topo"><span class="mono">Pasta</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>~/.local/share/prep-wiki-br</pre></div></article>
+          <article><h3>Desinstalar</h3><p>Remove o app e mantém os acervos, para o caso de você instalar de novo.</p><div class="cod"><div class="cod__topo"><span class="mono">Terminal</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>sudo apt remove prep-wiki-br</pre></div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Docker ===== -->
+    <section class="painel" id="docker" aria-labelledby="t-docker">
+      <div class="painel__grade">
+        <div>
+          <h2 id="t-docker">Num servidor da casa, com Docker</h2>
+          <ul class="roda-em" aria-label="Onde roda"><li>PC de 64 bits</li><li>Raspberry Pi 4 e 5</li><li>outro ARM de 64 bits</li></ul>
+          <div class="cod cod--grande"><div class="cod__topo"><span class="mono">Já usa Docker? É só isto</span><button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button></div><pre>docker run -d --name prep-wiki-br --restart unless-stopped \
+  -p 8099:8080 -v ~/prep-wiki-br:/data ghcr.io/wdonega/prep-wiki-br:latest</pre></div>
+          <p class="nota-a">Roda num computador e atende a casa toda pelo navegador. Testado em PC com Linux, no Mac, no Raspberry Pi 5 e na Radxa Rock 5T. No Windows ainda não.</p>
+          <a class="bt bt--fio" href="docker.html">Passo a passo completo do Docker <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div>
+          <p class="mono rot">Como instalar</p>
+          <ol class="passos">
+            <li><div><h3>Instale o Docker</h3><p>Nunca usou? O <a href="docker.html#passo-1">passo a passo completo</a> mostra onde baixar e como conferir que funcionou.</p></div></li>
+            <li><div><h3>Cole o comando</h3><p>O do quadro ao lado. Na primeira vez o Docker baixa o Prep Wiki BR, o que leva alguns minutos. No Windows, a pasta muda: veja o <a href="docker.html#passo-2">comando para Windows</a>.</p></div></li>
+            <li><div><h3>Abra no navegador</h3><p>Neste computador, o endereço é <code>http://localhost:8099</code>. De outro aparelho da casa, troque <code>localhost</code> pelo endereço do computador.</p></div></li>
+            <li><div><h3>Escolha e baixe os acervos</h3><p>Na primeira vez a biblioteca está vazia e você cai direto na tela de baixar conteúdo.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <div class="finais">
+      <a href="https://github.com/wdonega/prep-wiki-br/releases/tag/desktop-v0.1.0" target="_blank" rel="noopener">Todas as versões e as somas SHA-256 no GitHub</a>
+      <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Testar antes na demonstração</a>
+      <a href="./">Voltar ao início</a>
+    </div>
+  </section>
+  <div class="grao"></div>
+</main>
+
+<footer class="rodape">
+  <div><a class="marca" href="./"><img src="img/icone-96.png" alt="">Prep Wiki BR</a><p>Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.</p></div>
+  <div><h4>Guias</h4><ul><li><a href="./#guias">Sisteminha Embrapa</a></li><li><a href="./#guias">Plantas Medicinais</a></li><li><a href="./#guias">Chuva forte e tempestade</a></li></ul></div>
+  <div><h4>Página inicial</h4><ul><li><a href="./#busca">Busca</a></li><li><a href="./#acervos">Acervos</a></li><li><a href="./#passos">Como começar</a></li><li><a href="./#perguntas">Perguntas</a></li></ul></div>
+  <div><h4>Projeto</h4><ul><li><a href="mac.html">Instalar no Mac</a></li><li><a href="docker.html">Instalar com Docker</a></li><li><a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Demonstração ao vivo</a></li><li><a href="https://github.com/wdonega/prep-wiki-br" target="_blank" rel="noopener">Código no GitHub</a></li><li><a href="./#apoiar">Apoiar o projeto</a></li></ul></div>
+  <div><h4>Termos</h4><ul><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/privacidade.md" target="_blank" rel="noopener">Política de privacidade</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/termos.md" target="_blank" rel="noopener">Termos de uso</a></li><li><a href="mailto:support@bigode.org">support@bigode.org</a></li></ul></div>
+  <p class="rodape__fim"><span>© 2026 Prep Wiki BR. Código sob a licença GPLv3.</span><span>Ícones do Tabler; os das distribuições que ele não tem foram desenhados no mesmo traço. Nomes e marcas são de seus donos.</span></p>
+</footer>
+
+<script>
+(function () {
+  function cada(sel, f, raiz) { [].forEach.call((raiz || document).querySelectorAll(sel), f); }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  // topo: vira uma faixa de vidro depois de rolar
+  var topo = document.querySelector('.topo');
+  function rolou() { topo.classList.toggle('rolou', scrollY > 30); }
+  addEventListener('scroll', rolou, { passive: true }); rolou();
+
+  // o título é iluminado pelo foco da seção
+  function luzes() {
+    cada('.sec', function (s) {
+      var f = s.querySelector('.foco'); if (!f) return;
+      var x = parseFloat(f.style.getPropertyValue('--x')) / 100, y = parseFloat(f.style.getPropertyValue('--y')) / 100, r = s.getBoundingClientRect(), fx = r.left + r.width * x, fy = r.top + r.height * y;
+      cada('.aceso', function (t) { var q = t.getBoundingClientRect(); t.style.setProperty('--tx', (fx - q.left) + 'px'); t.style.setProperty('--ty', (fy - q.top) + 'px'); }, s);
+    });
+  }
+  luzes(); addEventListener('resize', luzes); addEventListener('load', luzes); if (document.fonts && document.fonts.ready) document.fonts.ready.then(luzes);
+
+  // copiar: vale também para os blocos que o Linux redesenha
+  function copiar(texto) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(texto);
+    var t = document.createElement('textarea'); t.value = texto; t.setAttribute('readonly', ''); t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select();
+    var ok = document.execCommand('copy'); t.remove(); return ok ? Promise.resolve() : Promise.reject();
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.copia'); if (!b) return;
+    var rot = b.querySelector('span');
+    copiar(b.closest('.cod').querySelector('pre').textContent).then(function () { rot.textContent = 'Copiado'; setTimeout(function () { rot.textContent = 'Copiar'; }, 2200); });
+  });
+
+  /* ---- as abas: a página abre no sistema de quem visita, ou no que vier no endereço (#linux) ---- */
+  // A mesma detecção do index.html. O Android vem antes porque o navegador dele também diz "Linux",
+  // e o iPad se apresenta como Mac, mas tem tela de toque. Sem versão própria (iPhone, iPad...), vale o Docker.
+  var ua = navigator.userAgent, plat = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '').toLowerCase();
+  var meu = /android/i.test(ua) || plat === 'android' ? 'android'
+    : /windows/i.test(ua) || plat.indexOf('win') === 0 ? 'windows'
+    : (/macintosh/i.test(ua) || plat.indexOf('mac') === 0) && !(navigator.maxTouchPoints > 1) ? 'mac'
+    : /linux|cros|x11/i.test(ua) || /linux|chrome os/.test(plat) ? 'linux'
+    : 'docker';
+  var abas = [].slice.call(document.querySelectorAll('.sistemas a')), paineis = [].slice.call(document.querySelectorAll('.painel'));
+  function mostra(so) {
+    abas.forEach(function (a) { a.setAttribute('aria-current', a.dataset.so === so ? 'true' : 'false'); });
+    paineis.forEach(function (p) { p.hidden = p.id !== so; });
+  }
+  function doEndereco() { var h = location.hash.slice(1); return document.getElementById(h) && h in { android: 1, windows: 1, mac: 1, linux: 1, docker: 1 } ? h : null; }
+  abas.forEach(function (a) {
+    a.querySelector('.seu').hidden = a.dataset.so !== meu;
+    a.addEventListener('click', function (e) { e.preventDefault(); mostra(a.dataset.so); history.replaceState(null, '', '#' + a.dataset.so); });
+  });
+  addEventListener('hashchange', function () { var h = doEndereco(); if (h) mostra(h); });
+  mostra(doEndereco() || meu);
+  // quem chega com #linux no endereço para nas abas, e não no meio do painel
+  if (doEndereco()) addEventListener('load', function () { document.querySelector('.sistemas').scrollIntoView(); });
+
+  /* ---- Linux: cada distribuição aponta para o pacote que instala melhor nela ---- */
+  var REL = 'https://github.com/wdonega/prep-wiki-br/releases/download/desktop-v0.1.0/';
+  var F = {
+    deb: { rot: '.deb', x: ['prep-wiki-br_0.1.0_amd64.deb', '128 MB'], a: ['prep-wiki-br_0.1.0_arm64.deb', '118 MB'] },
+    rpm: { rot: '.rpm', x: ['prep-wiki-br-0.1.0.x86_64.rpm', '100 MB'], a: ['prep-wiki-br-0.1.0.aarch64.rpm', '93 MB'] },
+    appimage: { rot: 'AppImage', x: ['prep-wiki-br-0.1.0-linux-x86_64.AppImage', '151 MB'], a: ['prep-wiki-br-0.1.0-linux-arm64.AppImage', '146 MB'] }
+  };
+  var D = {
+    ubuntu: { nome: 'Ubuntu', fmt: 'deb', ger: 'apt', tambem: 'Serve também para Kubuntu, Xubuntu, Pop!_OS, Zorin OS e elementary OS.' },
+    debian: { nome: 'Debian', fmt: 'deb', ger: 'apt' },
+    mint: { nome: 'Linux Mint', fmt: 'deb', ger: 'apt' },
+    fedora: { nome: 'Fedora', fmt: 'rpm', ger: 'dnf' },
+    redhat: { nome: 'RHEL, Rocky, Alma', fmt: 'rpm', ger: 'dnf' },
+    opensuse: { nome: 'openSUSE', fmt: 'rpm', ger: 'zypper', nota: 'O pacote ainda não tem assinatura digital, por isso o comando leva --allow-unsigned-rpm.' },
+    arch: { nome: 'Arch e Manjaro', fmt: 'appimage', fuse: 'sudo pacman -S --needed fuse2', tambem: 'Ainda não há pacote próprio para o Arch. O AppImage roda sem instalar nada.' },
+    raspberry: { nome: 'Raspberry Pi OS', fmt: 'deb', ger: 'apt', soArm: true, tambem: 'Precisa da versão de 64 bits do Raspberry Pi OS, num Raspberry Pi 4 ou 5.',
+      nota: 'Os pacotes ARM ainda não foram abertos num Raspberry Pi com interface. Se der problema, o Docker já roda no Pi 5: veja a aba Docker.' },
+    outra: { nome: 'Outra distribuição', fmt: 'appimage', tambem: 'O AppImage roda em quase qualquer distribuição, sem instalar nada.',
+      nota: 'Se não abrir, falta a biblioteca FUSE 2: instale o pacote libfuse2 ou fuse2, conforme a distribuição.' }
+  };
+  var PASTA = '~/.local/share/prep-wiki-br';
+  var COPIA = '<button class="copia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>';
+  function cod(rot, txt) { return '<div class="cod"><div class="cod__topo"><span class="mono">' + rot + '</span>' + COPIA + '</div><pre>' + esc(txt) + '</pre></div>'; }
+  var VAZIA = 'Na primeira vez a biblioteca está vazia e você cai direto na tela de baixar conteúdo.';
+
+  // palpite inicial: o Firefox de algumas distribuições põe o nome dela no navegador; o processador vem de lá também
+  var lx = {
+    distro: /ubuntu/i.test(ua) ? 'ubuntu' : /fedora/i.test(ua) ? 'fedora' : /raspbian/i.test(ua) ? 'raspberry' : /debian/i.test(ua) ? 'debian' : /linux mint/i.test(ua) ? 'mint' : /suse/i.test(ua) ? 'opensuse' : /manjaro|arch linux/i.test(ua) ? 'arch' : 'ubuntu',
+    arq: /aarch64|arm64|armv8/i.test(ua) ? 'a' : 'x', mexeu: false
+  };
+  var tiles = [].slice.call(document.querySelectorAll('.distros button')), arqBts = [].slice.call(document.querySelectorAll('.arqs button'));
+  function linux() {
+    var d = D[lx.distro], q = d.soArm ? 'a' : lx.arq, f = F[d.fmt], file = f[q][0], tam = f[q][1];
+    tiles.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.distro === lx.distro); });
+    arqBts.forEach(function (b) { b.hidden = d.soArm && b.dataset.arq === 'x'; b.setAttribute('aria-pressed', b.dataset.arq === q); });
+    document.getElementById('lx-icone').setAttribute('d', document.querySelector('[data-distro="' + lx.distro + '"] path').getAttribute('d'));
+    document.getElementById('lx-titulo').textContent = d.nome + ' · ' + f.rot + ' · ' + (q === 'a' ? 'ARM64' : 'x86_64');
+    var tb = document.getElementById('lx-tambem'); tb.hidden = !d.tambem; tb.textContent = d.tambem || '';
+    var nt = document.getElementById('lx-nota'); nt.hidden = !d.nota; nt.textContent = d.nota || '';
+    var bt = document.getElementById('lx-bt'); bt.href = REL + file; bt.querySelector('b').textContent = 'Baixar o ' + f.rot; bt.querySelector('small').textContent = file + ' · ' + tam;
+
+    var passos, depois;
+    if (d.fmt === 'appimage') {
+      passos = [['Baixe o AppImage', 'O botão ao lado baixa ' + file + '. É um arquivo só.']];
+      if (d.fuse) passos.push(['Instale o FUSE 2, se ainda não tiver', 'O AppImage precisa dele para abrir.', d.fuse]);
+      passos.push(['Dê permissão e abra', 'No terminal, cole e aperte Enter. O AppImage não entra no menu sozinho: abra sempre pelo arquivo.', 'cd ~/Downloads\nchmod +x ' + file + '\n./' + file]);
+      passos.push(['Escolha os acervos', VAZIA]);
+      depois = [['Atualizar', 'Baixe o AppImage novo nesta página e apague o antigo. Os acervos não são apagados.'],
+        ['Onde ficam os acervos', 'Na pasta abaixo, a mesma para os três formatos.', PASTA, 'Pasta'],
+        ['Desinstalar', 'Apague o arquivo .AppImage. Os acervos continuam na pasta ao lado, para o caso de você voltar.']];
+    } else {
+      var inst = d.ger === 'apt' ? 'sudo apt install ./' : d.ger === 'dnf' ? 'sudo dnf install ./' : 'sudo zypper install --allow-unsigned-rpm ./';
+      passos = [['Baixe o pacote', 'O botão ao lado baixa ' + file + '.'],
+        ['Instale pelo terminal', 'Cole e aperte Enter. Ele pede a sua senha.', 'cd ~/Downloads\n' + inst + file],
+        ['Abra e escolha os acervos', 'Procure Prep Wiki BR no menu de aplicativos. ' + VAZIA]];
+      depois = [['Atualizar', 'Baixe o pacote novo nesta página e rode o mesmo comando do passo 2. Os acervos não são apagados.'],
+        ['Onde ficam os acervos', 'Na pasta abaixo, a mesma para os três formatos.', PASTA, 'Pasta'],
+        ['Desinstalar', 'Remove o app e mantém os acervos, para o caso de você instalar de novo.', 'sudo ' + d.ger + ' remove prep-wiki-br']];
+    }
+    document.getElementById('lx-passos').innerHTML = passos.map(function (p) {
+      return '<li><div><h3>' + esc(p[0]) + '</h3><p>' + esc(p[1]) + '</p>' + (p[2] ? cod('Terminal', p[2]) : '') + '</div></li>';
+    }).join('');
+    document.getElementById('lx-depois').innerHTML = depois.map(function (p) {
+      return '<article><h3>' + esc(p[0]) + '</h3><p>' + esc(p[1]) + '</p>' + (p[2] ? cod(p[3] || 'Terminal', p[2]) : '') + '</article>';
+    }).join('');
+    cada('#lx-pacotes li', function (li) { li.querySelector('.seu').hidden = li.dataset.arq !== file; });
+  }
+  tiles.forEach(function (b) { b.addEventListener('click', function () { lx.distro = b.dataset.distro; lx.mexeu = true; linux(); }); });
+  arqBts.forEach(function (b) { b.addEventListener('click', function () { lx.arq = b.dataset.arq; lx.mexeu = true; linux(); }); });
+  linux();
+  // o Chrome diz o processador de verdade, se o navegador deixar perguntar
+  if (meu === 'linux' && navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+    navigator.userAgentData.getHighEntropyValues(['architecture']).then(function (v) {
+      if (!lx.mexeu && v.architecture === 'arm') { lx.arq = 'a'; linux(); }
+    }).catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>

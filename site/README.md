@@ -1,6 +1,6 @@
 # Página do projeto
 
-A landing page do Prep Wiki BR, que vai em <https://prep.bigode.org>, e o passo a passo de instalação pelo Docker, em `/docker`. São duas páginas em HTML, sem framework e sem etapa de build: o que está nesta pasta é o que vai ao ar.
+A landing page do Prep Wiki BR, que vai em <https://prep.bigode.org>, a página de baixar, em `/baixar`, e os passos a passo de instalação no Mac (`/mac`) e pelo Docker (`/docker`). São páginas em HTML, sem framework e sem etapa de build: o que está nesta pasta é o que vai ao ar.
 
 A demonstração ao vivo, para onde a página manda quem quer testar, fica em <https://prep-demo.bigode.org>.
 
@@ -26,7 +26,9 @@ Para publicar na mão: `cd site && npx wrangler deploy --name prep-wiki-br-site`
 | Arquivo | O que é |
 |---|---|
 | `index.html` | A página inicial: marcação, estilo e scripts, tudo no mesmo arquivo. |
-| `docker.html` | O passo a passo de instalação pelo Docker, para quem nunca usou. É para onde vai a aba Docker do cartão de baixar. |
+| `baixar.html` | A página de baixar: uma aba por sistema, com todos os pacotes, os passos e o "depois de instalar". No Linux, a escolha é por distribuição. É para onde vão o cartão de baixar e o link "Outro sistema ou formato". |
+| `mac.html` | O passo a passo do Mac pelo Homebrew. A aba Mac da `baixar.html` resume e aponta para ele. |
+| `docker.html` | O passo a passo de instalação pelo Docker, para quem nunca usou. A aba Docker da `baixar.html` resume e aponta para ele. |
 | `base.css` | Zera os estilos do navegador. |
 | `img/` | Gravuras, recortes, capturas do app e o QR do PIX. |
 | `modelos/lampiao.glb` | O lampião em 3D da primeira tela (6 MB). |
@@ -39,7 +41,7 @@ Nove seções, nesta ordem: primeira tela (`#palco`), `#guias`, `#busca`, `#acer
 
 - **A luz.** O tema é um lampião aceso no escuro. Na primeira tela, a posição da chama vira as variáveis de CSS `--lx` e `--ly`, e a tremulação vira `--f`; o clarão do fundo (`.clarao`, `.chama`), o título e a borda do cartão de baixar leem essas variáveis. Nas outras seções, cada uma tem um foco fixo (`.foco`, com `--x` e `--y`), e o título dela (`.aceso`) é iluminado a partir dele.
 - **O lampião 3D.** Um canvas do three.js com o `lampiao.glb`. Gira com o ponteiro e com a rolagem, e só é redesenhado enquanto a primeira tela está à vista. Se o WebGL falhar, fica a imagem `img/lampiao.png`.
-- **O cartão de baixar (`.ab`).** Aparece na primeira tela e no fecho. As quatro abas trocam o texto, o endereço e o ícone do botão, a partir da tabela `SO` no script. O sistema de quem visita já vem escolhido; num Mac, que não tem versão própria, vale o Docker.
+- **O cartão de baixar (`.ab`).** Aparece na primeira tela e no fecho. O botão leva direto ao sistema de quem visita, a partir da tabela `SO` no script: Android abre a Google Play, Windows baixa o instalador na hora, e Mac, Linux e Docker abrem a `baixar.html` na aba certa. No Linux o botão não baixa direto porque o navegador não diz a distribuição nem se é ARM. Embaixo, o link "Outro sistema ou formato" (no celular, "Outros") mostra os ícones dos outros sistemas e leva à `baixar.html`. Quem não tem versão própria (iPhone, iPad) cai no Docker.
 - **A busca que digita sozinha.** A lista `BUSCAS` no script tem as duas perguntas e os resultados mostrados. São resultados reais, anotados do app; ao trocar, use outros reais.
 - **O que entra na tela aparece.** Qualquer elemento com o atributo `data-ver` ganha a classe `visto` ao entrar na tela.
 - **Movimento reduzido.** Com `prefers-reduced-motion`, as animações são encurtadas e a busca mostra o resultado direto.
@@ -61,14 +63,17 @@ A página repete alguns números e fatos do projeto. Ao mudar um, procure os out
 | 81 acervos, 10 assuntos, 3 guias | primeira tela, `<meta>` de descrição, `#acervos`, perguntas | [`manager/catalogo.json`](../manager/catalogo.json) |
 | A lista dos 10 grupos | `#acervos` | o mesmo catálogo |
 | Tamanho dos guias (16 MB, 29 MB, 46 MB no total) | `#guias`, perguntas | as releases das wikis |
-| Endereços de download | a tabela `SO` no script | Google Play, releases, `docker.html` |
+| Endereços de download | a tabela `SO` no script do `index.html`; os links e as tabelas `REL`, `F` e `D` da `baixar.html` | Google Play, release `desktop-v…` |
+| Versão do app de desktop (0.1.0) e tamanhos dos pacotes | `baixar.html` (texto, links e tabela `F`), subtítulo do Windows no `index.html` | a release `desktop-v…`; numa versão nova, troque `0.1.0` e os tamanhos nos dois arquivos |
+| Comandos de instalar e remover no Linux, pasta dos acervos | a tabela `D` e a função `linux()` da `baixar.html` | `desktop/package.json` (nome do pacote) e `desktop/main.js` (pasta de dados) |
 | O comando `docker run` | `docker.html` | [`docs/instalar.md`](../docs/instalar.md) |
 | Valores do apoio no app | `#apoiar` | os produtos na Play Console |
 | Código PIX e QR | `#apoiar` (`data-copiar` e `img/pix.png`) | [`manager/web/apoie.html`](../manager/web/apoie.html) |
 
 ## Pendências
 
-- **Windows e Linux:** as abas existem, mas o botão aponta para a página de releases do GitHub e o texto é genérico ("Para computador com Windows"). Trocar quando houver o instalador.
+- **Pacotes de Linux não testados em todas as distribuições:** a `baixar.html` dá comandos para openSUSE (`zypper` com `--allow-unsigned-rpm`) e para o Raspberry Pi OS (ARM64), que ainda não foram rodados num sistema de verdade. A página diz isso no caso do Pi.
+- **Ícones das distribuições:** Debian, Ubuntu e Red Hat são do Tabler; Fedora, Linux Mint, openSUSE, Arch e Raspberry Pi foram desenhados no mesmo traço, simplificados.
 - **Busca na demonstração:** a seção `#busca` mostra a busca por significado, e a demonstração hoje responde com a busca por palavras. Por isso essa seção não tem link para a demonstração.
 - **Peso do modelo 3D:** o `lampiao.glb` tem 6 MB, sem compressão. Ele carrega depois da página e não a trava, mas dá para reduzir bastante com compressão de malha e de textura.
 
