@@ -8,6 +8,11 @@
 <link rel="canonical" href="https://prep.bigode.org/baixar">
 <meta name="theme-color" content="#050e09">
 <meta name="color-scheme" content="dark">
+<script>
+  // Samsung Internet: o modo escuro forçado dele recolore a página e não tem como desligar daqui. A classe "sb"
+  // liga as regras de contorno do base.css e o samsung.js. "?sb=1" liga o mesmo caminho em outro navegador, para teste.
+  if (/SamsungBrowser/.test(navigator.userAgent) || /[?&]sb=1/.test(location.search)) { document.documentElement.className += ' sb'; (function (s) { s.src = 'samsung.js'; document.head.appendChild(s); })(document.createElement('script')); }
+</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://prep.bigode.org/baixar">
 <meta property="og:title" content="Baixar o Prep Wiki BR">

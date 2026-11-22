@@ -31,3 +31,6 @@ desktop/dist/
 #   rag-prototipo/   laboratório da busca: comparações de modelos, de formatos de índice e testes no celular
 rascunhos/
 rag-prototipo/
+
+# cache do wrangler
+site/.wrangler/

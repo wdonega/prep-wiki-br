@@ -14,3 +14,40 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 h1,h2,h3,p,ul,ol,figure{margin:0;padding:0}
 ul,ol{list-style:none}
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+/* ---- Samsung Internet (classe "sb" no <html>, posta pelo <head> de cada página) ----
+   O modo escuro forçado dele ignora a declaração acima: escurece todo fundo claro e todo degradê de CSS,
+   e não dá para saber pelo script se está ligado. O que ele não toca: canvas, retângulo de SVG com degradê
+   e texto de cor clara com máscara. Aqui os títulos passam a ser texto claro com máscara (a luz do lampião
+   vira transparência em vez de cor); o samsung.js troca os clarões por SVG e os botões âmbar por canvas. */
+.sb .titulo .l>span{background:none;color:#ffdc94;
+  -webkit-mask-image:radial-gradient(circle calc(var(--raio,62vw)*var(--f,1)) at var(--tx,70vw) var(--ty,30vh),#000 0,#000 14%,rgba(0,0,0,.84) 30%,rgba(0,0,0,.54) 48%,rgba(0,0,0,.28) 68%,rgba(0,0,0,.2) 100%);
+  mask-image:radial-gradient(circle calc(var(--raio,62vw)*var(--f,1)) at var(--tx,70vw) var(--ty,30vh),#000 0,#000 14%,rgba(0,0,0,.84) 30%,rgba(0,0,0,.54) 48%,rgba(0,0,0,.28) 68%,rgba(0,0,0,.2) 100%)}
+.sb .guias h2{background:none;color:#fff1cf;
+  -webkit-mask-image:radial-gradient(circle 96vmax at var(--tx,85%) var(--ty,-60vh),#000 0,rgba(0,0,0,.93) 34%,rgba(0,0,0,.72) 62%,rgba(0,0,0,.52) 100%);
+  mask-image:radial-gradient(circle 96vmax at var(--tx,85%) var(--ty,-60vh),#000 0,rgba(0,0,0,.93) 34%,rgba(0,0,0,.72) 62%,rgba(0,0,0,.52) 100%)}
+.sb .aceso{background:none;color:#fff1cf;
+  -webkit-mask-image:radial-gradient(circle var(--raio,92vmax) at var(--tx,85%) var(--ty,-40%),#000 0,rgba(0,0,0,.93) 30%,rgba(0,0,0,.72) 60%,rgba(0,0,0,.52) 100%);
+  mask-image:radial-gradient(circle var(--raio,92vmax) at var(--tx,85%) var(--ty,-40%),#000 0,rgba(0,0,0,.93) 30%,rgba(0,0,0,.72) 60%,rgba(0,0,0,.52) 100%)}
+/* o âmbar cheio (#f6b74a) ele escurece até em texto; este tom mais claro passa */
+.sb .guias h2 em,.sb .aceso em{color:#ffd98a}
+/* clarões: o degradê de CSS sai, entra o <svg> que o samsung.js põe dentro da mesma caixa */
+.sb .clarao,.sb .chama,.sb .chao,.sb .foco{background:none}
+.sb .clarao{overflow:hidden}
+.sb-g{position:absolute;left:0;top:0;width:100%;height:100%;max-width:none;display:block;pointer-events:none}
+.sb .clarao>.sb-g--verde{width:176vmax;height:250vmax;transform:translate3d(calc(var(--lx) - 88vmax),calc(var(--ly) - 125vmax),0)}
+.sb .clarao>.sb-g--laranja{width:160vmax;height:210vmax;transform:translate3d(calc(var(--lx) - 80vmax),calc(var(--ly) - 105vmax),0)}
+.sb .fecho__lamp::before,.sb .capa__lamp::before{display:none}
+.sb-lamp{position:absolute;left:50%;top:54%;width:230%;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;animation:treme 3.1s ease-in-out infinite}
+.sb .capa__lamp .sb-lamp{width:220%}
+/* cartão de baixar: borda e reflexo */
+.sb .ab::before,.sb .ab::after{display:none}
+.sb-ab{position:absolute;inset:0;z-index:-1;border-radius:inherit;overflow:hidden;pointer-events:none}
+.sb-ab>svg{position:absolute;left:0;top:0;width:100%;height:100%;max-width:none}
+.sb-ab--borda{padding:1px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.sb-ab--luz{opacity:calc(.82 + (var(--f,1) - 1)*2.4)}
+/* botões âmbar: o canvas pinta tudo; o fundo, a sombra e o conteúdo do DOM somem (o layout continua valendo) */
+.sb-f{position:relative;color:transparent!important;background:none!important;box-shadow:none!important}
+.sb-f>:not(.sb-face){visibility:hidden}
+.sb-f::before,.sb-f::after{display:none!important}
+.sb-face{position:absolute;left:0;top:0;width:100%;height:100%;max-width:none;display:block;pointer-events:none}
