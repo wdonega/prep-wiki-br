@@ -41,7 +41,7 @@ Precisa do Android SDK com o NDK e o CMake, do Go e do JDK.
 
 ```bash
 # 1. compila o gerenciador e o llama-server para dentro de app/src/main/jniLibs/
-VERSAO=0.1.2 ./preparar-libs.sh        # SEM_LLAMA=1 pula o llama-server (app sem a busca por significado)
+VERSAO=0.1.3 ./preparar-libs.sh        # SEM_LLAMA=1 pula o llama-server (app sem a busca por significado)
 
 # 2. gera o APK
 ./gradlew assemblePlayDebug            # ou assembleLivreDebug

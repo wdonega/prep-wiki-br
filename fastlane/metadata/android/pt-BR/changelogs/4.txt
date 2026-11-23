@@ -1,0 +1,1 @@
+Corrige o botão de enviar um arquivo .zim do próprio aparelho, que não abria nada.

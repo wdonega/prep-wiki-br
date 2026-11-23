@@ -1,0 +1,1 @@
+Fixes the button to add a .zim file from the device, which did nothing.

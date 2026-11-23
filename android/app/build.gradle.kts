@@ -19,8 +19,8 @@ android {
         applicationId = "org.bigode.prep"
         minSdk = 29 // Android 10: a mesma API do clang do NDK usado em preparar-libs.sh
         targetSdk = 36
-        versionCode = 3
-        versionName = "0.1.2" // a mesma versão vai no gerenciador: VERSAO=<versionName> ./preparar-libs.sh
+        versionCode = 4
+        versionName = "0.1.3" // a mesma versão vai no gerenciador: VERSAO=<versionName> ./preparar-libs.sh
         ndk { abiFilters += "arm64-v8a" }
     }
 

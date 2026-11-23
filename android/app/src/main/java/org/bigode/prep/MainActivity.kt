@@ -2,10 +2,12 @@ package org.bigode.prep
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Message
@@ -15,6 +17,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.webkit.ConsoleMessage
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -38,6 +41,8 @@ class MainActivity : Activity() {
     private var pediuNotificacao = false
     private var limparHistorico = false
     private var voltar: OnBackInvokedCallback? = null
+    // quem espera o arquivo escolhido no seletor do sistema (o "envie um arquivo .zim" do gerenciador)
+    private var escolhaDeArquivo: ValueCallback<Array<Uri>>? = null
     // o "Apoie": compra pelo Google no sabor da Play, a página /apoie no sabor livre (Apoio.kt de cada sabor)
     private lateinit var apoio: Apoio
 
@@ -107,6 +112,23 @@ class MainActivity : Activity() {
             }
 
             override fun onHideCustomView() = sairDaTelaCheia()
+
+            // <input type="file"> da página (enviar um .zim do aparelho). Sem isto a WebView ignora o toque.
+            // O tipo vai como */* porque .zim não tem MIME conhecido: com accept=".zim" o seletor do sistema
+            // não mostraria arquivo nenhum. Quem confere a extensão é a própria página (admin.js).
+            override fun onShowFileChooser(v: WebView, callback: ValueCallback<Array<Uri>>, params: FileChooserParams): Boolean {
+                escolhaDeArquivo?.onReceiveValue(null) // um seletor anterior que não voltou: libera a página
+                escolhaDeArquivo = callback
+                val i = Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("*/*")
+                return try {
+                    startActivityForResult(i, PEDIDO_ARQUIVO)
+                    true
+                } catch (e: ActivityNotFoundException) {
+                    Log.w(TAG, "sem seletor de arquivos", e)
+                    escolhaDeArquivo = null
+                    false
+                }
+            }
 
             // Tema de cor da página. O tema.js escreve no console "prep-tema:<fundo em #rrggbb>:<claro|escuro>"
             // toda vez que aplica um tema, e a área das barras do sistema vai atrás. A cor vem pelo console
@@ -256,6 +278,14 @@ class MainActivity : Activity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode != PEDIDO_ARQUIVO) return super.onActivityResult(requestCode, resultCode, data)
+        // cancelado volta null, e a página fica pronta para outra escolha
+        escolhaDeArquivo?.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, data))
+        escolhaDeArquivo = null
+    }
+
     override fun onDestroy() {
         Servico.telaAberta = false // sem download em andamento, o Servico encerra o gerenciador e o Kiwix
         apoio.encerrar()
@@ -268,6 +298,7 @@ class MainActivity : Activity() {
         const val PORTA = Servico.PORTA
         // a página de apoio do gerenciador (manager/main.go); os links "Apoie" das páginas apontam para ela
         const val CAMINHO_APOIE = "/apoie"
+        private const val PEDIDO_ARQUIVO = 2 // o 1 é o pedido de permissão de notificação
         // a linha que o manager/web/prep/tema.js escreve no console: cor de fundo e modo do tema
         private val LINHA_DO_TEMA = Regex("prep-tema:(#[0-9a-fA-F]{6}):(claro|escuro)")
     }
