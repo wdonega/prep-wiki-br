@@ -1,11 +1,11 @@
 An offline library for preparedness, self-reliance and health, in Brazilian Portuguese.
 
-When the network goes down (a flood, a blackout, out in the countryside or on the road) what you need to know has to be on your phone. Pick what to download from a curated list of 81 collections; once downloaded, everything works without internet.
+When the network goes down (a flood, a blackout, out in the countryside or on the road) what you need to know has to be on your phone. Pick what to download from a curated list of 82 collections; once downloaded, everything works without internet.
 
 WHAT YOU CAN DOWNLOAD
 • Portuguese Wikipedia: complete (with or without images) or only the 50,000 best articles, starting at 153 MB
 • Wikipedia by topic: Medicine, Chemistry, Physics, Mathematics, Biology, History, Geography, Computing
-• Wikis made by this project: Sisteminha Embrapa (backyard food production), Plantas Medicinais (85 plants from the Brazilian health agency's herbal formulary) and a heavy rain and storm guide
+• Wikis made by this project: Sisteminha Embrapa (backyard food production), Plantas Medicinais (85 plants from the Brazilian health agency's herbal formulary), a heavy rain and storm guide and a guide to safer places to live in Brazil
 • Study material, repairs (iFixit), books (Wikisource, Project Gutenberg), dictionary, travel guides and maps of Brazil
 • Preparedness material in English: survival, field medicine, water treatment, canning, gardening, energy, repairs and amateur radio
 

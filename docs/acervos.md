@@ -33,14 +33,15 @@ As edições da Wikipédia por assunto (Medicina, Química, Física, Matemática
 
 No fim da lista do gerenciador dá para baixar o pacote **Inglês → português** (42 MB). Com ele, as páginas e os PDFs dos acervos em inglês abrem em português, e uma faixa no alto leva ao original. A tradução roda no próprio aparelho, sem internet: nenhum texto sai da máquina. É tradução por máquina e serve para entender o texto; confira doses e medidas no original.
 
-## As três wikis do projeto
+## As quatro wikis do projeto
 
-Cada uma é um arquivo `.zim` gerado a partir de publicações oficiais, com o texto reorganizado para leitura, busca, índice e citação da página de origem. Elas vêm no catálogo, mas não dependem do Prep Wiki BR: o arquivo abre em qualquer Kiwix.
+Cada uma é um arquivo `.zim` com texto organizado para leitura, busca, índice e citação da fonte. As três primeiras foram geradas a partir de publicações oficiais; a Lugares seguros no Brasil aplica ao país os critérios de dois livros, com palavras próprias e fontes públicas. Elas vêm no catálogo, mas não dependem do Prep Wiki BR: o arquivo abre em qualquer Kiwix.
 
 | Wiki | O que tem | Baixar | Código |
 |---|---|---|---|
 | **Sisteminha Embrapa** | Produção integrada de alimentos para a agricultura familiar: tanque de peixes com biofiltro, aves, horta e compostagem. Com figuras, as 52 perguntas e respostas da Embrapa e uma calculadora de ração. | [sisteminha-embrapa_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/sisteminha-embrapa-latest/sisteminha-embrapa_pt.zim) (16 MB) | [`sisteminha-embrapa/`](../sisteminha-embrapa) |
 | **Plantas Medicinais** | 85 plantas do Formulário de Fitoterápicos da Anvisa (fórmula, preparo, dose, advertências e foto), com seções de preparo caseiro, cultivo e uso seguro no SUS. | [plantas-medicinais_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/plantas-medicinais-latest/plantas-medicinais_pt.zim) (29 MB) | [`plantas-medicinais/`](../plantas-medicinais) |
 | **Chuva forte e tempestade** | O que fazer antes, durante e depois de alagamento, enchente, enxurrada, deslizamento, vendaval, granizo, raio e tornado. 36 páginas, com a fonte de cada orientação. | [chuvas-tempestades_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/chuvas-tempestades-latest/chuvas-tempestades_pt.zim) (0,6 MB) | [`chuvas-tempestades/`](../chuvas-tempestades) |
+| **Lugares seguros no Brasil** | Onde morar com mais segurança no longo prazo: nota de 0 a 5 para as 27 UFs em oito critérios, mapa das notas, as 5 regiões, clima, violência e rotas de fuga. 64 páginas, com a fonte de cada dado. | [lugares-seguros_pt.zim](https://github.com/wdonega/prep-wiki-br/releases/download/lugares-seguros-latest/lugares-seguros_pt.zim) (1,6 MB) | [`lugares-seguros/`](../lugares-seguros) |
 
-O link de download é fixo e aponta sempre para a versão mais recente. Duas delas (Sisteminha e Plantas Medicinais) estão na [demonstração](https://prep-demo.bigode.org/). Os acervos de saúde são educativos e **não substituem um profissional de saúde**.
+O link de download é fixo e aponta sempre para a versão mais recente. As quatro estão na [demonstração](https://prep-demo.bigode.org/). Os acervos de saúde são educativos e **não substituem um profissional de saúde**.

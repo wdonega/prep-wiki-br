@@ -22,7 +22,7 @@ Este README é para quem quer entender como o projeto foi feito ou contribuir. P
 - **Catálogo:** 82 acervos em 12 grupos, definidos em [`manager/catalogo.json`](manager/catalogo.json). O gerenciador busca a versão mais nova desse arquivo no GitHub a cada verificação, então uma mudança no catálogo chega às instalações sem imagem nova. A lista está em [`docs/acervos.md`](docs/acervos.md).
 - **Downloads:** fila com um download por vez, retomada de onde parou, troca automática de mirror e conferência por sha-256 antes de o acervo entrar na biblioteca. A edição mais recente de cada acervo é descoberta no mirror do Kiwix.
 - **Acervos de fora do catálogo:** qualquer `.zim` entra por link (conferido antes de baixar), por envio do arquivo ou copiado para a pasta de dados.
-- **Três wikis próprias:** Sisteminha Embrapa, Plantas Medicinais e Chuva forte e tempestade, geradas de Markdown e PDFs de órgãos públicos por um `build.py` e publicadas como ZIM pelo GitHub Actions.
+- **Quatro wikis próprias:** Sisteminha Embrapa, Plantas Medicinais, Chuva forte e tempestade e Lugares seguros no Brasil, geradas de Markdown (e, nas três primeiras, de PDFs de órgãos públicos) por um `build.py` e publicadas como ZIM pelo GitHub Actions.
 
 **Leitura**
 
@@ -73,12 +73,12 @@ No Docker, o `kiwix-serve` e o `llama-server` são processos dentro da mesma ima
 | [`android/`](android) | O app Android, que embute o gerenciador. | [`android/README.md`](android/README.md) |
 | [`desktop/`](desktop) | O app de desktop (Windows, Linux e Mac), em Electron: sobe o gerenciador e mostra a biblioteca numa janela. | [`desktop/README.md`](desktop/README.md) |
 | [`zimdex/`](zimdex) | A fábrica dos índices de busca e das legendas: extrai texto, calcula vetores, transcreve e traduz vídeos. | [`zimdex/README.md`](zimdex/README.md) |
-| [`sisteminha-embrapa/`](sisteminha-embrapa), [`plantas-medicinais/`](plantas-medicinais), [`chuvas-tempestades/`](chuvas-tempestades) | As fontes das três wikis do projeto. | README de cada pasta |
+| [`sisteminha-embrapa/`](sisteminha-embrapa), [`plantas-medicinais/`](plantas-medicinais), [`chuvas-tempestades/`](chuvas-tempestades), [`lugares-seguros/`](lugares-seguros) | As fontes das quatro wikis do projeto. | README de cada pasta |
 | [`site/`](site) | A página do projeto (prep.bigode.org). | [`site/README.md`](site/README.md) |
 | [`docs/`](docs) | Instalação, lista de acervos, privacidade, termos e apoio. | |
 | [`fastlane/`](fastlane) | Textos e imagens da ficha do app na loja. | |
 | [`arte/`](arte) | O ícone e a arte de origem do projeto. | |
-| [`.github/workflows/`](.github/workflows) | Publicação da imagem Docker e das três wikis. | [Publicação](#publicação) |
+| [`.github/workflows/`](.github/workflows) | Publicação da imagem Docker e das quatro wikis. | [Publicação](#publicação) |
 
 Ficam fora do git, no `.gitignore`: `rascunhos/` (conceitos da página, capturas, tentativas) e `rag-prototipo/` (o laboratório da busca, com comparações de modelos e de formatos de índice).
 
@@ -151,7 +151,7 @@ O Prep Wiki BR é gratuito e sem anúncios. Se ele foi útil, dá para apoiar po
 ## Licenças
 
 - O **código** deste repositório (gerenciador, app Android, scripts de build, CSS e JS) é software livre, sob a [GPLv3 ou posterior](LICENSE): pode usar, estudar, modificar e redistribuir, desde que as versões modificadas sigam abertas sob a mesma licença.
-- O **conteúdo das três wikis** vem de publicações públicas (Embrapa, Anvisa, Ministério da Saúde, Defesa Civil e, na de chuva e tempestade, também do governo federal dos EUA, em domínio público), reorganizadas para uso **pessoal e educativo, sem fins comerciais**. Toda página cita a fonte. Os créditos completos estão no README de cada wiki e dentro de cada ZIM.
+- O **conteúdo das wikis Sisteminha, Plantas Medicinais e Chuva forte e tempestade** vem de publicações públicas (Embrapa, Anvisa, Ministério da Saúde, Defesa Civil e, na de chuva e tempestade, também do governo federal dos EUA, em domínio público), reorganizadas para uso **pessoal e educativo, sem fins comerciais**. Toda página cita a fonte. Os créditos completos estão no README de cada wiki e dentro de cada ZIM. A **Lugares seguros no Brasil** tem texto próprio e segue as regras descritas no [README dela](lugares-seguros/README.md#direito-autoral).
 - As **fotos** da wiki de plantas vêm do Wikimedia Commons, com licenças livres, e o autor é creditado em cada imagem.
 - O **pacote de tradução** não é deste projeto e é baixado à parte: o motor Bergamot e os modelos do Firefox Translations, da Mozilla, são software livre sob a MPL 2.0.
 - O **leitor de PDF** usa o PDF.js, da Mozilla, sob a licença Apache 2.0, distribuído junto com o gerenciador. As licenças dele, dos decodificadores de imagem e das fontes que o acompanham estão em [`manager/web/prep/pdf/pdfjs/`](manager/web/prep/pdf/pdfjs/).
@@ -164,7 +164,7 @@ O Prep Wiki BR é um projeto independente, sem relação oficial com nenhum dos 
 
 - **[Kiwix](https://kiwix.org/) e [openZIM](https://openzim.org/):** o formato ZIM, o `kiwix-serve` que roda por baixo do leitor, a `libkiwix` do app, os mirrors de download e a maior parte dos acervos do catálogo, que eles empacotam e mantêm atualizados.
 - **Wikimedia e seus voluntários:** Wikipédia, Wikcionário, Wikilivros, Wikiversidade, Wikisource, Wikiquote, Wikivoyage e o Wikimedia Commons, de onde vêm as fotos das plantas.
-- **Embrapa, Anvisa, Ministério da Saúde, Defesas Civis, Corpos de Bombeiros e os órgãos federais dos EUA (NWS, FEMA, USACE, CDC, EPA):** as publicações que deram origem às três wikis do projeto.
+- **Embrapa, Anvisa, Ministério da Saúde, Defesas Civis, Corpos de Bombeiros e os órgãos federais dos EUA (NWS, FEMA, USACE, CDC, EPA):** as publicações que deram origem às wikis do projeto.
 - **Quem produz os outros acervos do catálogo:** iFixit, Stack Exchange, PhET, Vikidia, Projeto Gutenberg, freeCodeCamp, OpenStreetMap, Low-tech Magazine, Hundred Rabbits, Appropedia, energypedia, CD3WD, MDWiki e WikiProjectMed, MedlinePlus, NHS, CDC, WikiVet, Ready.gov, e os canais e sites de preparação listados no gerenciador.
 - **[llama.cpp](https://github.com/ggml-org/llama.cpp), [whisper.cpp](https://github.com/ggerganov/whisper.cpp), Bergamot e PDF.js:** os motores da busca, das legendas, da tradução e do leitor de PDF.
 - **[Lucide](https://lucide.dev/):** os ícones da interface.

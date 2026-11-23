@@ -1,11 +1,11 @@
 Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.
 
-Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar no celular. Você escolhe o que baixar numa lista pronta de 81 acervos e, depois de baixado, tudo funciona sem internet.
+Quando a rede cai, numa enchente, num apagão, no sítio ou na estrada, o que você precisa saber tem que estar no celular. Você escolhe o que baixar numa lista pronta de 82 acervos e, depois de baixado, tudo funciona sem internet.
 
 O QUE DÁ PARA BAIXAR
 • Wikipédia em português: completa (com ou sem imagens) ou só os 50 mil melhores artigos, a partir de 153 MB
 • Wikipédia por tema: Medicina, Química, Física, Matemática, Biologia, História, Geografia, Computação
-• Wikis do próprio projeto: Sisteminha Embrapa (produção de alimentos no quintal), Plantas Medicinais (85 plantas do Formulário de Fitoterápicos da Anvisa) e Chuva forte e tempestade
+• Wikis do próprio projeto: Sisteminha Embrapa (produção de alimentos no quintal), Plantas Medicinais (85 plantas do Formulário de Fitoterápicos da Anvisa), Chuva forte e tempestade e Lugares seguros no Brasil
 • Estudo, consertos (iFixit), livros (Wikisource, Projeto Gutenberg), dicionário, guias de viagem e mapas do Brasil
 • Material de preparação em inglês: sobrevivência, medicina de campo, tratamento de água, conservas, horta, energia, consertos e rádio amador
 
