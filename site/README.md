@@ -33,7 +33,7 @@ Para publicar na mão: `cd site && npx wrangler deploy --name prep-wiki-br-site`
 | `img/` | Gravuras, recortes, capturas do app e o QR do PIX. |
 | `modelos/lampiao.glb` | O lampião em 3D da primeira tela (6 MB). |
 | `vendor/` | O three.js (r134), o carregador de GLTF e a licença. |
-| `favicon.svg`, `share.jpg` | O ícone e a imagem que aparece quando o link é compartilhado. |
+| `favicon.svg`, `share.jpg` | O ícone e a imagem que aparece quando o link é compartilhado: uma captura da primeira tela em 1200 × 630, que mostra os números de acervos e de guias. |
 
 ## Como a página é feita
 
@@ -42,6 +42,7 @@ Nove seções, nesta ordem: primeira tela (`#palco`), `#guias`, `#busca`, `#acer
 - **A luz.** O tema é um lampião aceso no escuro. Na primeira tela, a posição da chama vira as variáveis de CSS `--lx` e `--ly`, e a tremulação vira `--f`; o clarão do fundo (`.clarao`, `.chama`), o título e a borda do cartão de baixar leem essas variáveis. Nas outras seções, cada uma tem um foco fixo (`.foco`, com `--x` e `--y`), e o título dela (`.aceso`) é iluminado a partir dele.
 - **O lampião 3D.** Um canvas do three.js com o `lampiao.glb`. Gira com o ponteiro e com a rolagem, e só é redesenhado enquanto a primeira tela está à vista. Se o WebGL falhar, fica a imagem `img/lampiao.png`.
 - **O cartão de baixar (`.ab`).** Aparece na primeira tela e no fecho. O botão leva direto ao sistema de quem visita, a partir da tabela `SO` no script: Windows baixa o instalador na hora, e Android, Mac, Linux e Docker abrem a `baixar.html` na aba certa. O Android vai ao passo a passo do teste fechado (entrar no grupo `prep-wiki-br-testadores` e virar testador); o botão 2 dessa aba troca o link da página de teste na web pelo da loja quando o visitante está num Android, porque a Play Console dá um link para cada. No Linux o botão não baixa direto porque o navegador não diz a distribuição nem se é ARM. Embaixo, o link "Outro sistema ou formato" (no celular, "Outros") mostra os ícones dos outros sistemas e leva à `baixar.html`. Quem não tem versão própria (iPhone, iPad) cai no Docker.
+- **Os guias (`#guias`).** O guia mais novo abre a seção numa folha deitada (`.folha--destaque`), com o selo "Novo" e três fatos; os outros vêm embaixo, em folhas de pé, três por linha. Quando entrar outro guia, ele assume o destaque e o anterior vira folha comum. Depois confira os números da tabela abaixo e tire a `share.jpg` de novo.
 - **A busca que digita sozinha.** A lista `BUSCAS` no script tem as duas perguntas e os resultados mostrados. São resultados reais, anotados do app; ao trocar, use outros reais.
 - **O que entra na tela aparece.** Qualquer elemento com o atributo `data-ver` ganha a classe `visto` ao entrar na tela.
 - **Movimento reduzido.** Com `prefers-reduced-motion`, as animações são encurtadas e a busca mostra o resultado direto.
@@ -60,9 +61,9 @@ A página repete alguns números e fatos do projeto. Ao mudar um, procure os out
 
 | Fato | Onde aparece | De onde vem |
 |---|---|---|
-| 81 acervos, 10 assuntos, 3 guias | primeira tela, `<meta>` de descrição, `#acervos`, perguntas | [`manager/catalogo.json`](../manager/catalogo.json) |
-| A lista dos 10 grupos | `#acervos` | o mesmo catálogo |
-| Tamanho dos guias (16 MB, 29 MB, 46 MB no total) | `#guias`, perguntas | as releases das wikis |
+| 82 acervos, 12 assuntos, 4 guias | primeira tela, `<meta>` de descrição, `#guias`, `#acervos`, perguntas, rodapé, `share.jpg`; "os quatro guias" também na `docker.html` e na `mac.html` | [`manager/catalogo.json`](../manager/catalogo.json) |
+| A lista dos 12 grupos | `#acervos` | o mesmo catálogo |
+| Tamanho dos guias (16 MB, 29 MB, 47 MB no total) | `#guias`, perguntas | as releases das wikis |
 | Endereços de download | a tabela `SO` no script do `index.html`; os links e as tabelas `REL`, `F` e `D` da `baixar.html` | Google Play, release `desktop-v…` |
 | Versão do app de desktop (0.1.0) e tamanhos dos pacotes | `baixar.html` (texto, links e tabela `F`), subtítulo do Windows no `index.html` | a release `desktop-v…`; numa versão nova, troque `0.1.0` e os tamanhos nos dois arquivos |
 | Comandos de instalar e remover no Linux, pasta dos acervos | a tabela `D` e a função `linux()` da `baixar.html` | `desktop/package.json` (nome do pacote) e `desktop/main.js` (pasta de dados) |
@@ -81,7 +82,7 @@ A página repete alguns números e fatos do projeto. Ao mudar um, procure os out
 
 | Imagem | Origem |
 |---|---|
-| `sisteminha`, `plantas`, `chuva` (gravuras) | Geradas com IA (Meshy), no estilo da arte do projeto. |
+| `sisteminha`, `plantas`, `chuva`, `lugares` (gravuras) | Geradas com IA (Meshy), no estilo da arte do projeto. A `lugares` veio com a borda escura, tirada depois; o original está em `rascunhos/gravuras/`. |
 | `lampiao.png`, `bussola.png`, `radio.png` | Geradas com IA (Meshy), a partir da arte do projeto. |
 | `modelos/lampiao.glb` | Gerado com IA (Meshy), a partir de `lampiao.png`. |
 | `caderno.jpg`, `icone-96.png` | A arte e o ícone do projeto, de [`arte/`](../arte). |
