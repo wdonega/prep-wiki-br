@@ -785,4 +785,16 @@ func TestCatalogoEmbutidoValido(t *testing.T) {
 	if com == 0 {
 		t.Error("nenhum item com edição aprovada no catálogo")
 	}
+	// toda etiqueta usada (no gerenciador ou na tela do acervo) tem definição: título e cor
+	def := map[string]bool{}
+	for _, tg := range c.Tags {
+		def[tg.ID] = true
+	}
+	for _, it := range c.Itens {
+		for _, tg := range append(append([]string{}, it.Tags...), it.TagsAcervo...) {
+			if !def[tg] {
+				t.Errorf("%s usa a etiqueta %q, que não está no bloco tags", it.ID, tg)
+			}
+		}
+	}
 }

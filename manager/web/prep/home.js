@@ -5,6 +5,7 @@ const ico = (nome, cls = "") => `<svg class="i ${cls}" aria-hidden="true"><use h
 
 let livros = null;    // null = ainda carregando
 let grupos = [];
+let tagsDef = [];     // definições das etiquetas (bloco "tags" do catálogo): título, cor e dica
 let traduz = [];      // idiomas (duas letras) com pacote de tradução para o português instalado
 let comAdmin = false; // há gerenciador para abrir (/admin/)? Só depois de a biblioteca responder; sem ele a página não oferece baixar
 let grupoSel = sessionStorage.getItem("prep.grupo") || "";   // "" = todos
@@ -87,7 +88,6 @@ function desenhar(el, html) {
 }
 
 const NOMES_IDIOMA = { por: "português", eng: "inglês", spa: "espanhol", fra: "francês", deu: "alemão", ita: "italiano" };
-const SIGLAS_IDIOMA = { por: "PT", eng: "EN", spa: "ES", fra: "FR", deu: "DE", ita: "IT" };
 // o Kiwix dá o idioma em ISO 639-3; os pacotes de tradução usam duas letras (igual ao traducao.js)
 const DUAS_LETRAS = { eng: "en", fra: "fr", spa: "es", deu: "de", ita: "it", por: "pt" };
 function nomeIdioma(cod) {
@@ -113,20 +113,26 @@ function subDoAcervo(l, q) {
   return esc([l.tema || (grupo && grupo.titulo), tamanho(l.tamanho)].filter(Boolean).join(" · "));
 }
 
+// etiquetas da tela do acervo (tags_acervo do catálogo, como "Vídeo" e "Traduzido"), com o título, a cor e a
+// dica do bloco "tags" do catálogo. A cor é um nome da paleta ou "#rrggbb"; sem definição, o próprio id em cinza.
+const CORES_TAG = ["amarelo", "verde", "azul", "vermelho", "cinza"];
+function tagHtml(id) {
+  const tg = tagsDef.find((x) => x.id === id) || { titulo: id };
+  const cor = String(tg.cor || "").trim().toLowerCase();
+  const dica = tg.dica ? ` title="${esc(tg.dica)}"` : "";
+  if (/^#[0-9a-f]{6}$/.test(cor)) {
+    return `<span class="etq tag"${dica} style="color:${cor};background:${cor}26">${esc(tg.titulo)}</span>`;
+  }
+  return `<span class="etq tag tag-${CORES_TAG.includes(cor) ? cor : "cinza"}"${dica}>${esc(tg.titulo)}</span>`;
+}
+
 // um acervo do aparelho: no celular é uma linha da lista; em tela larga, uma caixa da grade (home.css)
 function linhaAcervo(l, q) {
-  // etiqueta de idioma só no que não é em português (o resto do acervo é)
-  const outros = l.idiomas.includes("por") ? [] : l.idiomas;
   return `<a class="acervo" href="/viewer#${encodeURIComponent(l.nome)}" title="${esc(l.descricao)}">
     <span class="acervo-ico"><img src="${esc(l.icone)}" alt="" width="30" height="30" loading="lazy"></span>
     <span class="acervo-corpo">
       <span class="acervo-tit">${destacar(l.titulo, q)}</span>
-      <span class="acervo-sub"><span>${subDoAcervo(l, q)}</span>
-        ${l.video ? `<span class="etq etq-ok" title="Canal de vídeos">Vídeo</span>` : ""}
-        ${outros.map((c) => traduz.includes(DUAS_LETRAS[c])
-          ? `<span class="etq etq-info" title="Em ${esc(nomeIdioma(c))}; abre traduzido para o português no próprio aparelho, e o original fica a um toque">Traduzido</span>`
-          : `<span class="etq etq-info" title="Em ${esc(nomeIdioma(c))}">${esc(SIGLAS_IDIOMA[c] || c.toUpperCase())}</span>`).join("")}
-      </span>
+      <span class="acervo-sub"><span>${subDoAcervo(l, q)}</span>${(l.tags_acervo || []).map(tagHtml).join("")}</span>
     </span>
     <span class="seta" aria-hidden="true">›</span>
   </a>`;
@@ -627,7 +633,7 @@ async function carregar() {
     if (texto === ultima) return; // nada mudou: não redesenha (preserva foco e rolagem)
     ultima = texto;
     const j = JSON.parse(texto);
-    livros = j.livros; grupos = j.grupos; comAdmin = j.admin !== false; traduz = j.traduz || [];
+    livros = j.livros; grupos = j.grupos; tagsDef = j.tags || []; comAdmin = j.admin !== false; traduz = j.traduz || [];
     buscaAtiva = !!j.busca;
     $("q").placeholder = buscaAtiva ? "Pergunte ou busque" : "Buscar nos acervos";
     mostrarVersao(j.versao);

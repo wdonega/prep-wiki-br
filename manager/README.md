@@ -139,7 +139,8 @@ O [`catalogo.json`](catalogo.json) define quais acervos existem. Ele vai embutid
 | `origem` | `kiwix` (com `pasta`, a pasta em `download.kiwix.org/zim/`) ou `github` (com `repo`, `tag` e `arquivo` de uma release). |
 | `grupo` | O `id` de um dos `grupos` do catálogo. |
 | `tema` | Opcional: subdivisão dentro do grupo, só para organizar a lista. |
-| `tags` | Opcional: etiquetas. As definidas no bloco `tags` do catálogo ganham título e cor. |
+| `tags` | Opcional: etiquetas no gerenciador (tela de download). As definidas no bloco `tags` do catálogo ganham título, cor e dica. |
+| `tags_acervo` | Opcional: etiquetas na tela do acervo (a home), como `video` e `traduzido`. Não são as mesmas do gerenciador, mas usam as mesmas definições do bloco `tags`. A home não decide nada sozinha: mostra o que está aqui. |
 | `titulo`, `descricao` | O que aparece na biblioteca e no gerenciador. |
 | `edicao` | Opcional: a edição aprovada, a que tem índice de busca. `AAAA-MM` no Kiwix (como no nome do arquivo), `AAAA-MM-DD` no GitHub (a data do arquivo na release). Veja abaixo. |
 

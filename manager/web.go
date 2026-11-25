@@ -242,15 +242,17 @@ type livro struct {
 	Grupo     string   `json:"grupo"`
 	Tema      string   `json:"tema,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
-	Nome      string   `json:"nome"`  // nome do acervo nas URLs do Kiwix (/content/<nome>/, /viewer#<nome>)
-	Icone     string   `json:"icone"` // ilustração de 48 px servida pelo Kiwix
-	Idiomas   []string `json:"idiomas"`
-	Artigos   int64    `json:"artigos"`
-	Midias    int64    `json:"midias"`
-	Tamanho   int64    `json:"tamanho"`
-	Edicao    string   `json:"edicao"`
-	Video     bool     `json:"video,omitempty"`  // canal de vídeos (a home mostra a etiqueta "Vídeo")
-	Indice    bool     `json:"indice,omitempty"` // tem índice: entra na busca por significado (busca.go)
+	// etiquetas da home: vêm do catálogo (tags_acervo), sem regra no código
+	TagsAcervo []string `json:"tags_acervo,omitempty"`
+	Nome       string   `json:"nome"`  // nome do acervo nas URLs do Kiwix (/content/<nome>/, /viewer#<nome>)
+	Icone      string   `json:"icone"` // ilustração de 48 px servida pelo Kiwix
+	Idiomas    []string `json:"idiomas"`
+	Artigos    int64    `json:"artigos"`
+	Midias     int64    `json:"midias"`
+	Tamanho    int64    `json:"tamanho"`
+	Edicao     string   `json:"edicao"`
+	Video      bool     `json:"video,omitempty"`  // canal de vídeos do youtube2zim (nos resultados da busca, o cabeçalho diz "vídeos")
+	Indice     bool     `json:"indice,omitempty"` // tem índice: entra na busca por significado (busca.go)
 }
 
 // apiBiblioteca lista o que o kiwix-serve está servindo agora: os itens instalados que entraram
@@ -280,7 +282,7 @@ func (a *App) apiBiblioteca(w http.ResponseWriter, r *http.Request) {
 			nome = x.ID
 		}
 		l := livro{
-			ID: it.ID, Titulo: it.Titulo, Descricao: it.Descricao, Grupo: it.Grupo, Tema: it.Tema, Tags: it.Tags,
+			ID: it.ID, Titulo: it.Titulo, Descricao: it.Descricao, Grupo: it.Grupo, Tema: it.Tema, Tags: it.Tags, TagsAcervo: it.TagsAcervo,
 			Nome:    nome,
 			Icone:   "/catalog/v2/illustration/" + x.ID + "/?size=48",
 			Artigos: x.Artigos, Midias: x.Midias, Tamanho: inst.tamanhoComIndice(), Edicao: inst.Edicao,

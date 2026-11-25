@@ -17,18 +17,21 @@ import (
 var catalogoJSON []byte
 
 type ItemCatalogo struct {
-	ID        string   `json:"id"`
-	Origem    string   `json:"origem"` // "kiwix" ou "github"
-	Pasta     string   `json:"pasta,omitempty"`
-	Repo      string   `json:"repo,omitempty"`
-	Tag       string   `json:"tag,omitempty"`
-	Arquivo   string   `json:"arquivo,omitempty"`
-	Grupo     string   `json:"grupo"`
-	Tema      string   `json:"tema,omitempty"` // subdivisão dentro do grupo (só para organizar a lista do gerenciador)
-	Tags      []string `json:"tags,omitempty"` // etiquetas; as definidas em Catalogo.Tags ganham título e cor, as outras aparecem com o próprio nome em cinza
-	URL       string   `json:"url,omitempty"`  // só nos acervos acrescentados por link
-	Titulo    string   `json:"titulo"`
-	Descricao string   `json:"descricao"`
+	ID      string   `json:"id"`
+	Origem  string   `json:"origem"` // "kiwix" ou "github"
+	Pasta   string   `json:"pasta,omitempty"`
+	Repo    string   `json:"repo,omitempty"`
+	Tag     string   `json:"tag,omitempty"`
+	Arquivo string   `json:"arquivo,omitempty"`
+	Grupo   string   `json:"grupo"`
+	Tema    string   `json:"tema,omitempty"` // subdivisão dentro do grupo (só para organizar a lista do gerenciador)
+	Tags    []string `json:"tags,omitempty"` // etiquetas no gerenciador (download); as definidas em Catalogo.Tags ganham título e cor, as outras aparecem com o próprio nome em cinza
+	// TagsAcervo: etiquetas na tela do acervo (a home), como "Vídeo" e "Traduzido". Não são as mesmas do
+	// gerenciador; usam as mesmas definições (Catalogo.Tags). Versões antigas ignoram o campo.
+	TagsAcervo []string `json:"tags_acervo,omitempty"`
+	URL        string   `json:"url,omitempty"` // só nos acervos acrescentados por link
+	Titulo     string   `json:"titulo"`
+	Descricao  string   `json:"descricao"`
 	// Edicao (opcional) é a edição que o projeto aprovou: a que tem índice de busca. Com ela, quem decide se
 	// há atualização é o catálogo: só há quando o catálogo passa a apontar uma edição mais nova que a
 	// instalada, e o Kiwix entrega essa edição mesmo que já tenha uma mais nova. Sem ela, vale a regra antiga
@@ -50,7 +53,8 @@ type Grupo struct {
 type Tag struct {
 	ID     string `json:"id"`
 	Titulo string `json:"titulo"`
-	Cor    string `json:"cor,omitempty"` // amarelo, verde, azul, vermelho, cinza (o padrão) ou hexadecimal (#7c3aed)
+	Cor    string `json:"cor,omitempty"`  // amarelo, verde, azul, vermelho, cinza (o padrão) ou hexadecimal (#7c3aed)
+	Dica   string `json:"dica,omitempty"` // texto que aparece ao parar o mouse na etiqueta
 }
 
 type Catalogo struct {
