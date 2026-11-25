@@ -1,0 +1,2 @@
+Etiquetas novas na lista de acervos: Exclusivo, Vídeo e Traduzido.
+Um acervo só pede atualização quando a edição nova já tem busca por significado.

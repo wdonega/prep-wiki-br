@@ -1,0 +1,2 @@
+New labels in the library list: Exclusive, Video and Translated.
+A library only asks for an update once its new edition supports search by meaning.
