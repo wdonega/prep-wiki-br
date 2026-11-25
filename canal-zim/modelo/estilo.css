@@ -1,0 +1,75 @@
+/* Páginas do ZIM de canal (montar.py): abertura (index.html), lista (lista.html) e vídeo (v/<id>.html). */
+:root{--fundo:#fafaf7;--texto:#1d1d1b;--suave:#66665f;--linha:#e3e3dc;--marca:#2f6b3a}
+@media (prefers-color-scheme:dark){:root{--fundo:#161614;--texto:#ecece6;--suave:#a3a39a;--linha:#33332e;--marca:#7fbf8a}}
+*{box-sizing:border-box}body{margin:0;background:var(--fundo);color:var(--texto);
+font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:880px;margin:0 auto;padding:16px}
+a{color:var(--marca)}h1{font-size:1.45rem;line-height:1.25;margin:.4em 0}
+.sub{color:var(--suave);margin:0 0 1em}
+video{width:100%;aspect-ratio:16/9;background:#000;border-radius:6px}
+/* página inicial: capa da playlist em cima (celular e desktop), lista embaixo */
+.inicio{max-width:1100px;padding:12px}
+.capa{position:relative;overflow:hidden;border-radius:14px;color:#fff;padding:16px;display:flex;
+flex-direction:column;gap:14px;isolation:isolate}
+.capa::before{content:"";position:absolute;inset:-40px;z-index:-1;background:var(--img) center/cover;
+filter:blur(36px) brightness(.45) saturate(1.2)}
+.capa img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
+.capa>div{min-width:0}.capa h1{font-size:1.5rem;margin:0}.capa .meta{margin:.2em 0;opacity:.85;font-size:.9rem}
+.capa .desc{margin:.6em 0 0;font-size:.9rem;opacity:.9;white-space:pre-line;cursor:pointer;
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.capa .desc.aberta{display:block}
+.tocar{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#fff;color:#111;
+text-decoration:none;font-weight:600;border-radius:999px;padding:9px 22px}
+.sobre{display:inline-block;margin:14px 0 0 14px;color:#fff;opacity:.9}
+/* abertura */
+.abertura section{margin:26px 0}.abertura h2{font-size:1.25rem;margin:0 0 .5em}
+/* a arte do banner do YouTube é uma faixa no meio da imagem: no celular, zoom nessa faixa */
+.banner{aspect-ratio:2.6/1;border-radius:14px;background:var(--linha) center/auto 280% no-repeat}
+.perfil{display:flex;align-items:center;gap:16px;margin-top:-34px;padding:0 14px}
+.logo{width:96px;height:96px;border-radius:50%;border:4px solid var(--fundo);flex:none;background:var(--linha)}
+.perfil h1{margin:30px 0 0;font-size:1.6rem}.perfil .meta{color:var(--suave);margin:0;font-size:.9rem}
+.historia p{margin:0 0 .8em}
+
+.pl{display:flex;flex-direction:column;gap:14px;padding:16px;border:1px solid var(--linha);border-radius:14px}
+.pl img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block}
+.pl .rot{margin:0;color:var(--suave);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+.pl .meta{color:var(--suave);margin:.2em 0 .6em;font-size:.9rem}.pl p{margin:.3em 0}
+.abertura .tocar{background:var(--texto);color:var(--fundo)}
+.abertura .tocar.sec{background:none;color:var(--texto);border:1px solid var(--linha)}
+.botoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.botoes .tocar{margin:0}
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.link{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--linha);border-radius:12px;
+text-decoration:none;color:var(--texto)}.link:hover{background:var(--linha)}.link svg{color:var(--marca);flex:none}
+.link span{display:flex;flex-direction:column;min-width:0}.link small{color:var(--suave);overflow:hidden;text-overflow:ellipsis}
+.obrigado{padding:18px;border-radius:14px;background:color-mix(in srgb,var(--marca) 14%,transparent)}
+.obrigado p{margin:0 0 .7em}.obrigado p:last-child{margin:0}
+@media (min-width:760px){.pl{flex-direction:row;align-items:center}.pl>a{flex:none;width:340px}
+.logo{width:120px;height:120px}.perfil{margin-top:-44px;padding:0 24px}.perfil h1{font-size:2rem;margin-top:40px}
+.banner{aspect-ratio:5/1;background-size:cover}}
+@media (min-width:760px){.capa{flex-direction:row;align-items:center;padding:22px;gap:26px}
+.capa img{width:360px;flex:none}.capa h1{font-size:1.9rem}}
+.lista{list-style:none;padding:0;margin:18px 0 0}
+.lista a{display:grid;grid-template-columns:168px 1fr;grid-template-rows:auto 1fr;column-gap:12px;row-gap:6px;padding:8px;border-radius:10px;
+text-decoration:none;color:inherit;align-items:start}
+.lista a:hover{background:var(--linha)}.lista .txt{min-width:0}.lista li+li{margin-top:10px}
+.mini{position:relative;grid-row:span 2}
+.mini img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;background:var(--linha);display:block}
+.mini span{position:absolute;right:5px;bottom:5px;background:rgba(0,0,0,.8);color:#fff;font-size:.75rem;
+font-weight:600;padding:1px 5px;border-radius:4px}
+.lista .t{font-weight:600;font-size:.95rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;
+-webkit-box-orient:vertical;overflow:hidden}
+.lista .c{color:var(--suave);font-size:.8rem;margin:2px 0}
+.lista .r{color:var(--suave);font-size:.85rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;
+-webkit-box-orient:vertical;overflow:hidden;grid-column:2}
+@media (min-width:760px){.lista a{grid-template-columns:240px 1fr}.lista .t{font-size:1.05rem}}
+/* celular: o resumo ocupa a linha inteira, embaixo da miniatura e do título */
+@media (max-width:520px){.lista a{grid-template-columns:44% 1fr;grid-template-rows:auto}.mini{grid-row:auto}
+.lista .r{grid-column:1/-1;-webkit-line-clamp:2;padding:0 2px 2px}.lista li+li{margin-top:4px}}
+.resumo{font-size:1.05rem;margin:.6em 0 1em}
+.trans p{margin:0 0 .9em}.trans h3{font-size:1.05rem;margin:1.4em 0 .6em}
+.caps{list-style:none;padding:0;margin:0 0 1.2em}.caps li{padding:5px 0;border-bottom:1px solid var(--linha)}
+.trans button,.caps button{font:inherit;font-size:.8rem;color:var(--marca);background:none;
+border:1px solid var(--linha);border-radius:4px;padding:0 6px;margin-right:8px;cursor:pointer}
+details{margin:1em 0;color:var(--suave)}details p{white-space:pre-line}
+nav{display:flex;justify-content:space-between;gap:12px;margin:1.5em 0;border-top:1px solid var(--linha);padding-top:1em}
+.aviso{font-size:.85rem;color:var(--suave)}

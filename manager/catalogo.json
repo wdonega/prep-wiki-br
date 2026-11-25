@@ -1,5 +1,5 @@
 {
-  "versao": 11,
+  "versao": 12,
   "grupos": [
     {"id": "projeto", "titulo": "Deste projeto"},
     {"id": "emergencias", "titulo": "Emergências e preparação"},
@@ -68,6 +68,7 @@
     {"id": "based.cooking_en_all", "origem": "kiwix", "pasta": "zimit", "grupo": "agua-comida", "tags": ["ingles"], "titulo": "Based Cooking", "descricao": "Receitas simples enviadas pela comunidade."},
     {"id": "sustainability.stackexchange.com_en_all", "origem": "kiwix", "pasta": "stack_exchange", "grupo": "agua-comida", "tags": ["ingles"], "titulo": "Sustainable Living Q&A", "descricao": "Perguntas e respostas sobre vida sustentável."},
     {"id": "canadian-prepper_en_preppingfood", "origem": "kiwix", "pasta": "videos", "grupo": "agua-comida", "tags": ["video", "ingles"], "titulo": "Canadian Prepper · Prepping Food", "descricao": "Armazenamento de comida de longo prazo e refeições de sobrevivência."},
+    {"id": "guia-do-sobrevivente-alimentos_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "guia-do-sobrevivente-alimentos-latest", "arquivo": "guia-do-sobrevivente-alimentos_pt.zim", "grupo": "agua-comida", "tags": ["video", "lancamento"], "titulo": "Guia do Sobrevivente · Alimentos", "descricao": "48 vídeos em português do Protocolo 550 sobre como armazenar alimentos, com transcrição, resumo e capítulos."},
 
     {"id": "wikipedia_pt_medicine_maxi", "origem": "kiwix", "pasta": "wikipedia", "grupo": "saude", "titulo": "Wikipédia: Medicina · com imagens", "descricao": "Os artigos de saúde da Wikipédia, com imagens. Já estão na Wikipédia completa."},
     {"id": "wikipedia_pt_medicine_nopic", "origem": "kiwix", "pasta": "wikipedia", "grupo": "saude", "titulo": "Wikipédia: Medicina · sem imagens", "descricao": "Os artigos de saúde da Wikipédia, só texto. Já estão na Wikipédia completa."},

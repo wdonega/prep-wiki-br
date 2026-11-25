@@ -1,6 +1,6 @@
 # Acervos
 
-O catálogo tem **82 acervos em 12 grupos**. A fonte desta lista é o [`manager/catalogo.json`](../manager/catalogo.json), que é também o que o gerenciador mostra; se as duas divergirem, vale o catálogo.
+O catálogo tem **83 acervos em 12 grupos**. A fonte desta lista é o [`manager/catalogo.json`](../manager/catalogo.json), que é também o que o gerenciador mostra; se as duas divergirem, vale o catálogo.
 
 Você instala só o que quiser. Os tamanhos são os que o gerenciador mostrava em novembro de 2026 e mudam um pouco a cada edição.
 
@@ -10,7 +10,7 @@ Você instala só o que quiser. Os tamanhos são os que o gerenciador mostrava e
 |---|---|---|---|
 | **Deste projeto** | 4 | 47 MB | Sisteminha Embrapa, Plantas Medicinais, Chuva forte e tempestade, Lugares seguros no Brasil |
 | **Emergências e preparação** | 15 | 29,7 GB | Post Disaster Resource Library, Ready.gov, True Prepper, Manuais do Exército dos EUA, A Library of Knots, Nós (Wikipédia em inglês), The Great Outdoors Q&A, Amateur Radio Q&A, Rabbit Waves, Learning Self-Reliance, Urban Prepper, Canadian Prepper · Bug Out Concepts, Canadian Prepper · Bug Out Roll, Canadian Prepper · Winter Prepping, S2 Underground |
-| **Água, comida e horta** | 10 | 3,8 GB | Water Treatment Library, Food for Preppers, Guia de conservas caseiras (USDA), Gardening & Landscaping Q&A, Gardenology, Seasoned Advice Q&A, Grim Grains, Based Cooking, Sustainable Living Q&A, Canadian Prepper · Prepping Food |
+| **Água, comida e horta** | 11 | 5,0 GB | Guia do Sobrevivente · Alimentos, Water Treatment Library, Food for Preppers, Guia de conservas caseiras (USDA), Gardening & Landscaping Q&A, Gardenology, Seasoned Advice Q&A, Grim Grains, Based Cooking, Sustainable Living Q&A, Canadian Prepper · Prepping Food |
 | **Saúde** | 11 | 7,8 GB | Wikipédia: Medicina · com imagens, Wikipédia: Medicina · sem imagens, Medical Library, MDWiki, Medicina (Wikipédia em inglês), MedlinePlus, Remédios de A a Z (NHS), Saúde do viajante (CDC), Military Medicine, Surviving Residency, WikiVet |
 | **Energia e baixa tecnologia** | 6 | 2,9 GB | Low-tech Magazine, Hundred Rabbits, Appropedia, energypedia, CD3WD, Permacomputing |
 | **Consertos e habilidades** | 8 | 15,4 GB | iFixit, iFixit (em inglês), Restarters, Home Improvement Q&A, Motor Vehicle Maintenance Q&A, Electrical Engineering Q&A, Woodworking Q&A, Bicycles Q&A |
@@ -27,7 +27,7 @@ As edições da Wikipédia por assunto (Medicina, Química, Física, Matemática
 
 ## Acervos em inglês
 
-48 acervos são material de preparação que não existe em português, ou que é melhor no original. No gerenciador eles levam a etiqueta **Em inglês** e ficam no grupo do assunto, junto com os acervos em português. Os canais de vídeo levam a etiqueta **Vídeo**. Com o pacote de tradução instalado, as páginas abrem em português.
+48 acervos são material de preparação que não existe em português, ou que é melhor no original. No gerenciador eles levam a etiqueta **Em inglês** e ficam no grupo do assunto, junto com os acervos em português. Os canais de vídeo levam a etiqueta **Vídeo**; o Guia do Sobrevivente · Alimentos é o único deles em português, montado pelo projeto a partir de uma playlist do canal, com autorização ([`canal-zim/`](../canal-zim)). Com o pacote de tradução instalado, as páginas abrem em português.
 
 ## Pacote de tradução
 

@@ -389,6 +389,8 @@ def categoria(a):
     videos = sum(n for k, n in c.items() if k.startswith("video/"))
     if "phet" in scraper:
         return "phet", c
+    if scraper.startswith("prep-canal-zim"):  # nossos canais (canal-zim/): a transcrição já está nas páginas
+        return "texto", c
     if scraper.startswith("youtube") or videos > paginas / 2 > 0:
         return "video", c
     if scraper.startswith("maps2zim"):

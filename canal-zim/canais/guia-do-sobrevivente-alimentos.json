@@ -1,0 +1,29 @@
+{
+ "id": "guia-do-sobrevivente-alimentos",
+ "playlist": "PLla5ym5TzHIC9gWMENfKaEs2tV2YVo-0J",
+ "canal": "https://www.youtube.com/@GuiadoSobrevivente",
+ "arroba": "@GuiadoSobrevivente",
+ "subtitulo": "canal brasileiro de sobrevivencialismo",
+ "titulo": "Guia do Sobrevivente · Alimentos",
+ "descricao": "Protocolo 550: como armazenar alimentos, em vídeo com transcrição",
+ "tags": ["preparação", "alimentos"],
+ "tema": "preparação e armazenamento de alimentos",
+ "sobre": [
+  "O Guia do Sobrevivente é uma das principais referências em sobrevivencialismo no Brasil. No YouTube desde 2010, o canal passou de 1 milhão de inscritos e soma mais de 900 vídeos, mais de 500 transmissões ao vivo e mais de 100 milhões de visualizações.",
+  "Nos vídeos, eles mostram de forma simples e prática como armazenar alimentos, produzir comida em casa e se preparar para crises, com uma ideia de fundo: se eles conseguiram, qualquer família consegue."
+ ],
+ "links": [
+  {"icone": "yt", "nome": "YouTube", "texto": "@GuiadoSobrevivente", "url": "https://www.youtube.com/@GuiadoSobrevivente"},
+  {"icone": "site", "nome": "Site", "texto": "guiadosobrevivente.com.br", "url": "https://www.guiadosobrevivente.com.br"},
+  {"icone": "ig", "nome": "Instagram", "texto": "@guiadosobrevivente", "url": "https://www.instagram.com/guiadosobrevivente"},
+  {"icone": "apoio", "nome": "Apoia.se", "texto": "apoie o canal", "url": "https://apoia.se/guiadosobrevivente"}
+ ],
+ "agradecimento": {
+  "titulo": "Obrigado, Batata e Dona Raposa!",
+  "paragrafos": [
+   "Este acervo existe porque vocês autorizaram que os vídeos do Guia do Sobrevivente ficassem guardados aqui. Assim, quem estiver sem internet (num apagão, numa enchente, longe de tudo) continua aprendendo a armazenar comida e a cuidar da própria família. Obrigado pela generosidade e por anos de conhecimento compartilhado.",
+   "Se este material te ajudou, apoie o canal quando estiver conectado."
+  ]
+ },
+ "autorizacao": "Autorizado pelo canal em novembro de 2026 (pedido feito pelo mantenedor)."
+}

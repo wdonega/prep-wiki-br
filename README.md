@@ -19,7 +19,7 @@ Este README é para quem quer entender como o projeto foi feito ou contribuir. P
 
 **Acervos**
 
-- **Catálogo:** 82 acervos em 12 grupos, definidos em [`manager/catalogo.json`](manager/catalogo.json). O gerenciador busca a versão mais nova desse arquivo no GitHub a cada verificação, então uma mudança no catálogo chega às instalações sem imagem nova. A lista está em [`docs/acervos.md`](docs/acervos.md).
+- **Catálogo:** 83 acervos em 12 grupos, definidos em [`manager/catalogo.json`](manager/catalogo.json). O gerenciador busca a versão mais nova desse arquivo no GitHub a cada verificação, então uma mudança no catálogo chega às instalações sem imagem nova. A lista está em [`docs/acervos.md`](docs/acervos.md).
 - **Downloads:** fila com um download por vez, retomada de onde parou, troca automática de mirror e conferência por sha-256 antes de o acervo entrar na biblioteca. A edição mais recente de cada acervo é descoberta no mirror do Kiwix.
 - **Acervos de fora do catálogo:** qualquer `.zim` entra por link (conferido antes de baixar), por envio do arquivo ou copiado para a pasta de dados.
 - **Quatro wikis próprias:** Sisteminha Embrapa, Plantas Medicinais, Chuva forte e tempestade e Lugares seguros no Brasil, geradas de Markdown (e, nas três primeiras, de PDFs de órgãos públicos) por um `build.py` e publicadas como ZIM pelo GitHub Actions.
