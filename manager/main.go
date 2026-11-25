@@ -510,6 +510,15 @@ func soFaltaIndice(it *ItemCatalogo, inst *Instalado, disp *Disponivel) bool {
 	return faltaIndice(inst, disp)
 }
 
+// edicaoAnterior: a edição instalada é mais antiga que a do catálogo. Sem data no nome não dá para saber;
+// "2026-11" (só o mês, de um arquivo achado na pasta) vale como a mesma edição que "2026-11-13".
+func edicaoAnterior(instalada, catalogo string) bool {
+	if instalada == "" || strings.HasPrefix(catalogo, instalada) {
+		return false
+	}
+	return instalada < catalogo
+}
+
 // desatualizado compara o instalado com a edição mais recente conhecida.
 func desatualizado(it *ItemCatalogo, inst *Instalado, disp *Disponivel) bool {
 	if disp == nil || it.personalizado() || it.legado() { // sem edição a acompanhar
@@ -517,6 +526,9 @@ func desatualizado(it *ItemCatalogo, inst *Instalado, disp *Disponivel) bool {
 	}
 	if soFaltaIndice(it, inst, disp) {
 		return true
+	}
+	if it.Edicao != "" { // o catálogo diz qual é a edição atual: só há atualização se ele mudou
+		return edicaoAnterior(inst.Edicao, it.Edicao)
 	}
 	if inst.SHA256 != "" && disp.SHA256 != "" {
 		return inst.SHA256 != disp.SHA256

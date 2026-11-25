@@ -159,6 +159,10 @@ O `zimdex.py` só publica o que está pronto e pula o que já subiu igual, entã
 meio da tradução ele sobe os canais que já fecharam. Para testar um gerenciador contra a pasta local, sirva-a por
 HTTP e aponte `PREP_ZIMDEX_URL` para ela.
 
+**Edição nova de um acervo:** depois de publicar o índice dela, troque o `edicao` do item no
+[`manager/catalogo.json`](../manager/catalogo.json) pela edição indexada e suba a `versao`. Só então as instalações
+oferecem "Atualizar", e o ZIM novo chega junto com o índice.
+
 O formato do `.zimdex` e do `indice.json` está descrito no começo do [`zimdex.py`](zimdex.py); quem lê é o
 [`manager/zimdex.go`](../manager/zimdex.go).
 

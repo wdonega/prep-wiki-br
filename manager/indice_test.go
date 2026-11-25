@@ -701,3 +701,88 @@ func TestPedirExtras(t *testing.T) {
 		t.Error("tradutor já instalado não devia voltar para a fila")
 	}
 }
+
+// Com "edicao" no catálogo, só há atualização quando o catálogo aponta uma edição mais nova que a instalada,
+// mesmo que a origem já tenha outro arquivo. Sem o campo, segue a regra antiga (mudou o arquivo, atualiza).
+func TestEdicaoDoCatalogoDecideAtualizacao(t *testing.T) {
+	it := &ItemCatalogo{ID: "wiki", Origem: "kiwix", Pasta: "wikipedia"}
+	if err := it.prepararPadrao(); err != nil {
+		t.Fatal(err)
+	}
+	inst := &Instalado{Arquivo: "wiki_2026-08.zim", Edicao: "2026-08", SHA256: "velho",
+		Indice: &IndiceInstalado{Arquivo: "wiki_2026-08.zimdex", SHA256: "i1"}}
+	nova := &Disponivel{Arquivo: "wiki_2026-11.zim", Edicao: "2026-11", SHA256: "novo"}
+
+	if !desatualizado(it, inst, nova) {
+		t.Error("sem edição no catálogo: arquivo novo na origem devia ser atualização (regra antiga)")
+	}
+	it.Edicao = "2026-08"
+	if desatualizado(it, inst, nova) {
+		t.Error("catálogo ainda na 2026-08: não devia oferecer a 2026-11")
+	}
+	it.Edicao = "2026-11"
+	if !desatualizado(it, inst, nova) {
+		t.Error("catálogo passou para a 2026-11: devia oferecer a atualização")
+	}
+	inst2 := &Instalado{Arquivo: "wiki_2026-12.zim", Edicao: "2026-12", SHA256: "outro"}
+	if desatualizado(it, inst2, nova) {
+		t.Error("instalada mais nova que a do catálogo: não é atualização")
+	}
+
+	gh := &ItemCatalogo{ID: "g_pt", Origem: "github", Repo: "a/b", Tag: "g-latest", Arquivo: "g_pt.zim", Edicao: "2026-11-25"}
+	if err := gh.prepararPadrao(); err != nil {
+		t.Fatal(err)
+	}
+	mes := &Instalado{Arquivo: "g_pt_2026-11.zim", Edicao: "2026-11", SHA256: "x"}
+	if desatualizado(gh, mes, &Disponivel{Arquivo: "g_pt.zim", Edicao: "2026-11-30", SHA256: "y"}) {
+		t.Error("github: instalado 2026-11 (só mês) é a mesma edição que 2026-11-25")
+	}
+	if !desatualizado(gh, &Instalado{Arquivo: "g_pt_2026-10-01.zim", Edicao: "2026-10-01"}, &Disponivel{Arquivo: "g_pt.zim", Edicao: "2026-11-25"}) {
+		t.Error("github: instalado 2026-10-01 com catálogo em 2026-11-25 devia atualizar")
+	}
+}
+
+func TestEdicaoDoCatalogoInvalida(t *testing.T) {
+	base := `{"versao":1,"grupos":[{"id":"g","titulo":"G"}],"zims":[%s]}`
+	ok := `{"id":"w","origem":"kiwix","pasta":"p","grupo":"g","titulo":"W","descricao":"d","edicao":"2026-08"}`
+	if _, err := lerCatalogo([]byte(fmt.Sprintf(base, ok))); err != nil {
+		t.Errorf("edição válida recusada: %v", err)
+	}
+	ruim := `{"id":"w","origem":"kiwix","pasta":"p","grupo":"g","titulo":"W","descricao":"d","edicao":"2026-08-01"}`
+	if _, err := lerCatalogo([]byte(fmt.Sprintf(base, ruim))); err == nil {
+		t.Error("edição do kiwix com dia devia ser recusada")
+	}
+}
+
+func TestEdicaoNaListagem(t *testing.T) {
+	html := `<a href="wiki_2026-08.zim">x</a> <a href="wiki_2026-11.zim">y</a> <a href="wiki_2026-08.zim.meta4">z</a>`
+	it := &ItemCatalogo{ID: "wiki"}
+	if e := edicaoNaListagem(html, it); e != "2026-11" {
+		t.Errorf("sem edição no catálogo: esperava a mais nova, veio %q", e)
+	}
+	it.Edicao = "2026-08"
+	if e := edicaoNaListagem(html, it); e != "2026-08" {
+		t.Errorf("com edição no catálogo: esperava 2026-08, veio %q", e)
+	}
+	it.Edicao = "2026-05" // o Kiwix já apagou: fica com a mais nova
+	if e := edicaoNaListagem(html, it); e != "2026-11" {
+		t.Errorf("edição do catálogo sumiu: esperava 2026-11, veio %q", e)
+	}
+}
+
+// O catalogo.json embutido tem que passar pela validação (inclusive o formato de "edicao").
+func TestCatalogoEmbutidoValido(t *testing.T) {
+	c, err := lerCatalogo(catalogoJSON)
+	if err != nil {
+		t.Fatal(err)
+	}
+	com := 0
+	for _, it := range c.Itens {
+		if it.Edicao != "" {
+			com++
+		}
+	}
+	if com == 0 {
+		t.Error("nenhum item com edição aprovada no catálogo")
+	}
+}

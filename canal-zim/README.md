@@ -135,8 +135,13 @@ gh release create -R $R $P-latest $Z $Z.sha256 --title "$P – mais recente" --n
 ```
 
 Depois entre no [`manager/catalogo.json`](../manager/catalogo.json) com `"origem": "github"`, `"tag": "<id>-latest"`
-e `"arquivo": "<id>_pt.zim"`, a tag `video` e o grupo do assunto. Suba a `versao` do catálogo e a contagem em
-`README.md` e `docs/acervos.md`. O catálogo chega às instalações pelo GitHub depois do push.
+e `"arquivo": "<id>_pt.zim"`, a tag `video`, o grupo do assunto e `"edicao"` com a data do arquivo na release
+(`AAAA-MM-DD`, o `updated_at` do asset: `gh api repos/$R/releases/tags/$P-latest --jq '.assets[0].updated_at'`).
+Suba a `versao` do catálogo e a contagem em `README.md` e `docs/acervos.md`. O catálogo chega às instalações pelo
+GitHub depois do push.
+
+**Numa atualização do ZIM**, refaça e publique o índice, suba o arquivo novo na release `-latest` e só então troque
+`edicao` no catálogo pela data nova: é a troca no catálogo que faz as instalações oferecerem "Atualizar".
 
 ### 6. Limpar
 

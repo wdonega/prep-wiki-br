@@ -29,6 +29,12 @@ type ItemCatalogo struct {
 	URL       string   `json:"url,omitempty"`  // só nos acervos acrescentados por link
 	Titulo    string   `json:"titulo"`
 	Descricao string   `json:"descricao"`
+	// Edicao (opcional) é a edição que o projeto aprovou: a que tem índice de busca. Com ela, quem decide se
+	// há atualização é o catálogo: só há quando o catálogo passa a apontar uma edição mais nova que a
+	// instalada, e o Kiwix entrega essa edição mesmo que já tenha uma mais nova. Sem ela, vale a regra antiga
+	// (mudou o arquivo na origem, há atualização). Versões antigas do gerenciador ignoram o campo.
+	// Formato: AAAA-MM[letra] no Kiwix (como no nome do arquivo); AAAA-MM-DD no GitHub (data do arquivo na release).
+	Edicao string `json:"edicao,omitempty"`
 
 	padrao *regexp.Regexp // reconhece os arquivos deste item na pasta de dados
 }
@@ -91,10 +97,19 @@ func lerCatalogo(b []byte) (*Catalogo, error) {
 		if err := it.prepararPadrao(); err != nil {
 			return nil, err
 		}
+		if it.Edicao != "" && !reEdicaoCatalogo[it.Origem].MatchString(it.Edicao) {
+			return nil, fmt.Errorf("catálogo: %s com edição inválida %q", it.ID, it.Edicao)
+		}
 		c.porID[it.ID] = it
 	}
 	c.Traducao = pacotesValidos(c.Traducao)
 	return &c, nil
+}
+
+// reEdicaoCatalogo: o formato do campo "edicao" de cada origem.
+var reEdicaoCatalogo = map[string]*regexp.Regexp{
+	"kiwix":  regexp.MustCompile(`^\d{4}-\d{2}[a-z]?$`),
+	"github": regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`),
 }
 
 // prepararPadrao monta a expressão que reconhece os arquivos do item na pasta de dados.

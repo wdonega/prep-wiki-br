@@ -86,20 +86,14 @@ func (ls *listagens) da(ctx context.Context, a *App, pasta string) (string, erro
 	return l.html, l.err
 }
 
-// resolverKiwix acha a edição mais nova na listagem da pasta e lê o .meta4 dela
+// resolverKiwix acha na listagem da pasta a edição aprovada no catálogo (ou, sem ela, a mais nova) e lê o .meta4 dela
 // (tamanho, sha-256 e lista de mirrors com prioridade).
 func (a *App) resolverKiwix(ctx context.Context, it *ItemCatalogo, ls *listagens) (*Disponivel, error) {
 	html, err := ls.da(ctx, a, it.Pasta)
 	if err != nil {
 		return nil, err
 	}
-	re := regexp.MustCompile(`href="` + regexp.QuoteMeta(it.ID) + `_(\d{4}-\d{2}[a-z]?)\.zim"`)
-	var edicao string
-	for _, m := range re.FindAllStringSubmatch(html, -1) {
-		if m[1] > edicao {
-			edicao = m[1]
-		}
-	}
+	edicao := edicaoNaListagem(html, it)
 	if edicao == "" {
 		return nil, fmt.Errorf("nenhuma edição de %s em %s", it.ID, kiwixDownload+it.Pasta+"/")
 	}
@@ -107,6 +101,22 @@ func (a *App) resolverKiwix(ctx context.Context, it *ItemCatalogo, ls *listagens
 	direto := kiwixDownload + it.Pasta + "/" + nome
 
 	return a.lerMetalink(ctx, direto, nome, edicao)
+}
+
+// edicaoNaListagem escolhe a edição na listagem da pasta do Kiwix: a aprovada no catálogo, enquanto o
+// Kiwix ainda a tiver, ou a mais nova. "" se não houver nenhuma.
+func edicaoNaListagem(html string, it *ItemCatalogo) string {
+	re := regexp.MustCompile(`href="` + regexp.QuoteMeta(it.ID) + `_(\d{4}-\d{2}[a-z]?)\.zim"`)
+	var edicao string
+	for _, m := range re.FindAllStringSubmatch(html, -1) {
+		if m[1] == it.Edicao {
+			return m[1]
+		}
+		if m[1] > edicao {
+			edicao = m[1]
+		}
+	}
+	return edicao
 }
 
 // lerMetalink lê o .meta4 que o download.kiwix.org publica ao lado de cada arquivo:

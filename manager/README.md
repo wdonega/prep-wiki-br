@@ -141,10 +141,17 @@ O [`catalogo.json`](catalogo.json) define quais acervos existem. Ele vai embutid
 | `tema` | Opcional: subdivisão dentro do grupo, só para organizar a lista. |
 | `tags` | Opcional: etiquetas. As definidas no bloco `tags` do catálogo ganham título e cor. |
 | `titulo`, `descricao` | O que aparece na biblioteca e no gerenciador. |
+| `edicao` | Opcional: a edição aprovada, a que tem índice de busca. `AAAA-MM` no Kiwix (como no nome do arquivo), `AAAA-MM-DD` no GitHub (a data do arquivo na release). Veja abaixo. |
 
 - **O que sai do catálogo** e está baixado não some: vai para o grupo "Fora do catálogo" até ser apagado.
 - **Cor de uma tag:** um nome da paleta (`amarelo`, `verde`, `azul`, `vermelho`, `cinza`), que se ajusta ao tema, ou um hexadecimal.
 - **Pacote de tradução:** o bloco `traducao` lista os arquivos (motor Bergamot e modelo), cada um com tamanho, sha-256 e endereços. Para trocar um arquivo ou acrescentar um mirror, mude o bloco e suba a `versao` do pacote.
+- **Atualizações e o campo `edicao`:** sem o campo, o gerenciador oferece "Atualizar" sempre que o arquivo muda
+  na origem (o Kiwix lança uma edição nova, a release ganha outro arquivo). Com o campo, quem decide é o catálogo:
+  só há atualização quando `edicao` passa a ser mais nova que a instalada, e o Kiwix entrega a edição do catálogo
+  mesmo que já tenha uma mais nova (se ela sumir de lá, vem a mais nova). Assim a edição nova só chega junto com o
+  índice dela. **Fluxo:** indexe a edição nova, publique o índice no Hugging Face, troque `edicao` aqui e suba a
+  `versao`. Versões antigas do gerenciador ignoram o campo e seguem com a regra antiga.
 - **Depois de mexer,** copie o catálogo para `zimdex/catalogo.json` se o acervo novo for ganhar índice de busca.
 
 ## Detalhes que economizam tempo
