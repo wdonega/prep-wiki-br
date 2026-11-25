@@ -415,7 +415,7 @@ def main():
         for k, v in {
             "Name": "chuvas-tempestades_pt_all",
             "Title": "Chuva forte e tempestade",
-            "Description": "O que fazer antes, durante e depois de enchente, vendaval, granizo, raio e deslizamento",
+            "Description": "O que fazer antes, durante e depois de enchente, vendaval, raio e deslizamento",
             "LongDescription": ("Guia offline para desastres de chuva e tempestade no Brasil: alertas, kit e plano da "
                                 "família, alagamento, carro na água, ficar ilhado, enxurrada, deslizamento, vendaval e "
                                 "destelhamento, lona no telhado passo a passo, granizo, raio, tornado, falta de energia, "

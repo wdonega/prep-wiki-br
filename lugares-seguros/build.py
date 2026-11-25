@@ -493,7 +493,7 @@ def main():
         for k, v in {
             "Name": "lugares-seguros_pt_all",
             "Title": TITULO,
-            "Description": "Onde morar com mais segurança no Brasil: critérios de Strategic Relocation aplicados às UFs",
+            "Description": "Onde morar com mais segurança no Brasil: notas das 27 UFs e rotas de fuga",
             "LongDescription": ("Guia offline que explica, com palavras próprias e com a página do livro, os critérios "
                                 "de Strategic Relocation (Joel M. Skousen e Andrew L. Skousen, 2010) para escolher um "
                                 "lugar seguro para morar, e os aplica ao Brasil: clima e desastres (El Niño 2026-27 e "

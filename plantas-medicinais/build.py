@@ -607,7 +607,7 @@ def main():
                                 "Formulário de Fitoterápicos da Farmacopeia Brasileira (3ª ed., Anvisa, 2026), "
                                 "preparo e manipulação, cultivo (Embrapa) e uso seguro e fitoterapia no SUS "
                                 "(Ministério da Saúde). Índices por nome popular, científico e indicação."),
-            "Language": "por", "Creator": "Anvisa; Ministério da Saúde; Embrapa", "Publisher": "Coleção pessoal",
+            "Language": "por", "Creator": "Anvisa; Ministério da Saúde; Embrapa", "Publisher": "Prep Wiki BR",
             "Date": datetime.date.today().isoformat(),
             "Tags": "saúde;fitoterapia",
             "Source": "https://bibliotecadigital.anvisa.gov.br/jspui/handle/anvisa/21045",
