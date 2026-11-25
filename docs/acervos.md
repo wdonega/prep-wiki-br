@@ -8,9 +8,9 @@ Você instala só o que quiser. Os tamanhos são os que o gerenciador mostrava e
 
 | Grupo | Acervos | Tamanho do grupo | O que tem |
 |---|---|---|---|
-| **Deste projeto** | 4 | 47 MB | Sisteminha Embrapa, Plantas Medicinais, Chuva forte e tempestade, Lugares seguros no Brasil |
+| **Deste projeto** | 5 | 1,2 GB | Sisteminha Embrapa, Plantas Medicinais, Chuva forte e tempestade, Lugares seguros no Brasil, Guia do Sobrevivente · Alimentos |
 | **Emergências e preparação** | 15 | 29,7 GB | Post Disaster Resource Library, Ready.gov, True Prepper, Manuais do Exército dos EUA, A Library of Knots, Nós (Wikipédia em inglês), The Great Outdoors Q&A, Amateur Radio Q&A, Rabbit Waves, Learning Self-Reliance, Urban Prepper, Canadian Prepper · Bug Out Concepts, Canadian Prepper · Bug Out Roll, Canadian Prepper · Winter Prepping, S2 Underground |
-| **Água, comida e horta** | 11 | 5,0 GB | Guia do Sobrevivente · Alimentos, Water Treatment Library, Food for Preppers, Guia de conservas caseiras (USDA), Gardening & Landscaping Q&A, Gardenology, Seasoned Advice Q&A, Grim Grains, Based Cooking, Sustainable Living Q&A, Canadian Prepper · Prepping Food |
+| **Água, comida e horta** | 10 | 3,8 GB | Water Treatment Library, Food for Preppers, Guia de conservas caseiras (USDA), Gardening & Landscaping Q&A, Gardenology, Seasoned Advice Q&A, Grim Grains, Based Cooking, Sustainable Living Q&A, Canadian Prepper · Prepping Food |
 | **Saúde** | 11 | 7,8 GB | Wikipédia: Medicina · com imagens, Wikipédia: Medicina · sem imagens, Medical Library, MDWiki, Medicina (Wikipédia em inglês), MedlinePlus, Remédios de A a Z (NHS), Saúde do viajante (CDC), Military Medicine, Surviving Residency, WikiVet |
 | **Energia e baixa tecnologia** | 6 | 2,9 GB | Low-tech Magazine, Hundred Rabbits, Appropedia, energypedia, CD3WD, Permacomputing |
 | **Consertos e habilidades** | 8 | 15,4 GB | iFixit, iFixit (em inglês), Restarters, Home Improvement Q&A, Motor Vehicle Maintenance Q&A, Electrical Engineering Q&A, Woodworking Q&A, Bicycles Q&A |

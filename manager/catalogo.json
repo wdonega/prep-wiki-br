@@ -1,5 +1,5 @@
 {
-  "versao": 12,
+  "versao": 13,
   "grupos": [
     {"id": "projeto", "titulo": "Deste projeto"},
     {"id": "emergencias", "titulo": "Emergências e preparação"},
@@ -41,6 +41,7 @@
     {"id": "plantas-medicinais_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "plantas-medicinais-latest", "arquivo": "plantas-medicinais_pt.zim", "grupo": "projeto", "tags": ["recomendado"], "titulo": "Plantas Medicinais", "descricao": "85 plantas do Formulário de Fitoterápicos da Anvisa, com preparo, cultivo e uso seguro no SUS."},
     {"id": "chuvas-tempestades_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "chuvas-tempestades-latest", "arquivo": "chuvas-tempestades_pt.zim", "grupo": "projeto", "tags": ["lancamento", "recomendado"], "titulo": "Chuva forte e tempestade", "descricao": "O que fazer antes, durante e depois de enchente, vendaval, granizo, raio e deslizamento: ilhado, carro na água, lona no telhado, saúde e direitos."},
     {"id": "lugares-seguros_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "lugares-seguros-latest", "arquivo": "lugares-seguros_pt.zim", "grupo": "projeto", "tags": ["lancamento", "recomendado"], "titulo": "Lugares seguros no Brasil", "descricao": "Onde morar com mais segurança no longo prazo: mapa das notas das 27 UFs em crime, desastres, densidade e autossuficiência, com regiões, fronteiras e rotas de fuga."},
+    {"id": "guia-do-sobrevivente-alimentos_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "guia-do-sobrevivente-alimentos-latest", "arquivo": "guia-do-sobrevivente-alimentos_pt.zim", "grupo": "projeto", "tags": ["video", "lancamento"], "titulo": "Guia do Sobrevivente · Alimentos", "descricao": "48 vídeos em português do Protocolo 550 sobre como armazenar alimentos, com transcrição, resumo e capítulos."},
 
     {"id": "zimgit-post-disaster_en", "origem": "kiwix", "pasta": "other", "grupo": "emergencias", "tags": ["ingles"], "titulo": "Post Disaster Resource Library", "descricao": "Coleção de materiais para depois de um desastre."},
     {"id": "ready.gov_en_all", "origem": "kiwix", "pasta": "zimit", "grupo": "emergencias", "tags": ["ingles"], "titulo": "Ready.gov", "descricao": "Planos e kits de emergência do governo dos EUA, para cada tipo de desastre."},
@@ -68,7 +69,6 @@
     {"id": "based.cooking_en_all", "origem": "kiwix", "pasta": "zimit", "grupo": "agua-comida", "tags": ["ingles"], "titulo": "Based Cooking", "descricao": "Receitas simples enviadas pela comunidade."},
     {"id": "sustainability.stackexchange.com_en_all", "origem": "kiwix", "pasta": "stack_exchange", "grupo": "agua-comida", "tags": ["ingles"], "titulo": "Sustainable Living Q&A", "descricao": "Perguntas e respostas sobre vida sustentável."},
     {"id": "canadian-prepper_en_preppingfood", "origem": "kiwix", "pasta": "videos", "grupo": "agua-comida", "tags": ["video", "ingles"], "titulo": "Canadian Prepper · Prepping Food", "descricao": "Armazenamento de comida de longo prazo e refeições de sobrevivência."},
-    {"id": "guia-do-sobrevivente-alimentos_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "guia-do-sobrevivente-alimentos-latest", "arquivo": "guia-do-sobrevivente-alimentos_pt.zim", "grupo": "agua-comida", "tags": ["video", "lancamento"], "titulo": "Guia do Sobrevivente · Alimentos", "descricao": "48 vídeos em português do Protocolo 550 sobre como armazenar alimentos, com transcrição, resumo e capítulos."},
 
     {"id": "wikipedia_pt_medicine_maxi", "origem": "kiwix", "pasta": "wikipedia", "grupo": "saude", "titulo": "Wikipédia: Medicina · com imagens", "descricao": "Os artigos de saúde da Wikipédia, com imagens. Já estão na Wikipédia completa."},
     {"id": "wikipedia_pt_medicine_nopic", "origem": "kiwix", "pasta": "wikipedia", "grupo": "saude", "titulo": "Wikipédia: Medicina · sem imagens", "descricao": "Os artigos de saúde da Wikipédia, só texto. Já estão na Wikipédia completa."},
