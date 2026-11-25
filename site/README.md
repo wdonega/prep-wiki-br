@@ -26,9 +26,10 @@ Para publicar na mão: `cd site && npx wrangler deploy --name prep-wiki-br-site`
 | Arquivo | O que é |
 |---|---|
 | `index.html` | A página inicial: marcação, estilo e scripts, tudo no mesmo arquivo. |
-| `baixar.html` | A página de baixar: uma aba por sistema, com todos os pacotes, os passos e o "depois de instalar". No Linux, a escolha é por distribuição. É para onde vão o cartão de baixar e o link "Outro sistema ou formato". |
+| `baixar.html` | A página de baixar: uma aba por sistema, com todos os pacotes, e a aba Acervos, com o link de cada `.zim` do catálogo, os passos e o "depois de instalar". No Linux, a escolha é por distribuição. É para onde vão o cartão de baixar e o link "Outro sistema ou formato". |
 | `mac.html` | O passo a passo do Mac pelo Homebrew. A aba Mac da `baixar.html` resume e aponta para ele. |
 | `docker.html` | O passo a passo de instalação pelo Docker, para quem nunca usou. A aba Docker da `baixar.html` resume e aponta para ele. |
+| `gerar_acervos.py` | Gera a aba Acervos da `baixar.html` (entre os marcadores `acervos:inicio` e `acervos:fim`) a partir do `manager/catalogo.json`, com o tamanho de cada arquivo lido na hora. Rode `python3 site/gerar_acervos.py` sempre que o catálogo mudar. Não vai ao ar. |
 | `base.css` | Zera os estilos do navegador. |
 | `img/` | Gravuras, recortes, capturas do app e o QR do PIX. |
 | `modelos/lampiao.glb` | O lampião em 3D da primeira tela (6 MB). |

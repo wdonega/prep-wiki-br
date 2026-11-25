@@ -69,7 +69,7 @@
   .capa .aceso { font-size: clamp(44px, 7vw, 124px); line-height: .9; }
 
   /* ---- as abas: uma por sistema ---- */
-  .sistemas { margin-top: 5vh; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .sistemas { margin-top: 5vh; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
   .sistemas a { display: flex; flex-direction: column; gap: 8px; min-height: 92px; padding: 16px 18px; border-radius: 20px; background: rgba(243,234,208,.04); box-shadow: inset 0 0 0 1px rgba(243,234,208,.14); transition: background .25s, box-shadow .25s, color .2s, transform .25s; }
   .sistemas a:hover { box-shadow: inset 0 0 0 1px rgba(246,183,74,.45); transform: translateY(-2px); }
   .sistemas a[aria-current="true"] { background: rgba(246,183,74,.13); box-shadow: inset 0 0 0 1px rgba(246,183,74,.6), 0 0 40px rgba(246,160,60,.12); color: #ffd27a; }
@@ -103,6 +103,18 @@
   .pacotes .tam { font: 500 12.5px/1 "DM Mono", ui-monospace, monospace; color: #cfc8ae; white-space: nowrap; }
   .pacotes li > a { display: inline-flex; align-items: center; justify-content: center; min-width: 86px; min-height: 44px; padding: 0 16px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.5); color: #f6e3b4; font-size: 14.5px; font-weight: 600; transition: background .2s; }
   .pacotes li > a:hover { background: rgba(246,183,74,.12); }
+  /* ---- a aba Acervos: os .zim do catálogo, por grupo ---- */
+  .acervos-dl .rot { margin-top: 10px; } .acervos-dl .tambem { margin-top: 0; } .acervos-dl .tambem + .tambem { margin-top: 12px; }
+  .acervos-dl code { font: 400 .9em "DM Mono", ui-monospace, monospace; color: #f4dfae; }
+  .grupo { border-top: 1px solid rgba(243,234,208,.14); } .grupo:last-child { border-bottom: 1px solid rgba(243,234,208,.14); }
+  .grupo summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; min-height: 56px; padding: 16px 0; cursor: pointer; list-style: none; }
+  .grupo summary::-webkit-details-marker { display: none; }
+  .grupo summary b { font-size: 19px; font-weight: 700; } .grupo summary b::before { content: "+"; display: inline-block; width: 22px; color: var(--ambar); }
+  .grupo[open] summary b::before { content: "–"; } .grupo summary small { font-size: 14px; font-weight: 500; color: #b9b79f; }
+  .grupo summary .mono { font-size: 12.5px; color: #cfc8ae; } .grupo summary:hover b { color: #ffd27a; }
+  .grupo ul { margin: 0 0 14px 22px; }
+  .pacotes .desc { display: block; margin-top: 3px; font-size: 14.5px; line-height: 1.4; color: #cfc8ae; }
+  .pacotes .etq { margin-left: 8px; padding: 2px 8px; border-radius: 999px; font: normal 500 11.5px/1.4 "DM Mono", ui-monospace, monospace; color: #b3c4b0; box-shadow: inset 0 0 0 1px rgba(179,196,176,.35); white-space: nowrap; }
   .passos { counter-reset: p; margin-top: 18px; display: flex; flex-direction: column; gap: 24px; }
   .passos > li { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 16px; align-items: start; }
   .passos > li::before { counter-increment: p; content: counter(p); display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(246,183,74,.5); color: #ffd27a; font: 500 14px/1 "DM Mono", ui-monospace, monospace; }
@@ -159,7 +171,7 @@
     .topo .apoio { width: 44px; padding: 0; justify-content: center; } .topo .apoio span { display: none; }
     .sec { padding: 8vh 5.5vw; } .capa { padding-top: 15vh; } .lead { font-size: 17px; }
     .capa .aceso { font-size: clamp(42px, 13vw, 78px); }
-    .sistemas { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sistemas a:last-child { grid-column: 1 / -1; }
+    .sistemas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .sistemas a { min-height: 0; padding: 14px; } .sistemas b { font-size: 17px; } .sistemas small { font-size: 13px; }
     /* no celular a etiqueta "seu sistema" desce para a linha de baixo, em vez de vazar a aba */
     .sistemas span { flex-wrap: wrap; row-gap: 6px; } .sistemas .seu { order: 3; margin-left: 0; }
@@ -170,7 +182,7 @@
   }
   @media (max-width: 600px) {
     /* no celular as cinco abas cabem numa linha: só ícone e nome; "seu sistema" vira um ponto âmbar no canto */
-    .sistemas { margin-top: 3vh; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; } .sistemas a:last-child { grid-column: auto; }
+    .sistemas { margin-top: 3vh; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
     .sistemas a { position: relative; align-items: center; padding: 10px 0 9px; border-radius: 14px; }
     .sistemas span { flex-direction: column; gap: 5px; } .sistemas svg { width: 24px; height: 24px; }
     .sistemas b { font-size: 12px; letter-spacing: 0; } .sistemas small { display: none; }
@@ -203,6 +215,7 @@
       <a href="#mac" data-so="mac"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7c-3 0-4 3-4 5.5c0 3 2 7.5 4 7.5c1.088-.046 1.679-.5 3-.5c1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3c-.019-2.170 2.416-2.954 2.500-3c-1.023-1.492-2.951-1.963-3.500-2c-1.433-.111-2.830 1-3.500 1c-.680 0-1.900-1-3-1zM12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/></svg><b>Mac</b><i class="seu" hidden>seu sistema</i></span><small>Pelo Homebrew</small></a>
       <a href="#linux" data-so="linux"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.200a3 3 0 0 1 6 0v1.900c0 1.500.9 2.500 1.800 3.800.9 1.300 1.700 2.800 1.700 4.400 0 .6-.1 1.100-.3 1.600M9 7.200v1.900c0 1.500-.9 2.500-1.800 3.800-.9 1.300-1.700 2.800-1.700 4.400 0 .6.1 1.100.3 1.600M4.500 21h4.300c.9 0 1.300-.9.800-1.600l-1.500-2.100M19.500 21h-4.300c-.9 0-1.300-.9-.8-1.600l1.500-2.100M9.600 21h4.800M10.800 9.200l1.200.9 1.200-.9M10.600 6.800v.01M13.400 6.800v.01"/></svg><b>Linux</b><i class="seu" hidden>seu sistema</i></span><small>Debian, Ubuntu, Fedora e outras</small></a>
       <a href="#docker" data-so="docker"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.540c-1.804-.345-2.701-1.080-3.523-2.940-.487.696-1.102 1.568-.920 2.400.028.238-.320 1.002-.557 1h-14c0 5.208 3.164 7 6.196 7 4.124.022 7.828-1.376 9.854-5 1.146-.101 2.296-1.505 2.950-2.460zM5 10h3v3H5zM8 10h3v3H8zM11 10h3v3h-3zM8 7h3v3H8zM11 7h3v3h-3zM11 4h3v3h-3zM10 16v.01"/></svg><b>Docker</b><i class="seu" hidden>seu sistema</i></span><small>PC ou Raspberry Pi</small></a>
+      <a href="#acervos" data-so="acervos"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4v16H5zM9 4h4v16H9zM13.5 5.5l3.8-1 4 15.400-3.800 1z"/></svg><b>Acervos</b><i class="seu" hidden>seu sistema</i></span><small>Os arquivos .zim</small></a>
     </nav>
 
     <!-- ===== Android ===== -->
@@ -392,6 +405,166 @@ sudo apt install ./prep-wiki-br_0.1.1_amd64.deb</pre></div></div></li>
       </div>
     </section>
 
+    <!-- acervos:inicio -->
+    <!-- Gerado por site/gerar_acervos.py a partir do manager/catalogo.json: não edite à mão. -->
+    <section class="painel acervos-dl" id="acervos" aria-labelledby="t-acervos" hidden>
+      <div class="painel__grade">
+        <div>
+          <h2 id="t-acervos">Baixar os acervos</h2>
+          <p class="mono rot">Para levar no pendrive</p>
+        </div>
+        <div>
+          <p class="tambem">O app baixa os acervos por você. Aqui estão, todos do catálogo, em arquivo, para baixar num computador e levar para um aparelho sem internet. Cada um é um arquivo <code>.zim</code>, que abre no Prep Wiki BR ou em qualquer Kiwix.</p>
+        </div>
+      </div>
+      <div class="pacotes">
+      <details class="grupo" open>
+        <summary><b>Deste projeto</b><span class="mono">5 acervos · 1,2 GB</span></summary>
+        <ul>
+          <li><span><b>Sisteminha Embrapa</b><i class="etq">Exclusivo</i><span class="desc">Produção integrada de alimentos no quintal: tanque de peixes com biofiltro, aves, horta e compostagem.</span><span class="arq">sisteminha-embrapa_pt.zim</span></span><span class="tam">16 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/sisteminha-embrapa-latest/sisteminha-embrapa_pt.zim" aria-label="Baixar Sisteminha Embrapa">Baixar</a></li>
+          <li><span><b>Plantas Medicinais</b><i class="etq">Exclusivo</i><span class="desc">85 plantas do Formulário de Fitoterápicos da Anvisa, com preparo, cultivo e uso seguro no SUS.</span><span class="arq">plantas-medicinais_pt.zim</span></span><span class="tam">29 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/plantas-medicinais-latest/plantas-medicinais_pt.zim" aria-label="Baixar Plantas Medicinais">Baixar</a></li>
+          <li><span><b>Chuva forte e tempestade</b><i class="etq">Exclusivo</i><span class="desc">O que fazer antes, durante e depois de enchente, vendaval, granizo, raio e deslizamento: ilhado, carro na água, lona no telhado, saúde e direitos.</span><span class="arq">chuvas-tempestades_pt.zim</span></span><span class="tam">0,6 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/chuvas-tempestades-latest/chuvas-tempestades_pt.zim" aria-label="Baixar Chuva forte e tempestade">Baixar</a></li>
+          <li><span><b>Lugares seguros no Brasil</b><i class="etq">Exclusivo</i><span class="desc">Onde morar com mais segurança no longo prazo: mapa das notas das 27 UFs em crime, desastres, densidade e autossuficiência, com regiões, fronteiras e rotas de fuga.</span><span class="arq">lugares-seguros_pt.zim</span></span><span class="tam">1,6 MB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/lugares-seguros-latest/lugares-seguros_pt.zim" aria-label="Baixar Lugares seguros no Brasil">Baixar</a></li>
+          <li><span><b>Guia do Sobrevivente · Alimentos</b><i class="etq">Exclusivo</i><i class="etq">Vídeo</i><span class="desc">48 vídeos em português do Protocolo 550 sobre como armazenar alimentos, com transcrição, resumo e capítulos.</span><span class="arq">guia-do-sobrevivente-alimentos_pt.zim</span></span><span class="tam">1,2 GB</span><a href="https://github.com/wdonega/prep-wiki-br/releases/download/guia-do-sobrevivente-alimentos-latest/guia-do-sobrevivente-alimentos_pt.zim" aria-label="Baixar Guia do Sobrevivente · Alimentos">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Emergências e preparação</b><span class="mono">15 acervos · 29,5 GB</span></summary>
+        <ul>
+          <li><span><b>Post Disaster Resource Library</b><span class="desc">Coleção de materiais para depois de um desastre.</span><span class="arq">zimgit-post-disaster_en.zim</span></span><span class="tam">645 MB</span><a href="https://download.kiwix.org/zim/zimgit-post-disaster_en.zim" aria-label="Baixar Post Disaster Resource Library">Baixar</a></li>
+          <li><span><b>Ready.gov</b><span class="desc">Planos e kits de emergência do governo dos EUA, para cada tipo de desastre.</span><span class="arq">ready.gov_en_all.zim</span></span><span class="tam">2,1 GB</span><a href="https://download.kiwix.org/zim/ready.gov_en_all.zim" aria-label="Baixar Ready.gov">Baixar</a></li>
+          <li><span><b>True Prepper</b><span class="desc">Guias práticos de preparação: kits, listas e armazenamento.</span><span class="arq">trueprepper.com_en_all.zim</span></span><span class="tam">1,4 GB</span><a href="https://download.kiwix.org/zim/trueprepper.com_en_all.zim" aria-label="Baixar True Prepper">Baixar</a></li>
+          <li><span><b>Manuais do Exército dos EUA</b><span class="desc">Publicações oficiais do Army Publishing Directorate, incluindo os manuais de campo.</span><span class="arq">armypubs_en_all.zim</span></span><span class="tam">8,2 GB</span><a href="https://download.kiwix.org/zim/armypubs_en_all.zim" aria-label="Baixar Manuais do Exército dos EUA">Baixar</a></li>
+          <li><span><b>A Library of Knots</b><span class="desc">Material ilustrado sobre nós, amarrações, escadas e suturas.</span><span class="arq">zimgit-knots_en.zim</span></span><span class="tam">28 MB</span><a href="https://download.kiwix.org/zim/zimgit-knots_en.zim" aria-label="Baixar A Library of Knots">Baixar</a></li>
+          <li><span><b>Nós (Wikipédia em inglês)</b><span class="desc">Os artigos da Wikipédia em inglês sobre nós.</span><span class="arq">wikipedia_en_knots_maxi.zim</span></span><span class="tam">14 MB</span><a href="https://download.kiwix.org/zim/wikipedia_en_knots_maxi.zim" aria-label="Baixar Nós (Wikipédia em inglês)">Baixar</a></li>
+          <li><span><b>The Great Outdoors Q&amp;A</b><span class="desc">Perguntas e respostas sobre acampamento, trilha e vida ao ar livre.</span><span class="arq">outdoors.stackexchange.com_en_all.zim</span></span><span class="tam">142 MB</span><a href="https://download.kiwix.org/zim/outdoors.stackexchange.com_en_all.zim" aria-label="Baixar The Great Outdoors Q&amp;A">Baixar</a></li>
+          <li><span><b>Amateur Radio Q&amp;A</b><span class="desc">Perguntas e respostas sobre radioamadorismo.</span><span class="arq">ham.stackexchange.com_en_all.zim</span></span><span class="tam">77 MB</span><a href="https://download.kiwix.org/zim/ham.stackexchange.com_en_all.zim" aria-label="Baixar Amateur Radio Q&amp;A">Baixar</a></li>
+          <li><span><b>Rabbit Waves</b><span class="desc">Conhecimento útil em forma de quadrinhos.</span><span class="arq">rabbitwaves.ca_en_all.zim</span></span><span class="tam">81 MB</span><a href="https://download.kiwix.org/zim/rabbitwaves.ca_en_all.zim" aria-label="Baixar Rabbit Waves">Baixar</a></li>
+          <li><span><b>Learning Self-Reliance</b><i class="etq">Vídeo</i><span class="desc">Canal sobre preparação, sobrevivência e apicultura.</span><span class="arq">lrnselfreliance_en_all.zim</span></span><span class="tam">4,0 GB</span><a href="https://download.kiwix.org/zim/lrnselfreliance_en_all.zim" aria-label="Baixar Learning Self-Reliance">Baixar</a></li>
+          <li><span><b>Urban Prepper</b><i class="etq">Vídeo</i><span class="desc">Preparação para emergências na cidade.</span><span class="arq">urban-prepper_en_all.zim</span></span><span class="tam">2,2 GB</span><a href="https://download.kiwix.org/zim/urban-prepper_en_all.zim" aria-label="Baixar Urban Prepper">Baixar</a></li>
+          <li><span><b>Canadian Prepper · Bug Out Concepts</b><i class="etq">Vídeo</i><span class="desc">Estratégias e dicas para planos de evacuação.</span><span class="arq">canadian-prepper_en_bugoutconcepts.zim</span></span><span class="tam">2,9 GB</span><a href="https://download.kiwix.org/zim/canadian-prepper_en_bugoutconcepts.zim" aria-label="Baixar Canadian Prepper · Bug Out Concepts">Baixar</a></li>
+          <li><span><b>Canadian Prepper · Bug Out Roll</b><i class="etq">Vídeo</i><span class="desc">Equipamento essencial para a mochila de evacuação.</span><span class="arq">canadian-prepper_en_bugoutroll.zim</span></span><span class="tam">879 MB</span><a href="https://download.kiwix.org/zim/canadian-prepper_en_bugoutroll.zim" aria-label="Baixar Canadian Prepper · Bug Out Roll">Baixar</a></li>
+          <li><span><b>Canadian Prepper · Winter Prepping</b><i class="etq">Vídeo</i><span class="desc">Preparação para o inverno e suas emergências.</span><span class="arq">canadian-prepper_en_winterprepping.zim</span></span><span class="tam">1,3 GB</span><a href="https://download.kiwix.org/zim/canadian-prepper_en_winterprepping.zim" aria-label="Baixar Canadian Prepper · Winter Prepping">Baixar</a></li>
+          <li><span><b>S2 Underground</b><i class="etq">Vídeo</i><span class="desc">Inteligência e comunicações para tempos difíceis.</span><span class="arq">s2underground_en_all.zim</span></span><span class="tam">5,5 GB</span><a href="https://download.kiwix.org/zim/s2underground_en_all.zim" aria-label="Baixar S2 Underground">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Água, comida e horta</b><span class="mono">10 acervos · 3,7 GB</span></summary>
+        <ul>
+          <li><span><b>Water Treatment Library</b><span class="desc">Materiais sobre coleta e purificação de água.</span><span class="arq">zimgit-water_en.zim</span></span><span class="tam">21 MB</span><a href="https://download.kiwix.org/zim/zimgit-water_en.zim" aria-label="Baixar Water Treatment Library">Baixar</a></li>
+          <li><span><b>Food for Preppers</b><span class="desc">Receitas e técnicas de preparo de alimentos.</span><span class="arq">zimgit-food-preparation_en.zim</span></span><span class="tam">98 MB</span><a href="https://download.kiwix.org/zim/zimgit-food-preparation_en.zim" aria-label="Baixar Food for Preppers">Baixar</a></li>
+          <li><span><b>Guia de conservas caseiras (USDA)</b><span class="desc">Recomendações do Departamento de Agricultura dos EUA para fazer conservas em casa com segurança.</span><span class="arq">usda-2015_en.zim</span></span><span class="tam">20 MB</span><a href="https://download.kiwix.org/zim/usda-2015_en.zim" aria-label="Baixar Guia de conservas caseiras (USDA)">Baixar</a></li>
+          <li><span><b>Gardening &amp; Landscaping Q&amp;A</b><span class="desc">Perguntas e respostas sobre horta e jardinagem.</span><span class="arq">gardening.stackexchange.com_en_all.zim</span></span><span class="tam">933 MB</span><a href="https://download.kiwix.org/zim/gardening.stackexchange.com_en_all.zim" aria-label="Baixar Gardening &amp; Landscaping Q&amp;A">Baixar</a></li>
+          <li><span><b>Gardenology</b><span class="desc">Enciclopédia de plantas e jardinagem.</span><span class="arq">gardenology.org_en_all.zim</span></span><span class="tam">112 MB</span><a href="https://download.kiwix.org/zim/gardenology.org_en_all.zim" aria-label="Baixar Gardenology">Baixar</a></li>
+          <li><span><b>Seasoned Advice Q&amp;A</b><span class="desc">Perguntas e respostas sobre cozinha.</span><span class="arq">cooking.stackexchange.com_en_all.zim</span></span><span class="tam">238 MB</span><a href="https://download.kiwix.org/zim/cooking.stackexchange.com_en_all.zim" aria-label="Baixar Seasoned Advice Q&amp;A">Baixar</a></li>
+          <li><span><b>Grim Grains</b><span class="desc">Receitas de Rek Bell e Devine Lu Linvega, do Hundred Rabbits.</span><span class="arq">grimgrains_en_all.zim</span></span><span class="tam">27 MB</span><a href="https://download.kiwix.org/zim/grimgrains_en_all.zim" aria-label="Baixar Grim Grains">Baixar</a></li>
+          <li><span><b>Based Cooking</b><span class="desc">Receitas simples enviadas pela comunidade.</span><span class="arq">based.cooking_en_all.zim</span></span><span class="tam">23 MB</span><a href="https://download.kiwix.org/zim/based.cooking_en_all.zim" aria-label="Baixar Based Cooking">Baixar</a></li>
+          <li><span><b>Sustainable Living Q&amp;A</b><span class="desc">Perguntas e respostas sobre vida sustentável.</span><span class="arq">sustainability.stackexchange.com_en_all.zim</span></span><span class="tam">28 MB</span><a href="https://download.kiwix.org/zim/sustainability.stackexchange.com_en_all.zim" aria-label="Baixar Sustainable Living Q&amp;A">Baixar</a></li>
+          <li><span><b>Canadian Prepper · Prepping Food</b><i class="etq">Vídeo</i><span class="desc">Armazenamento de comida de longo prazo e refeições de sobrevivência.</span><span class="arq">canadian-prepper_en_preppingfood.zim</span></span><span class="tam">2,2 GB</span><a href="https://download.kiwix.org/zim/canadian-prepper_en_preppingfood.zim" aria-label="Baixar Canadian Prepper · Prepping Food">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Saúde</b><span class="mono">11 acervos · 7,4 GB</span></summary>
+        <ul>
+          <li><span><b>Wikipédia: Medicina · com imagens</b><span class="desc">Os artigos de saúde da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_medicine_maxi.zim</span></span><span class="tam">294 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_medicine_maxi.zim" aria-label="Baixar Wikipédia: Medicina · com imagens">Baixar</a></li>
+          <li><span><b>Wikipédia: Medicina · sem imagens</b><span class="desc">Os artigos de saúde da Wikipédia, só texto. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_medicine_nopic.zim</span></span><span class="tam">122 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_medicine_nopic.zim" aria-label="Baixar Wikipédia: Medicina · sem imagens">Baixar</a></li>
+          <li><span><b>Medical Library</b><span class="desc">Livros de medicina de campo e de emergência.</span><span class="arq">zimgit-medicine_en.zim</span></span><span class="tam">70 MB</span><a href="https://download.kiwix.org/zim/zimgit-medicine_en.zim" aria-label="Baixar Medical Library">Baixar</a></li>
+          <li><span><b>MDWiki</b><span class="desc">Enciclopédia médica com artigos de saúde curados pelo WikiProjectMed.</span><span class="arq">mdwiki_en_all_maxi.zim</span></span><span class="tam">2,3 GB</span><a href="https://download.kiwix.org/zim/mdwiki_en_all_maxi.zim" aria-label="Baixar MDWiki">Baixar</a></li>
+          <li><span><b>Medicina (Wikipédia em inglês)</b><span class="desc">Os artigos de saúde da Wikipédia em inglês, com imagens.</span><span class="arq">wikipedia_en_medicine_maxi.zim</span></span><span class="tam">1,9 GB</span><a href="https://download.kiwix.org/zim/wikipedia_en_medicine_maxi.zim" aria-label="Baixar Medicina (Wikipédia em inglês)">Baixar</a></li>
+          <li><span><b>MedlinePlus</b><span class="desc">Informação de saúde para o público, da Biblioteca Nacional de Medicina dos EUA.</span><span class="arq">medlineplus.gov_en_all.zim</span></span><span class="tam">1,9 GB</span><a href="https://download.kiwix.org/zim/medlineplus.gov_en_all.zim" aria-label="Baixar MedlinePlus">Baixar</a></li>
+          <li><span><b>Remédios de A a Z (NHS)</b><span class="desc">Como cada remédio funciona, como e quando tomar. Do serviço de saúde britânico.</span><span class="arq">nhs.uk_en_medicines.zim</span></span><span class="tam">17 MB</span><a href="https://download.kiwix.org/zim/nhs.uk_en_medicines.zim" aria-label="Baixar Remédios de A a Z (NHS)">Baixar</a></li>
+          <li><span><b>Saúde do viajante (CDC)</b><span class="desc">Orientações do Centro de Controle de Doenças dos EUA para viajantes.</span><span class="arq">wwwnc.cdc.gov_en_all.zim</span></span><span class="tam">178 MB</span><a href="https://download.kiwix.org/zim/wwwnc.cdc.gov_en_all.zim" aria-label="Baixar Saúde do viajante (CDC)">Baixar</a></li>
+          <li><span><b>Military Medicine</b><span class="desc">Manuais doutrinários e de instrução de medicina militar.</span><span class="arq">irp.fas.org_en_military-medicine.zim</span></span><span class="tam">65 MB</span><a href="https://download.kiwix.org/zim/irp.fas.org_en_military-medicine.zim" aria-label="Baixar Military Medicine">Baixar</a></li>
+          <li><span><b>Surviving Residency</b><i class="etq">Vídeo</i><span class="desc">Guias rápidos de medicina, em vídeo.</span><span class="arq">quickguidesformedicine_en_all.zim</span></span><span class="tam">528 MB</span><a href="https://download.kiwix.org/zim/quickguidesformedicine_en_all.zim" aria-label="Baixar Surviving Residency">Baixar</a></li>
+          <li><span><b>WikiVet</b><span class="desc">Enciclopédia de medicina veterinária.</span><span class="arq">wikivet.net_en_all_maxi_2026-07a.zim</span></span><span class="tam">57 MB</span><a href="https://download.kiwix.org/zim/other/wikivet.net_en_all_maxi_2026-07a.zim" aria-label="Baixar WikiVet">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Energia e baixa tecnologia</b><span class="mono">6 acervos · 2,8 GB</span></summary>
+        <ul>
+          <li><span><b>Low-tech Magazine</b><i class="etq">Em inglês</i><span class="desc">Nem todo problema tem solução de alta tecnologia: energia, aquecimento, transporte e ferramentas de baixa tecnologia.</span><span class="arq">solar.lowtechmagazine.com_mul_all.zim</span></span><span class="tam">701 MB</span><a href="https://download.kiwix.org/zim/solar.lowtechmagazine.com_mul_all.zim" aria-label="Baixar Low-tech Magazine">Baixar</a></li>
+          <li><span><b>Hundred Rabbits</b><span class="desc">Pesquisa e testes de soluções de baixa tecnologia, documentados.</span><span class="arq">100r.co_en_all.zim</span></span><span class="tam">178 MB</span><a href="https://download.kiwix.org/zim/100r.co_en_all.zim" aria-label="Baixar Hundred Rabbits">Baixar</a></li>
+          <li><span><b>Appropedia</b><span class="desc">Conhecimento compartilhado sobre tecnologia apropriada e vida sustentável.</span><span class="arq">appropedia_en_all_maxi.zim</span></span><span class="tam">582 MB</span><a href="https://download.kiwix.org/zim/appropedia_en_all_maxi.zim" aria-label="Baixar Appropedia">Baixar</a></li>
+          <li><span><b>energypedia</b><span class="desc">Energia renovável e acesso à energia.</span><span class="arq">energypedia_en_all_maxi.zim</span></span><span class="tam">800 MB</span><a href="https://download.kiwix.org/zim/energypedia_en_all_maxi.zim" aria-label="Baixar energypedia">Baixar</a></li>
+          <li><span><b>CD3WD</b><span class="desc">Mais de 900 documentos técnicos sobre desenvolvimento sustentável.</span><span class="arq">cd3wdproject.org_en_all.zim</span></span><span class="tam">573 MB</span><a href="https://download.kiwix.org/zim/cd3wdproject.org_en_all.zim" aria-label="Baixar CD3WD">Baixar</a></li>
+          <li><span><b>Permacomputing</b><span class="desc">Resiliência e regeneração na tecnologia digital.</span><span class="arq">permacomputing.net_en_all.zim</span></span><span class="tam">1,0 MB</span><a href="https://download.kiwix.org/zim/permacomputing.net_en_all.zim" aria-label="Baixar Permacomputing">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Consertos e habilidades</b><span class="mono">8 acervos · 14,5 GB</span></summary>
+        <ul>
+          <li><span><b>iFixit</b><span class="desc">Guias de conserto passo a passo, com fotos.</span><span class="arq">ifixit_pt_all.zim</span></span><span class="tam">3,6 GB</span><a href="https://download.kiwix.org/zim/ifixit_pt_all.zim" aria-label="Baixar iFixit">Baixar</a></li>
+          <li><span><b>iFixit (em inglês)</b><span class="desc">Guias de conserto passo a passo, com fotos. Tem mais guias que a versão em português.</span><span class="arq">ifixit_en_all.zim</span></span><span class="tam">3,6 GB</span><a href="https://download.kiwix.org/zim/ifixit_en_all.zim" aria-label="Baixar iFixit (em inglês)">Baixar</a></li>
+          <li><span><b>Restarters</b><span class="desc">Como as coisas funcionam e como consertá-las.</span><span class="arq">restarters_en_all_maxi.zim</span></span><span class="tam">17 MB</span><a href="https://download.kiwix.org/zim/restarters_en_all_maxi.zim" aria-label="Baixar Restarters">Baixar</a></li>
+          <li><span><b>Home Improvement Q&amp;A</b><span class="desc">Perguntas e respostas sobre reforma e manutenção da casa.</span><span class="arq">diy.stackexchange.com_en_all.zim</span></span><span class="tam">2,1 GB</span><a href="https://download.kiwix.org/zim/diy.stackexchange.com_en_all.zim" aria-label="Baixar Home Improvement Q&amp;A">Baixar</a></li>
+          <li><span><b>Motor Vehicle Maintenance Q&amp;A</b><span class="desc">Perguntas e respostas sobre mecânica de carros e motos.</span><span class="arq">mechanics.stackexchange.com_en_all.zim</span></span><span class="tam">342 MB</span><a href="https://download.kiwix.org/zim/mechanics.stackexchange.com_en_all.zim" aria-label="Baixar Motor Vehicle Maintenance Q&amp;A">Baixar</a></li>
+          <li><span><b>Electrical Engineering Q&amp;A</b><span class="desc">Perguntas e respostas sobre eletrônica.</span><span class="arq">electronics.stackexchange.com_en_all.zim</span></span><span class="tam">4,3 GB</span><a href="https://download.kiwix.org/zim/electronics.stackexchange.com_en_all.zim" aria-label="Baixar Electrical Engineering Q&amp;A">Baixar</a></li>
+          <li><span><b>Woodworking Q&amp;A</b><span class="desc">Perguntas e respostas sobre marcenaria.</span><span class="arq">woodworking.stackexchange.com_en_all.zim</span></span><span class="tam">107 MB</span><a href="https://download.kiwix.org/zim/woodworking.stackexchange.com_en_all.zim" aria-label="Baixar Woodworking Q&amp;A">Baixar</a></li>
+          <li><span><b>Bicycles Q&amp;A</b><span class="desc">Perguntas e respostas sobre bicicletas e sua manutenção.</span><span class="arq">bicycles.stackexchange.com_en_all.zim</span></span><span class="tam">499 MB</span><a href="https://download.kiwix.org/zim/bicycles.stackexchange.com_en_all.zim" aria-label="Baixar Bicycles Q&amp;A">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Wikipédia <small>(escolha uma)</small></b><span class="mono">6 acervos · 33,7 GB</span></summary>
+        <ul>
+          <li><span><b>Wikipédia completa · com imagens</b><span class="desc">Todos os artigos, completos, com imagens. A versão mais pesada.</span><span class="arq">wikipedia_pt_all_maxi.zim</span></span><span class="tam">20,6 GB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_all_maxi.zim" aria-label="Baixar Wikipédia completa · com imagens">Baixar</a></li>
+          <li><span><b>Wikipédia completa · sem imagens</b><span class="desc">Todos os artigos, completos, só texto.</span><span class="arq">wikipedia_pt_all_nopic.zim</span></span><span class="tam">7,1 GB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_all_nopic.zim" aria-label="Baixar Wikipédia completa · sem imagens">Baixar</a></li>
+          <li><span><b>Wikipédia completa · resumida</b><span class="desc">Todos os artigos, mas só a introdução de cada um, sem imagens.</span><span class="arq">wikipedia_pt_all_mini.zim</span></span><span class="tam">1,7 GB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_all_mini.zim" aria-label="Baixar Wikipédia completa · resumida">Baixar</a></li>
+          <li><span><b>Wikipédia: 50 mil melhores · com imagens</b><span class="desc">Os artigos mais lidos, completos, com imagens.</span><span class="arq">wikipedia_pt_top_maxi.zim</span></span><span class="tam">3,0 GB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_top_maxi.zim" aria-label="Baixar Wikipédia: 50 mil melhores · com imagens">Baixar</a></li>
+          <li><span><b>Wikipédia: 50 mil melhores · sem imagens</b><span class="desc">Os artigos mais lidos, completos, só texto. Boa para celular.</span><span class="arq">wikipedia_pt_top_nopic.zim</span></span><span class="tam">1,1 GB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_top_nopic.zim" aria-label="Baixar Wikipédia: 50 mil melhores · sem imagens">Baixar</a></li>
+          <li><span><b>Wikipédia: 50 mil melhores · resumida</b><span class="desc">Os artigos mais lidos, só a introdução, sem imagens.</span><span class="arq">wikipedia_pt_top_mini.zim</span></span><span class="tam">153 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_top_mini.zim" aria-label="Baixar Wikipédia: 50 mil melhores · resumida">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Estudo e ciências</b><span class="mono">10 acervos · 1,6 GB</span></summary>
+        <ul>
+          <li><span><b>Vikidia</b><span class="desc">Enciclopédia para crianças e adolescentes.</span><span class="arq">vikidia_pt_all_maxi.zim</span></span><span class="tam">19 MB</span><a href="https://download.kiwix.org/zim/vikidia_pt_all_maxi.zim" aria-label="Baixar Vikidia">Baixar</a></li>
+          <li><span><b>Wikilivros</b><span class="desc">Livros didáticos e manuais.</span><span class="arq">wikibooks_pt_all_maxi.zim</span></span><span class="tam">169 MB</span><a href="https://download.kiwix.org/zim/wikibooks_pt_all_maxi.zim" aria-label="Baixar Wikilivros">Baixar</a></li>
+          <li><span><b>Wikiversidade</b><span class="desc">Cursos e material de estudo.</span><span class="arq">wikiversity_pt_all_maxi.zim</span></span><span class="tam">101 MB</span><a href="https://download.kiwix.org/zim/wikiversity_pt_all_maxi.zim" aria-label="Baixar Wikiversidade">Baixar</a></li>
+          <li><span><b>PhET</b><span class="desc">Simulações interativas de ciências e matemática.</span><span class="arq">phet_pt_all.zim</span></span><span class="tam">82 MB</span><a href="https://download.kiwix.org/zim/phet_pt_all.zim" aria-label="Baixar PhET">Baixar</a></li>
+          <li><span><b>Wikipédia: Química</b><span class="desc">Os artigos de química da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_chemistry_maxi.zim</span></span><span class="tam">67 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_chemistry_maxi.zim" aria-label="Baixar Wikipédia: Química">Baixar</a></li>
+          <li><span><b>Wikipédia: Física</b><span class="desc">Os artigos de física da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_physics_maxi.zim</span></span><span class="tam">254 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_physics_maxi.zim" aria-label="Baixar Wikipédia: Física">Baixar</a></li>
+          <li><span><b>Wikipédia: Matemática</b><span class="desc">Os artigos de matemática da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_mathematics_maxi.zim</span></span><span class="tam">216 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_mathematics_maxi.zim" aria-label="Baixar Wikipédia: Matemática">Baixar</a></li>
+          <li><span><b>Wikipédia: Biologia molecular e celular</b><span class="desc">Os artigos de biologia molecular e celular da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_molcell_maxi.zim</span></span><span class="tam">82 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_molcell_maxi.zim" aria-label="Baixar Wikipédia: Biologia molecular e celular">Baixar</a></li>
+          <li><span><b>Wikipédia: História</b><span class="desc">Os artigos de história da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_history_maxi.zim</span></span><span class="tam">460 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_history_maxi.zim" aria-label="Baixar Wikipédia: História">Baixar</a></li>
+          <li><span><b>Wikipédia: Geografia</b><span class="desc">Os artigos de geografia da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_geography_maxi.zim</span></span><span class="tam">163 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_geography_maxi.zim" aria-label="Baixar Wikipédia: Geografia">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Programação e computação</b><span class="mono">3 acervos · 1,1 GB</span></summary>
+        <ul>
+          <li><span><b>Stack Overflow em Português</b><span class="desc">Perguntas e respostas para programadores.</span><span class="arq">pt.stackoverflow.com_mul_all.zim</span></span><span class="tam">934 MB</span><a href="https://download.kiwix.org/zim/pt.stackoverflow.com_mul_all.zim" aria-label="Baixar Stack Overflow em Português">Baixar</a></li>
+          <li><span><b>freeCodeCamp</b><span class="desc">Todos os cursos de programação do freeCodeCamp, em português.</span><span class="arq">freecodecamp_pt_all.zim</span></span><span class="tam">12 MB</span><a href="https://download.kiwix.org/zim/freecodecamp_pt_all.zim" aria-label="Baixar freeCodeCamp">Baixar</a></li>
+          <li><span><b>Wikipédia: Computação</b><span class="desc">Os artigos de computação da Wikipédia, com imagens. Já estão na Wikipédia completa.</span><span class="arq">wikipedia_pt_computer_maxi.zim</span></span><span class="tam">159 MB</span><a href="https://download.kiwix.org/zim/wikipedia_pt_computer_maxi.zim" aria-label="Baixar Wikipédia: Computação">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Livros e textos</b><span class="mono">3 acervos · 2,3 GB</span></summary>
+        <ul>
+          <li><span><b>Wikisource</b><span class="desc">Textos em domínio público.</span><span class="arq">wikisource_pt_all_maxi.zim</span></span><span class="tam">1,7 GB</span><a href="https://download.kiwix.org/zim/wikisource_pt_all_maxi.zim" aria-label="Baixar Wikisource">Baixar</a></li>
+          <li><span><b>Projeto Gutenberg</b><span class="desc">Livros clássicos em português.</span><span class="arq">gutenberg_pt_all.zim</span></span><span class="tam">523 MB</span><a href="https://download.kiwix.org/zim/gutenberg_pt_all.zim" aria-label="Baixar Projeto Gutenberg">Baixar</a></li>
+          <li><span><b>Wikiquote</b><span class="desc">Citações.</span><span class="arq">wikiquote_pt_all_maxi.zim</span></span><span class="tam">90 MB</span><a href="https://download.kiwix.org/zim/wikiquote_pt_all_maxi.zim" aria-label="Baixar Wikiquote">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Língua e viagem</b><span class="mono">3 acervos · 448 MB</span></summary>
+        <ul>
+          <li><span><b>Wikcionário</b><span class="desc">Dicionário (sem imagens).</span><span class="arq">wiktionary_pt_all_nopic.zim</span></span><span class="tam">370 MB</span><a href="https://download.kiwix.org/zim/wiktionary_pt_all_nopic.zim" aria-label="Baixar Wikcionário">Baixar</a></li>
+          <li><span><b>Portuguese Language Q&amp;A</b><span class="desc">Perguntas e respostas sobre a língua portuguesa (a maioria em inglês).</span><span class="arq">portuguese.stackexchange.com_mul_all.zim</span></span><span class="tam">21 MB</span><a href="https://download.kiwix.org/zim/portuguese.stackexchange.com_mul_all.zim" aria-label="Baixar Portuguese Language Q&amp;A">Baixar</a></li>
+          <li><span><b>Wikivoyage</b><span class="desc">Guia de viagem.</span><span class="arq">wikivoyage_pt_all_maxi.zim</span></span><span class="tam">57 MB</span><a href="https://download.kiwix.org/zim/wikivoyage_pt_all_maxi.zim" aria-label="Baixar Wikivoyage">Baixar</a></li>
+        </ul>
+      </details>
+      <details class="grupo">
+        <summary><b>Mapas e referência</b><span class="mono">3 acervos · 9,0 GB</span></summary>
+        <ul>
+          <li><span><b>Mapa do Brasil</b><span class="desc">Mapa completo, com estradas e pontos de referência. Interface em inglês.</span><span class="arq">maps_en_brazil.zim</span></span><span class="tam">3,1 GB</span><a href="https://download.kiwix.org/zim/maps_en_brazil.zim" aria-label="Baixar Mapa do Brasil">Baixar</a></li>
+          <li><span><b>Mapa da América do Sul</b><span class="desc">Mapa completo do continente, com estradas e pontos de referência. Interface em inglês.</span><span class="arq">maps_en_south-america.zim</span></span><span class="tam">5,5 GB</span><a href="https://download.kiwix.org/zim/maps_en_south-america.zim" aria-label="Baixar Mapa da América do Sul">Baixar</a></li>
+          <li><span><b>CIA World Factbook (2020)</b><span class="desc">Almanaque com dados de todos os países. Edição de 2020, a publicação foi descontinuada.</span><span class="arq">theworldfactbook_en_all.zim</span></span><span class="tam">407 MB</span><a href="https://download.kiwix.org/zim/theworldfactbook_en_all.zim" aria-label="Baixar CIA World Factbook (2020)">Baixar</a></li>
+        </ul>
+      </details>
+      </div>
+    </section>
+    <!-- acervos:fim -->
+
     <div class="finais">
       <a href="https://github.com/wdonega/prep-wiki-br/releases/tag/desktop-v0.1.1" target="_blank" rel="noopener">Todas as versões e as somas SHA-256 no GitHub</a>
       <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Testar antes na demonstração</a>
@@ -456,7 +629,7 @@ sudo apt install ./prep-wiki-br_0.1.1_amd64.deb</pre></div></div></li>
     abas.forEach(function (a) { a.setAttribute('aria-current', a.dataset.so === so ? 'true' : 'false'); });
     paineis.forEach(function (p) { p.hidden = p.id !== so; });
   }
-  function doEndereco() { var h = location.hash.slice(1); return document.getElementById(h) && h in { android: 1, windows: 1, mac: 1, linux: 1, docker: 1 } ? h : null; }
+  function doEndereco() { var h = location.hash.slice(1); return document.getElementById(h) && h in { android: 1, windows: 1, mac: 1, linux: 1, docker: 1, acervos: 1 } ? h : null; }
   abas.forEach(function (a) {
     a.querySelector('.seu').hidden = a.dataset.so !== meu;
     a.addEventListener('click', function (e) { e.preventDefault(); mostra(a.dataset.so); history.replaceState(null, '', '#' + a.dataset.so); });
