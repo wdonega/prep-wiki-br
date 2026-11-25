@@ -95,7 +95,8 @@ def relativizar(html_txt: str, caminho: str) -> str:
             alvo = "index" + alvo
         return f'{attr}="{pref}{alvo}"'
 
-    return re.sub(r'(href|src)="(/[^"]*)"', sub, html_txt)
+    # data-base: prefixo que o mapa.js junta à sigla do estado para montar o link
+    return re.sub(r'(href|src|data-base)="(/[^"]*)"', sub, html_txt)
 
 
 def texto_puro(html_txt: str) -> str:
