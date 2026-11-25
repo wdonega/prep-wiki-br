@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prep Wiki BR · biblioteca offline em português</title>
-<meta name="description" content="Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português. 82 acervos, quatro guias próprios e busca dentro de PDFs e vídeos traduzidos.">
+<meta name="description" content="Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português. 83 acervos, cinco guias próprios e busca dentro de PDFs e vídeos traduzidos.">
 <link rel="canonical" href="https://prep.bigode.org/">
 <meta name="theme-color" content="#050e09">
 <meta name="color-scheme" content="dark">
@@ -16,7 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://prep.bigode.org/">
 <meta property="og:title" content="Prep Wiki BR · biblioteca offline em português">
-<meta property="og:description" content="Quando a internet cai, a biblioteca fica acesa. 82 acervos, quatro guias próprios e busca dentro de PDFs e vídeos traduzidos.">
+<meta property="og:description" content="Quando a internet cai, a biblioteca fica acesa. 83 acervos, cinco guias próprios e busca dentro de PDFs e vídeos traduzidos.">
 <meta property="og:image" content="https://prep.bigode.org/share.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg">
@@ -105,7 +105,7 @@
   .rolar i { width: 1px; height: 34px; background: linear-gradient(#7f927f, transparent); animation: desce 1.8s ease-in-out infinite; transform-origin: top; }
   @keyframes desce { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
 
-  /* segunda tela: folhas de papel iluminadas; a do guia mais novo abre a seção, deitada */
+  /* segunda tela: folhas de papel iluminadas; as dos dois guias mais novos abrem a seção, maiores */
   .guias { position: relative; z-index: 1; padding: 14vh 5.5vw 20vh; }
   .guias h2 { font-size: clamp(38px, 5.4vw, 92px); line-height: .92; letter-spacing: -.03em; font-weight: 800; font-stretch: 84%; max-width: 13ch;
     /* o título da segunda tela também é iluminado de cima, pelo mesmo lampião */
@@ -127,13 +127,16 @@
   .folha .folha__novo { position: absolute; z-index: 2; top: 26px; left: 26px; margin: 0; padding: 9px 14px 8px; border-radius: 999px; background: var(--ambar); color: #1c1403; line-height: 1; letter-spacing: .1em; box-shadow: 0 8px 20px rgba(0,0,0,.28); }
   .folha .folha__fatos { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 10px 0; padding: 0; list-style: none; }
   .folha__fatos li { padding: 9px 13px 8px; border: 1px solid rgba(23,36,26,.28); border-radius: 999px; color: #17241a; font-size: 11.5px; line-height: 1; }
+  /* no desktop, os dois guias mais novos dividem a primeira linha ao meio; os outros vêm três por linha */
   @media (min-width: 901px) {
-    .folha--destaque { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); grid-template-rows: 1fr auto auto auto auto 1fr; column-gap: 3.2vw; padding: 16px; margin-bottom: 14px; --r: -.35deg; }
-    .folha--destaque figure { grid-column: 1; grid-row: 1 / -1; aspect-ratio: 16 / 9; }
-    .folha--destaque > p.mono { grid-column: 2; grid-row: 2; margin: 0 0 14px; }
-    .folha--destaque h3 { grid-column: 2; grid-row: 3; margin: 0; max-width: 14ch; font-size: clamp(34px, 3.5vw, 58px); line-height: .96; text-wrap: balance; }
-    .folha--destaque > p:not(.mono) { grid-column: 2; grid-row: 4; margin: 18px 24px 0 0; max-width: 38ch; font-size: 18px; }
-    .folha--destaque .folha__fatos { grid-column: 2; grid-row: 5; margin: 24px 0 0; }
+    .folhas { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .folha { grid-column: span 2; }
+    .folha--destaque { grid-column: span 3; padding: 16px 16px 30px; margin-bottom: 14px; }
+    .folha--destaque figure { aspect-ratio: 16 / 9; }
+    .folha--destaque > p.mono { margin: 24px 14px 10px; }
+    .folha--destaque h3 { margin: 0 14px; max-width: 16ch; font-size: clamp(30px, 2.7vw, 46px); line-height: .98; text-wrap: balance; }
+    .folha--destaque > p:not(.mono) { margin: 14px 14px 0; max-width: 46ch; font-size: 17px; }
+    .folha--destaque .folha__fatos { margin: 22px 14px 0; }
   }
 
   /* ---- componente de baixar ---- */
@@ -393,7 +396,7 @@
         <span class="l"><span>fica acesa.</span></span>
       </h1>
       <div class="base">
-        <p><b>82 acervos</b> guardados no seu aparelho: quatro guias que só existem aqui, a Wikipédia, manuais de conserto e <b>PDFs e vídeos traduzidos</b>, com busca em português. Sem sinal, sem conta, sem anúncio.</p>
+        <p><b>83 acervos</b> guardados no seu aparelho: cinco guias que só existem aqui, a Wikipédia, manuais de conserto e <b>PDFs e vídeos traduzidos</b>, com busca em português. Sem sinal, sem conta, sem anúncio.</p>
         <div class="lado">
           <div class="ab">
             <a class="ab__bt" href="baixar.html"><svg class="ab__so" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg><span><b class="ab__txt">Baixar o Prep Wiki BR</b><small class="ab__sub">Android, Windows, Mac, Linux e Docker</small></span><svg class="baixa" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -405,22 +408,23 @@
     </div>
 
     <div class="luz" id="luz"><img class="reserva" src="img/lampiao.png" alt=""><canvas id="lampiao" aria-hidden="true"></canvas></div>
-    <p class="nota nota--dir n1 mono"><b>82</b> acervos em 12 assuntos</p>
-    <p class="nota n2 mono"><b>4</b> guias exclusivos</p>
+    <p class="nota nota--dir n1 mono"><b>83</b> acervos em 12 assuntos</p>
+    <p class="nota n2 mono"><b>5</b> guias exclusivos</p>
     <p class="nota nota--dir n3 mono">PDFs e vídeos traduzidos</p>
     <img class="bussola" src="img/bussola.png" alt="">
     <p class="rolar mono"><i></i>Role para ver os guias</p>
   </section>
 
   <section class="guias" id="guias">
-    <h2>Quatro guias que <em>só existem aqui.</em></h2>
+    <h2>Cinco guias que <em>só existem aqui.</em></h2>
     <div class="folhas">
-      <article class="folha folha--destaque" style="--d:0s"><span class="folha__novo mono">Novo</span><figure><img src="img/lugares.jpg" alt="Gravura de uma casa no campo com araucárias, horta e caixa-d'água; na frente, um mapa, uma bússola e um binóculo" loading="lazy"></figure><p class="mono">Guia · 64 páginas</p><h3>Lugares seguros no Brasil</h3><p>Onde morar com mais segurança no longo prazo. A nota dos 27 estados em crime, desastres, densidade e autossuficiência, num mapa, com regiões e rotas de fuga.</p><ul class="folha__fatos mono"><li>27 estados</li><li>5 regiões</li><li>8 critérios</li></ul></article>
-      <article class="folha" style="--r:-2.2deg;--d:.1s"><figure><img src="img/sisteminha.jpg" alt="Gravura de um quintal com tanque de peixes, galinheiro e horta" loading="lazy"></figure><p class="mono">Guia · Embrapa · 16 MB</p><h3>Sisteminha: comida no quintal</h3><p>Tanque de peixes com biofiltro, aves, horta e compostagem. Com as 52 perguntas e respostas da Embrapa e uma calculadora de ração.</p></article>
-      <article class="folha" style="--r:.8deg;--d:.2s"><figure><img src="img/plantas.jpg" alt="Gravura de plantas medicinais ao lado de um pilão" loading="lazy"></figure><p class="mono">Guia · Anvisa · 29 MB</p><h3>85 plantas medicinais</h3><p>Fórmula, preparo, dose, advertências e foto de cada planta do Formulário de Fitoterápicos, mais cultivo e uso seguro no SUS.</p></article>
-      <article class="folha" style="--r:2.4deg;--d:.3s"><figure><img src="img/chuva.jpg" alt="Gravura de uma casa no morro sob tempestade" loading="lazy"></figure><p class="mono">Guia · 36 páginas</p><h3>Chuva forte e tempestade</h3><p>O que fazer antes, durante e depois de enchente, deslizamento, vendaval e raio. Cada orientação traz a fonte.</p></article>
+      <article class="folha folha--destaque" style="--r:-1.2deg;--d:0s"><span class="folha__novo mono">Novo</span><figure><img src="img/sobrevivente.jpg" alt="Gravura de uma despensa com potes de vidro, latas e sacos de grãos nas prateleiras" loading="lazy"></figure><p class="mono">Guia · Vídeos · 1,2 GB</p><h3>Guia do Sobrevivente: alimentos</h3><p>Os 48 vídeos do Protocolo 550, do canal Guia do Sobrevivente, sobre como guardar comida em casa. Cada um com transcrição, legenda, resumo e capítulos.</p><ul class="folha__fatos mono"><li>48 vídeos</li><li>Transcrição</li><li>Capítulos</li></ul></article>
+      <article class="folha folha--destaque" style="--r:.9deg;--d:.1s"><figure><img src="img/lugares.jpg" alt="Gravura de uma casa no campo com araucárias, horta e caixa-d'água; na frente, um mapa, uma bússola e um binóculo" loading="lazy"></figure><p class="mono">Guia · 64 páginas</p><h3>Lugares seguros no Brasil</h3><p>Onde morar com mais segurança no longo prazo. A nota dos 27 estados em crime, desastres, densidade e autossuficiência, num mapa, com regiões e rotas de fuga.</p><ul class="folha__fatos mono"><li>27 estados</li><li>5 regiões</li><li>8 critérios</li></ul></article>
+      <article class="folha" style="--r:-2.2deg;--d:.2s"><figure><img src="img/sisteminha.jpg" alt="Gravura de um quintal com tanque de peixes, galinheiro e horta" loading="lazy"></figure><p class="mono">Guia · Embrapa · 16 MB</p><h3>Sisteminha: comida no quintal</h3><p>Tanque de peixes com biofiltro, aves, horta e compostagem. Com as 52 perguntas e respostas da Embrapa e uma calculadora de ração.</p></article>
+      <article class="folha" style="--r:.8deg;--d:.3s"><figure><img src="img/plantas.jpg" alt="Gravura de plantas medicinais ao lado de um pilão" loading="lazy"></figure><p class="mono">Guia · Anvisa · 29 MB</p><h3>85 plantas medicinais</h3><p>Fórmula, preparo, dose, advertências e foto de cada planta do Formulário de Fitoterápicos, mais cultivo e uso seguro no SUS.</p></article>
+      <article class="folha" style="--r:2.4deg;--d:.4s"><figure><img src="img/chuva.jpg" alt="Gravura de uma casa no morro sob tempestade" loading="lazy"></figure><p class="mono">Guia · 36 páginas</p><h3>Chuva forte e tempestade</h3><p>O que fazer antes, durante e depois de enchente, deslizamento, vendaval e raio. Cada orientação traz a fonte.</p></article>
     </div>
-    <p class="guias__nota">Três vêm de publicações oficiais; o Lugares seguros cruza dados públicos com os critérios de dois livros sobre onde morar. Os quatro somam 47 MB, abrem em qualquer Kiwix e estão na <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">demonstração</a>.</p>
+    <p class="guias__nota">Três vêm de publicações oficiais; o Lugares seguros cruza dados públicos com os critérios de dois livros sobre onde morar; o Guia do Sobrevivente guarda os vídeos do canal, com autorização deles. Os cinco abrem em qualquer Kiwix e estão na <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">demonstração</a>.</p>
   </section>
   <section class="sec busca" id="busca">
     <div class="foco" style="--x:50%;--y:48%"></div>
@@ -445,7 +449,7 @@
   <section class="sec acervos" id="acervos">
     <div class="foco" style="--x:84%;--y:34%"></div>
     <p class="sobre mono"><i></i>Lista escolhida</p>
-    <h2 class="aceso">82 acervos, em <em>12 assuntos.</em></h2>
+    <h2 class="aceso">83 acervos, em <em>12 assuntos.</em></h2>
     <p class="lead">Você instala só o que quiser. Cada acervo tem descrição em português e mostra o tamanho antes de baixar.</p>
     <div class="acervos__grade">
       <ol class="lista">
@@ -464,7 +468,7 @@
       </ol>
       <div class="acervos__lado">
         <figure class="acervos__arte" data-ver><img src="img/caderno.jpg" alt="Caderno de campo com uma lista: água, lanterna, canivete, rádio, kit de primeiros socorros e mapa" loading="lazy" width="820" height="820"></figure>
-        <p class="acervos__nota">Um conjunto enxuto em português (os quatro guias, a Wikipédia dos 50 mil melhores artigos, Medicina, iFixit, Estudo e Língua e viagem) fica em torno de 8 GB. Dos 82 acervos, 48 são em inglês e abrem em português com o pacote de tradução.</p>
+        <p class="acervos__nota">Um conjunto enxuto em português (os cinco guias, a Wikipédia dos 50 mil melhores artigos, Medicina, iFixit, Estudo e Língua e viagem) fica em torno de 9 GB. Dos 83 acervos, 48 são em inglês e abrem em português com o pacote de tradução.</p>
       </div>
     </div>
     <div class="fontes" aria-label="Entre as fontes: Wikipédia, iFixit, Projeto Gutenberg, Wikcionário, Wikilivros, PhET, Wikivoyage, freeCodeCamp, Appropedia, Wikiversidade, Vikidia, CD3WD, Wikiquote, Stack Overflow, MedlinePlus, Low-tech Magazine">
@@ -515,7 +519,7 @@
     <div class="faq">
         <div class="faq__item aberto"><button type="button" aria-expanded="true">Precisa de internet para usar?<i></i></button><div class="faq__r"><div><p>Só para baixar. Depois de baixado, cada acervo abre, busca e traduz sem conexão.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">Dá para testar antes de instalar?<i></i></button><div class="faq__r"><div><p>Dá. A <a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">demonstração ao vivo</a> abre no navegador com 7 acervos de exemplo, sem instalar nada.</p></div></div></div>
-        <div class="faq__item"><button type="button" aria-expanded="false">Quanto espaço ocupa?<i></i></button><div class="faq__r"><div><p>Você decide. Os quatro guias do projeto somam 47 MB, e um conjunto enxuto em português fica em torno de 8 GB. O tamanho de cada acervo aparece antes de baixar.</p></div></div></div>
+        <div class="faq__item"><button type="button" aria-expanded="false">Quanto espaço ocupa?<i></i></button><div class="faq__r"><div><p>Você decide. Os quatro guias de texto do projeto somam 47 MB, o de vídeos tem 1,2 GB, e um conjunto enxuto em português fica em torno de 9 GB. O tamanho de cada acervo aparece antes de baixar.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">Em quais aparelhos funciona?<i></i></button><div class="faq__r"><div><p>No celular, em Android 10 ou mais novo, de 64 bits. No computador, em Windows, Mac e Linux; veja <a href="baixar.html">como instalar</a> em cada um. Pelo Docker, roda num PC ou num Raspberry Pi 4 ou 5 e serve a casa toda pelo navegador; veja o <a href="docker.html">passo a passo</a>.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">A tradução é confiável?<i></i></button><div class="faq__r"><div><p>É feita por máquina, dentro do aparelho, e serve para entender o texto. Em doses, medidas e números, confira o original, que fica a um toque.</p></div></div></div>
         <div class="faq__item"><button type="button" aria-expanded="false">É grátis mesmo?<i></i></button><div class="faq__r"><div><p>É. Não tem anúncio, cadastro nem versão paga. Quem quiser pode apoiar o projeto; o apoio não libera nada.</p></div></div></div>
@@ -557,7 +561,7 @@
 
 <footer class="rodape">
   <div><a class="marca" href="#"><img src="img/icone-96.png" alt="">Prep Wiki BR</a><p>Uma biblioteca de preparação, autonomia e saúde que funciona sem internet, em português.</p></div>
-  <div><h4>Guias</h4><ul><li><a href="#guias">Sisteminha Embrapa</a></li><li><a href="#guias">Plantas Medicinais</a></li><li><a href="#guias">Chuva forte e tempestade</a></li><li><a href="#guias">Lugares seguros no Brasil</a></li></ul></div>
+  <div><h4>Guias</h4><ul><li><a href="#guias">Sisteminha Embrapa</a></li><li><a href="#guias">Plantas Medicinais</a></li><li><a href="#guias">Chuva forte e tempestade</a></li><li><a href="#guias">Lugares seguros no Brasil</a></li><li><a href="#guias">Guia do Sobrevivente · Alimentos</a></li></ul></div>
   <div><h4>Nesta página</h4><ul><li><a href="#busca">Busca</a></li><li><a href="#acervos">Acervos</a></li><li><a href="#passos">Como começar</a></li><li><a href="#perguntas">Perguntas</a></li></ul></div>
   <div><h4>Projeto</h4><ul><li><a href="baixar.html">Baixar e instalar</a></li><li><a href="docker.html">Instalar com Docker</a></li><li><a href="https://prep-demo.bigode.org/" target="_blank" rel="noopener">Demonstração ao vivo</a></li><li><a href="https://github.com/wdonega/prep-wiki-br" target="_blank" rel="noopener">Código no GitHub</a></li><li><a href="#apoiar">Apoiar o projeto</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/issues" target="_blank" rel="noopener">Relatar um problema</a></li></ul></div>
   <div><h4>Termos</h4><ul><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/privacidade.md" target="_blank" rel="noopener">Política de privacidade</a></li><li><a href="https://github.com/wdonega/prep-wiki-br/blob/main/docs/termos.md" target="_blank" rel="noopener">Termos de uso</a></li><li><a href="mailto:support@bigode.org">support@bigode.org</a></li></ul></div>
