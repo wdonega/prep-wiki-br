@@ -1,5 +1,5 @@
 {
-  "versao": 16,
+  "versao": 17,
   "grupos": [
     {"id": "projeto", "titulo": "Deste projeto"},
     {"id": "emergencias", "titulo": "Emergências e preparação"},
@@ -19,7 +19,8 @@
     {"id": "recomendado", "titulo": "Recomendado", "cor": "verde"},
     {"id": "video", "titulo": "Vídeo", "cor": "verde", "dica": "Canal de vídeos"},
     {"id": "ingles", "titulo": "Em inglês", "cor": "azul"},
-    {"id": "traduzido", "titulo": "Traduzido", "cor": "azul", "dica": "Em inglês; abre traduzido para o português no próprio aparelho, e o original fica a um toque"}
+    {"id": "traduzido", "titulo": "Traduzido", "cor": "azul", "dica": "Em inglês; abre traduzido para o português no próprio aparelho, e o original fica a um toque"},
+    {"id": "exclusivo", "titulo": "Exclusivo", "cor": "#7c3aed", "dica": "Feito pelo Prep Wiki BR: só existe aqui"}
   ],
   "traducao": [
     {"id": "en-pt", "de": "en", "para": "pt", "versao": "1", "titulo": "Inglês → português",
@@ -38,11 +39,11 @@
      ]}
   ],
   "zims": [
-    {"id": "sisteminha-embrapa_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "sisteminha-embrapa-latest", "arquivo": "sisteminha-embrapa_pt.zim", "edicao": "2026-11-13", "grupo": "projeto", "tags": ["recomendado"], "titulo": "Sisteminha Embrapa", "descricao": "Produção integrada de alimentos no quintal: tanque de peixes com biofiltro, aves, horta e compostagem."},
-    {"id": "plantas-medicinais_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "plantas-medicinais-latest", "arquivo": "plantas-medicinais_pt.zim", "edicao": "2026-11-13", "grupo": "projeto", "tags": ["recomendado"], "titulo": "Plantas Medicinais", "descricao": "85 plantas do Formulário de Fitoterápicos da Anvisa, com preparo, cultivo e uso seguro no SUS."},
-    {"id": "chuvas-tempestades_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "chuvas-tempestades-latest", "arquivo": "chuvas-tempestades_pt.zim", "edicao": "2026-11-15", "grupo": "projeto", "tags": ["lancamento", "recomendado"], "titulo": "Chuva forte e tempestade", "descricao": "O que fazer antes, durante e depois de enchente, vendaval, granizo, raio e deslizamento: ilhado, carro na água, lona no telhado, saúde e direitos."},
-    {"id": "lugares-seguros_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "lugares-seguros-latest", "arquivo": "lugares-seguros_pt.zim", "edicao": "2026-11-22", "grupo": "projeto", "tags": ["lancamento", "recomendado"], "titulo": "Lugares seguros no Brasil", "descricao": "Onde morar com mais segurança no longo prazo: mapa das notas das 27 UFs em crime, desastres, densidade e autossuficiência, com regiões, fronteiras e rotas de fuga."},
-    {"id": "guia-do-sobrevivente-alimentos_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "guia-do-sobrevivente-alimentos-latest", "arquivo": "guia-do-sobrevivente-alimentos_pt.zim", "edicao": "2026-11-25", "grupo": "projeto", "tags": ["video", "lancamento", "recomendado"], "tags_acervo": ["video"], "titulo": "Guia do Sobrevivente · Alimentos", "descricao": "48 vídeos em português do Protocolo 550 sobre como armazenar alimentos, com transcrição, resumo e capítulos."},
+    {"id": "sisteminha-embrapa_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "sisteminha-embrapa-latest", "arquivo": "sisteminha-embrapa_pt.zim", "edicao": "2026-11-13", "grupo": "projeto", "tags": ["recomendado"], "tags_acervo": ["exclusivo"], "titulo": "Sisteminha Embrapa", "descricao": "Produção integrada de alimentos no quintal: tanque de peixes com biofiltro, aves, horta e compostagem."},
+    {"id": "plantas-medicinais_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "plantas-medicinais-latest", "arquivo": "plantas-medicinais_pt.zim", "edicao": "2026-11-13", "grupo": "projeto", "tags": ["recomendado"], "tags_acervo": ["exclusivo"], "titulo": "Plantas Medicinais", "descricao": "85 plantas do Formulário de Fitoterápicos da Anvisa, com preparo, cultivo e uso seguro no SUS."},
+    {"id": "chuvas-tempestades_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "chuvas-tempestades-latest", "arquivo": "chuvas-tempestades_pt.zim", "edicao": "2026-11-15", "grupo": "projeto", "tags": ["lancamento", "recomendado"], "tags_acervo": ["exclusivo"], "titulo": "Chuva forte e tempestade", "descricao": "O que fazer antes, durante e depois de enchente, vendaval, granizo, raio e deslizamento: ilhado, carro na água, lona no telhado, saúde e direitos."},
+    {"id": "lugares-seguros_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "lugares-seguros-latest", "arquivo": "lugares-seguros_pt.zim", "edicao": "2026-11-22", "grupo": "projeto", "tags": ["lancamento", "recomendado"], "tags_acervo": ["exclusivo"], "titulo": "Lugares seguros no Brasil", "descricao": "Onde morar com mais segurança no longo prazo: mapa das notas das 27 UFs em crime, desastres, densidade e autossuficiência, com regiões, fronteiras e rotas de fuga."},
+    {"id": "guia-do-sobrevivente-alimentos_pt", "origem": "github", "repo": "wdonega/prep-wiki-br", "tag": "guia-do-sobrevivente-alimentos-latest", "arquivo": "guia-do-sobrevivente-alimentos_pt.zim", "edicao": "2026-11-25", "grupo": "projeto", "tags": ["video", "lancamento", "recomendado"], "tags_acervo": ["exclusivo", "video"], "titulo": "Guia do Sobrevivente · Alimentos", "descricao": "48 vídeos em português do Protocolo 550 sobre como armazenar alimentos, com transcrição, resumo e capítulos."},
 
     {"id": "zimgit-post-disaster_en", "origem": "kiwix", "pasta": "other", "edicao": "2024-05", "grupo": "emergencias", "tags": ["ingles"], "tags_acervo": ["traduzido"], "titulo": "Post Disaster Resource Library", "descricao": "Coleção de materiais para depois de um desastre."},
     {"id": "ready.gov_en_all", "origem": "kiwix", "pasta": "zimit", "edicao": "2026-10", "grupo": "emergencias", "tags": ["ingles"], "tags_acervo": ["traduzido"], "titulo": "Ready.gov", "descricao": "Planos e kits de emergência do governo dos EUA, para cada tipo de desastre."},
